@@ -13,6 +13,7 @@ export const mockBlogs = [
     author: "Ashutosh",
     likes: 8,
     ratings: 3,
+    //category
     comments: [
       {
         userId: "1",

@@ -6,8 +6,8 @@ export const StyledNavLink = styled(NavLink)`
   ${(props) => (props.primary || props.secondary ? buttonCss : "")};
   text-decoration: none;
   font-size: 0.9rem;
-  ${(props) => (props.bold ? "font-weight: bold" : "")};
-  height: 40px;
+  ${(props) => (props.bold ? "font-weight: 500" : "")};
+  height: ${(props) => props.height || "2.5rem"};
   user-select: none;
 `;
 

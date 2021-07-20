@@ -12,9 +12,11 @@ const StyledFooter = styled.div`
   }
 
   & p {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   & h4 {
+    font-family: "Montserrat", sans-serif !important;
+    font-weight: 700;
     margin-bottom: 8px;
   }
 `;

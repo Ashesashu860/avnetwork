@@ -9,4 +9,5 @@ export const StyledFab = styled(Fab)`
   }
   ${buttonCss};
   border-radius: 24px !important;
+  max-height: 100%;
 `;

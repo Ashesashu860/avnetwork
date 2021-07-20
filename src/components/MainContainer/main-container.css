@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+}
+
+.main > div:not(:first-child) {
+  flex: auto;
+}
+
+.main > div {
+  /* border: 1px solid; */
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1000px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .main div:not(:first-child) {
+    flex: initial;
+  }
+
+  .main div:first-child {
+    flex: 2;
+  }
+}

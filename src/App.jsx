@@ -3,7 +3,10 @@ import { Navbar, Footer } from "./components";
 import { BrowserRouter, Route } from "react-router-dom";
 import {
   Homepage,
-  Blog,
+  BlogList,
+  BlogLandingPage,
+  BlogCreate,
+  ViewBlog,
   Network,
   MarketPlace,
   JobPortal,
@@ -14,13 +17,16 @@ import {
   Register,
 } from "./pages";
 import React from "react";
+import "react-quill/dist/quill.snow.css";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
       <Route exact path="/" component={Homepage} />
-      <Route exact path="/blog" component={Blog} />
+      <Route exact path="/blog" component={BlogLandingPage} />
+      <Route exact path="/blogs" component={BlogList} />
+      <Route exact path="/blog-create" component={BlogCreate} />
       <Route exact path="/network" component={Network} />
       <Route exact path="/market_place" component={MarketPlace} />
       <Route exact path="/job_portal" component={JobPortal} />

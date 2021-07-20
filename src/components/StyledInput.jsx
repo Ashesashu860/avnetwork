@@ -1,7 +1,6 @@
-import React from "react";
 import styled from "styled-components";
 
-const Input = styled.input`
+export const StyledInput = styled.input`
   width: 100%;
   height: 3rem;
   border: 1px solid #bbb;
@@ -20,7 +19,3 @@ const Input = styled.input`
     color: #bbb;
   }
 `;
-
-export const StyledInput = () => {
-  return <Input></Input>;
-};

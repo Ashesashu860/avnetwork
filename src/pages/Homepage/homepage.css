@@ -1,0 +1,27 @@
+.homepage {
+  display: flex;
+}
+
+.homepage div:not(:first-child) {
+  flex: 2;
+}
+
+.homepage > div {
+  border: 1px solid;
+  width: 100%;
+  min-height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .homepage {
+    flex-direction: column;
+  }
+
+  .homepage div:not(:first-child) {
+    flex: initial;
+  }
+
+  .homepage div:first-child {
+    flex: 2;
+  }
+}

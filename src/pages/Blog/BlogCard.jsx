@@ -9,18 +9,20 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const StyledCard = styled(Card)`
   position: relative;
-  padding: 2rem;
+  padding: 2rem 2.5rem;
+  margin: 1rem 0.5rem;
   height: 16rem;
-  width: 25rem;
+  min-width: 25rem;
+  max-width: 25rem;
   border-radius: 16px !important;
   & > * {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
   & hr {
-    margin-bottom: 0.9rem;
+    margin-bottom: 1rem;
   }
   & h5 {
-    color: var(--tertiary);
+    color: var(--text-medium);
     font-weight: bold;
   }
 
@@ -32,13 +34,6 @@ const StyledCard = styled(Card)`
   //   height: 100%;
   //   width: 100%;
   // }
-`;
-
-const ShadedDiv = styled.div`
-  background-image: linear-gradient(transparent, white);
-  width: 100%;
-  height: 2rem;
-  position: absolute;
 `;
 
 const StyledFooter = styled(Grid)`
@@ -71,18 +66,19 @@ export const BlogCard = ({
         style={{
           maxWidth: "100%",
           width: "100%",
-          height: "6rem",
+          height: "4.5rem",
           overflow: "hidden",
-          color: "#777",
-          fontSize: "0.9rem",
+          color: "var(--text-medium)",
+          fontSize: "0.85rem",
           textOverflow: "ellipsis",
           position: "relative",
+          textAlign: "justify",
         }}
       >
         {content}
       </p>
       <Divider />
-      <h5>{`Author: ${author}`}</h5>
+      <h5 style={{ marginBottom: "0.5rem" }}>{`Author: ${author}`}</h5>
       <Grid container justify="space-between" alignItems="center">
         <Rating
           name="customized-empty"

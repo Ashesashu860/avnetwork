@@ -8,3 +8,4 @@ export * from "./AboutUs";
 export * from "./ContactUs";
 export * from "./Login";
 export * from "./Register";
+export * from "./TermsOfUse";

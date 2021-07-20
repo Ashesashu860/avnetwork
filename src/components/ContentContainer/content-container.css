@@ -1,0 +1,28 @@
+.content-container {
+  flex-direction: column;
+  padding: 2rem 3rem;
+  align-items: flex-start !important;
+}
+
+.content-container > p {
+  text-align: left;
+}
+
+.content-container > h1,
+h2 {
+  color: var(--primary);
+}
+
+@media screen and (max-width: 1000px) {
+  .content-container {
+    align-items: center !important;
+  }
+  .content-container > p {
+    text-align: center;
+  }
+
+  .content-container > h1,
+  h2 {
+    text-align: center;
+  }
+}

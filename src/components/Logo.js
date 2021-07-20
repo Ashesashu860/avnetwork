@@ -5,7 +5,7 @@ const StyledLogo = styled.div`
   font-size: 1rem !important;
 
   & > span {
-    font-weight: bold;
+    font-weight: 600;
   }
 
   & > span:first-child {
