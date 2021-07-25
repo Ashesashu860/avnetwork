@@ -9,3 +9,5 @@ export * from "./ContactUs";
 export * from "./Login";
 export * from "./Register";
 export * from "./TermsOfUse";
+export * from "./Loading";
+export * from "./Main";

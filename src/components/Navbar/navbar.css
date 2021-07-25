@@ -26,6 +26,7 @@ ul > * {
 }
 
 nav ul > *:not(:last-child) {
+  transition: 0.3s ease-in;
   margin-right: 1.5rem;
 }
 
@@ -53,9 +54,6 @@ nav ul > *:not(:last-child) {
 }
 
 @media screen and (max-width: 1260px) {
-  nav {
-    padding: 1rem 1.5rem;
-  }
   nav ul > *:not(:last-child) {
     margin-right: 1.5rem;
   }
@@ -71,6 +69,9 @@ nav ul > *:not(:last-child) {
 }
 
 @media screen and (max-width: 570px) {
+  nav {
+    padding: 1rem 1.5rem;
+  }
   ul {
     display: none;
   }

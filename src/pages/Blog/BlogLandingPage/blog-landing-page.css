@@ -6,10 +6,6 @@
   max-height: 60vmin;
 }
 
-.blog_row {
-  min-height: auto !important;
-}
-
 .remove_top_padding {
   padding-top: 0 !important;
 }

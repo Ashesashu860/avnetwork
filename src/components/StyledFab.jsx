@@ -8,6 +8,7 @@ export const StyledFab = styled(Fab)`
     ${(props) => !props.textCapitalize && "text-transform: none;"}
   }
   ${buttonCss};
-  border-radius: 24px !important;
-  max-height: 100%;
+  border-radius: ${(props) => (props.round ? "50%" : "24px")} !important;
+  max-height: 3.5rem;
+  ${(props) => props.round && "max-width: 3.5rem"}
 `;

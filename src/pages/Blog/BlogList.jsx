@@ -2,6 +2,16 @@ import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { BlogCard } from ".";
 import { StyledFab, StyledNavLink } from "../../components";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+
+const BlogListContainer = styled.div`
+  overflow: auto;
+  ${(props) =>
+    (props.autoHeight || props.direction === "row") &&
+    "min-height: auto !important;"}
+  padding: 1rem;
+`;
 
 export const BlogList = ({
   fabRef,
@@ -11,15 +21,18 @@ export const BlogList = ({
   className,
   direction,
   location,
+  autoHeight,
 }) => {
   React.useEffect(() => window.scrollTo(0, 0), []);
+
+  const history = useHistory();
+
   return (
-    <div
-      className={`wrapper ${direction === "row" && "blog_row"} ${className}`}
-      style={{
-        overflow: "auto",
-        ...style,
-      }}
+    <BlogListContainer
+      autoHeight={autoHeight}
+      direction={direction}
+      className={`wrapper ${className}`}
+      style={style}
     >
       <div
         className="center"
@@ -28,31 +41,25 @@ export const BlogList = ({
         }}
       >
         {(blogs || location.blogs).map((blog, index) => {
-          return <BlogCard {...blog} title={`${blog.title} ${index}`} />;
-        })}
-      </div>
-      {/* <Grid
-        container
-        direction="row"
-        spacing={2}
-        alignItems="center"
-        justify="center"
-        style={{
-          padding: "1rem 2rem",
-          ...(direction === "row" && {
-            overflow: "auto",
-          }),
-        }}
-        wrap={direction === "row" ? "nowrap" : "wrap"}
-      >
-        {blogs.map((blog, index) => {
+          const blogDate =
+            blog.timestamp.getDate() +
+            "/" +
+            (blog.timestamp.getMonth() + 1) +
+            "/" +
+            blog.timestamp.getFullYear();
           return (
-            <Grid item>
-              <BlogCard {...blog} title={`${blog.title} ${index}`} />
-            </Grid>
+            <BlogCard
+              key={index}
+              blogDate={blogDate}
+              {...blog}
+              title={`${blog.title} ${index}`}
+              onClick={(event) => {
+                history.push(`/blogs/${index}`, blog);
+              }}
+            />
           );
         })}
-      </Grid> */}
+      </div>
       <StyledNavLink to="/blog-create">
         <StyledFab
           variant="extended"
@@ -69,6 +76,6 @@ export const BlogList = ({
           Add Blog
         </StyledFab>
       </StyledNavLink>
-    </div>
+    </BlogListContainer>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Grid, Divider } from "@material-ui/core";
-import { Logo } from "../components";
+import { Logo } from ".";
 const StyledFooter = styled.div`
   background-color: var(--primary);
   padding: 3rem 7rem 2rem 6rem;

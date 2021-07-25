@@ -10,7 +10,7 @@ import "./blog-landing-page.css";
 import { BlogList } from "..";
 import { mockBlogs } from "../../../mocks";
 
-export const BlogLandingPage = () => {
+export const BlogLandingPage = (props) => {
   const addBlogRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -23,6 +23,7 @@ export const BlogLandingPage = () => {
       }
     });
   }, []);
+  console.log("Blog Landing props", props);
 
   return (
     <>
@@ -88,6 +89,7 @@ export const BlogLandingPage = () => {
         fabRef={addBlogRef}
         noFab
         className="remove_top_padding"
+        autoHeight
       />
     </>
   );

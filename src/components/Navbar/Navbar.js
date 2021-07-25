@@ -1,15 +1,13 @@
 import React, { useRef } from "react";
 import "./navbar.css";
-import { StyledNavLink, StyledFab, SearchBar, withAuth } from "../components";
-import { Logo } from "./Logo";
-import { mockUser } from "../mocks";
-import { Avatar, Drawer, IconButton } from "@material-ui/core";
+import { StyledNavLink, StyledFab, SearchBar, Logo } from "../../components";
+import { Avatar, Drawer, IconButton, Tooltip } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import styled from "styled-components";
-import { DrawerLayout } from "./DrawerLayout";
-import GoogleLogo from "../assets/google.png";
-import { googleProvider } from "../config/authMethods";
-import socialMediaAuth from "../service/auth";
+import { DrawerLayout } from "../DrawerLayout";
+import GoogleLogo from "../../assets/google.png";
+import firebase from "../../config/firebase-config";
+import { withAuth } from "../../redux/containers";
 
 const HamburgerIcon = styled.div`
   display: none;
@@ -19,7 +17,7 @@ const HamburgerIcon = styled.div`
   }
 `;
 
-export const Navbar = ({ user }) => {
+const NavbarWithoutAuth = (props) => {
   const navLinks = [
     {
       name: "Blog",
@@ -45,8 +43,8 @@ export const Navbar = ({ user }) => {
   React.useEffect(() => {
     window.addEventListener("scroll", () => {
       window.pageYOffset > 0
-        ? navRef.current.classList.add("navbar_shadow")
-        : navRef.current.classList.remove("navbar_shadow");
+        ? navRef?.current?.classList.add("navbar_shadow")
+        : navRef?.current?.classList.remove("navbar_shadow");
     });
   }, []);
 
@@ -57,11 +55,21 @@ export const Navbar = ({ user }) => {
   };
 
   const handleLogin = async () => {
-    const res = await socialMediaAuth(googleProvider);
-    console.log(res);
+    firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then((res) => console.log(res));
+  };
 
   return (
     <>
@@ -100,21 +108,29 @@ export const Navbar = ({ user }) => {
               })}
             </ul>
             <div className="left-nav">
-              {user ? (
+              {props.user ? (
                 <div
                   style={{
                     flexWrap: "nowrap",
                   }}
                   className="center"
                 >
-                  <Avatar
-                    style={{
-                      backgroundColor: "var(--primary)",
-                      marginRight: "1rem",
-                    }}
+                  <Tooltip
+                    title={`Hi ${props.user?.displayName.split(" ")[0]}`}
                   >
-                    {mockUser.firstName.charAt(0)}
-                  </Avatar>
+                    <Avatar
+                      style={{
+                        maxHeight: "3rem",
+                        marginRight: "1rem",
+                      }}
+                    >
+                      <img
+                        src={props.user?.photoURL}
+                        alt={props.user?.displayName?.charAt(0)}
+                        style={{ maxHeight: "100%" }}
+                      />
+                    </Avatar>
+                  </Tooltip>
                   <StyledFab
                     variant="extended"
                     bold
@@ -147,27 +163,6 @@ export const Navbar = ({ user }) => {
                     />
                     Login/Sign Up
                   </StyledFab>
-                  {/* <StyledNavLink to="/signup">
-                    <StyledFab
-                      variant="extended"
-                      bold
-                      primary
-                      style={{ height: "3rem" }}
-                    >
-                      <img
-                        src={GoogleLogo}
-                        alt="G"
-                        style={{
-                          maxWidth: "1.4rem",
-                          marginRight: "0.5rem",
-                          backgroundColor: "var(--secondary)",
-                          padding: "4px",
-                          borderRadius: "50%",
-                        }}
-                      />
-                      Login/Sign Up
-                    </StyledFab>
-                  </StyledNavLink> */}
                 </>
               )}
             </div>
@@ -192,4 +187,4 @@ export const Navbar = ({ user }) => {
   );
 };
 
-//export const Navbar = withAuth(NavbarWithoutAuth);
+export const Navbar = withAuth(NavbarWithoutAuth);

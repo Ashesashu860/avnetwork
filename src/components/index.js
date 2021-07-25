@@ -1,4 +1,3 @@
-export * from "./withAuth";
 export * from "./Navbar";
 export * from "./StyledNavLink";
 export * from "./Footer";
@@ -7,6 +6,7 @@ export * from "./StyledButton";
 export * from "./DrawerLayout";
 export * from "./StyledInput";
 export * from "./StyledFab";
-export * from "./SearchBar2";
+export * from "./SearchBar";
 export * from "./MainContainer";
 export * from "./ContentContainer";
+export * from "./InputWithButton";

@@ -4,14 +4,13 @@ import styled from "styled-components";
 import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CommentIcon from "@material-ui/icons/Comment";
-//import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const StyledCard = styled(Card)`
   position: relative;
   padding: 2rem 2.5rem;
   margin: 1rem 0.5rem;
-  height: 16rem;
+  height: 16.5rem;
   min-width: 25rem;
   max-width: 25rem;
   border-radius: 16px !important;
@@ -58,9 +57,11 @@ export const BlogCard = ({
   likes,
   ratings,
   author,
+  onClick,
+  blogDate,
 }) => {
   return (
-    <StyledCard>
+    <StyledCard onClick={onClick}>
       <h3>{title}</h3>
       <p
         style={{
@@ -78,13 +79,25 @@ export const BlogCard = ({
         {content}
       </p>
       <Divider />
-      <h5 style={{ marginBottom: "0.5rem" }}>{`Author: ${author}`}</h5>
+      <Grid container justify="space-between" alignItems="center">
+        <h5>{`Author: ${author}`}</h5>
+        <span
+          style={{
+            fontSize: "0.9rem",
+            color: "var(--tertiary)",
+            fontWeight: "bold",
+          }}
+        >
+          {blogDate}
+        </span>
+      </Grid>
       <Grid container justify="space-between" alignItems="center">
         <Rating
           name="customized-empty"
           defaultValue={ratings}
           precision={0.5}
           //style={{ color: "var(--primary)" }}
+          style={{ zIndex: "0" }}
           readOnly
           emptyIcon={<StarBorderIcon fontSize="inherit" />}
         />

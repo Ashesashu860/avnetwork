@@ -12,6 +12,7 @@
   --text-light: #e0e0e0;
   color: var(--text-dark);
   font-size: 14px;
+  --backup-primary: #74609e;
 }
 
 h1,
@@ -34,7 +35,7 @@ h1 {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif !important;
   font-weight: 500;
-  transition: 0.3s ease;
+  /* transition: 0.3s ease; */
 }
 
 .wrapper {
