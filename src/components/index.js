@@ -10,3 +10,4 @@ export * from "./SearchBar";
 export * from "./MainContainer";
 export * from "./ContentContainer";
 export * from "./InputWithButton";
+export * from "./AuthProvider";

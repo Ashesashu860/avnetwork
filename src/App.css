@@ -80,7 +80,7 @@ h1 {
 }
 
 .center {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
 }

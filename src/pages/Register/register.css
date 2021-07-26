@@ -18,12 +18,14 @@
 
 @media screen and (max-width: 1150px) {
   .terms {
-    height: calc(100vh - 276px);
+    min-height: 9rem;
+    height: auto;
+    max-height: calc(100vh - 276px);
   }
 }
 
 @media screen and (max-width: 768px) {
   .terms {
-    height: calc(100vh - 225px);
+    max-height: calc(100vh - 230px);
   }
 }

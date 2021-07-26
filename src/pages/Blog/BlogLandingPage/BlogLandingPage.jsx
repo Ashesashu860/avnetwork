@@ -1,19 +1,22 @@
-import React from "react";
+import { useRef, useEffect, useContext } from "react";
 import BlogSvg from "../../../assets/blog_create.svg";
 import {
   MainContainer,
   ContentContainer,
   StyledNavLink,
   StyledFab,
+  AuthContext,
 } from "../../../components";
 import "./blog-landing-page.css";
 import { BlogList } from "..";
 import { mockBlogs } from "../../../mocks";
 
-export const BlogLandingPage = (props) => {
-  const addBlogRef = React.useRef(null);
+export const BlogLandingPage = () => {
+  const addBlogRef = useRef(null);
 
-  React.useEffect(() => {
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
     window.addEventListener("scroll", () => {
       if (!!addBlogRef.current) {
@@ -23,7 +26,6 @@ export const BlogLandingPage = (props) => {
       }
     });
   }, []);
-  console.log("Blog Landing props", props);
 
   return (
     <>
@@ -50,11 +52,13 @@ export const BlogLandingPage = (props) => {
                 View Blogs
               </StyledFab>
             </StyledNavLink>
-            <StyledNavLink to="/blog-create">
-              <StyledFab variant="extended" bold primary>
-                New Blog
-              </StyledFab>
-            </StyledNavLink>
+            {user && (
+              <StyledNavLink to="/blog-create">
+                <StyledFab variant="extended" bold primary>
+                  New Blog
+                </StyledFab>
+              </StyledNavLink>
+            )}
           </div>
         </ContentContainer>
         <div className="center" style={{ width: "30%" }}>

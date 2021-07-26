@@ -5,6 +5,8 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import styled from "styled-components";
 import { Grid } from "@material-ui/core";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import Rating from "@material-ui/lab/Rating";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -51,7 +53,7 @@ export const ViewBlog = (props) => {
   const onCommentSubmit = (event) => null;
 
   const onLike = (event) => setLike(!like);
-
+  console.log("View Blog");
   return (
     <ViewBlogContainer className="wrapper center">
       <h1>{title}</h1>
@@ -75,9 +77,21 @@ export const ViewBlog = (props) => {
           placeholder="Comment..."
         />
       </Grid>
-      <Grid container wrap="nowrap" style={{ marginBottom: "1rem" }}>
-        <span style={{ marginRight: "1rem" }}>{likes} Likes</span>
-        <span>{comments.length} Comments</span>
+      <Grid
+        container
+        justify="space-between"
+        alignItems="center"
+        style={{ marginBottom: "1rem" }}
+      >
+        <Grid wrap="nowrap" style={{ display: "inline-flex" }}>
+          <span style={{ marginRight: "1rem" }}>{likes} Likes</span>
+          <span>{comments.length} Comments</span>
+        </Grid>
+        <Rating
+          defaultValue={3.5}
+          precision={0.5}
+          emptyIcon={<StarBorderIcon fontSize="inherit" />}
+        />
       </Grid>
       <Grid container wrap="nowrap">
         <span style={{ marginRight: "0.3rem" }}>{author}</span>
@@ -105,9 +119,6 @@ export const ViewBlog = (props) => {
               </Grid>
               <div
                 style={{
-                  // padding: "0.5rem",
-                  // backgroundColor: "#bbb",
-                  // borderRadius: "4px",
                   width: "100%",
                 }}
               >

@@ -3,8 +3,9 @@ import ReactQuill from "react-quill";
 import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
 import { StyledFab } from "../../components";
-import { Grid } from "@material-ui/core";
+import { Grid, Select, FormControl, InputLabel } from "@material-ui/core";
 import firebase from "../../config/firebase-config";
+import BlogCreateModel from "../../models/BlogCreate";
 
 const atValues = [
   { id: 1, value: "Fredrik Sundqvist" },
@@ -84,52 +85,43 @@ export const BlogCreate = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const firebase_db = firebase.database().ref();
-    firebase_db.on("value", (snap) => console.log("snap", snap.val()));
   }, []);
 
   const onPublishClick = (event) => {
     //const firebase_db = firebase.database().ref();
-
     //DELETE
     // firebase.database().ref("test2/-MfRynEJ5zcTE-5WrLBG").remove();
-
     //GET
     // firebase
     //     .database()
     //     .ref()
     //     .child("test")
     //     .on("value", (snap) => console.log(snap.val()))
-
     //GET BY ID
     // firebase
     //     .database()
     //     .ref("test2/-MfRynEJ5zcTE-5WrLBG")
     //     .on("value", (snap) => console.log(snap.val()))
-
     //UPDATE
     // firebase.database().ref("test2/-MfRynEJ5zcTE-5WrLBG").update({
     //   blogContent: "ashes updated",
     // });
-
-    // firebase.database().ref("test2").push().set({ test: "testid1" });
-
-    console.log("test", firebase.database().ref("test2").push());
+    //ADD
+    // firebase.database().ref("test2/id").push().set({ id: id, test: "testid1" });
+    // console.log("test", firebase.database().ref("test2").push());
+    //firebase.database().ref("test2/id").push().set(new BlogCreateModel());
+    // firebase.database().ref("users");
+    // .on("value", (snap) => console.log("firebase data", snap.val()));
   };
+
+  const [category, setCategory] = useState("");
+
+  const onCategoryChange = (event) => setCategory(event.target.value);
+
+  const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
 
   return (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
-      <input
-        type="text"
-        placeholder="Enter Title..."
-        style={{
-          backgroundColor: "transparent",
-          width: "100%",
-          border: "1px solid #ccc",
-          padding: "1rem",
-          textAlign: "center",
-        }}
-      />
       <ReactQuill
         theme="snow"
         modules={modules}
@@ -140,6 +132,21 @@ export const BlogCreate = () => {
         <div className="my-editing-area" />
       </ReactQuill>
       <Grid container justify="flex-end">
+        <FormControl style={{ minWidth: "8rem", margin: "1rem" }}>
+          <InputLabel>Category</InputLabel>
+          <Select
+            native
+            defaultValue=""
+            value={category}
+            onChange={onCategoryChange}
+            label="Category"
+          >
+            <option value={""}></option>
+            {categories.map((category) => (
+              <option value={category}>{category}</option>
+            ))}
+          </Select>
+        </FormControl>
         <StyledFab
           style={{ margin: "1rem" }}
           variant="extended"

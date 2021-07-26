@@ -1,13 +1,19 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import "./navbar.css";
-import { StyledNavLink, StyledFab, SearchBar, Logo } from "../../components";
+import {
+  StyledNavLink,
+  StyledFab,
+  SearchBar,
+  Logo,
+  AuthContext,
+} from "../../components";
 import { Avatar, Drawer, IconButton, Tooltip } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import styled from "styled-components";
 import { DrawerLayout } from "../DrawerLayout";
 import GoogleLogo from "../../assets/google.png";
 import firebase from "../../config/firebase-config";
-import { withAuth } from "../../redux/containers";
+import { withRouter } from "react-router-dom";
 
 const HamburgerIcon = styled.div`
   display: none;
@@ -17,7 +23,7 @@ const HamburgerIcon = styled.div`
   }
 `;
 
-const NavbarWithoutAuth = (props) => {
+export const Navbar = withRouter(({ history }) => {
   const navLinks = [
     {
       name: "Blog",
@@ -38,7 +44,6 @@ const NavbarWithoutAuth = (props) => {
   ];
 
   const navRef = useRef(null);
-  const searchBarRef = useRef(null);
 
   React.useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -49,27 +54,55 @@ const NavbarWithoutAuth = (props) => {
   }, []);
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const { user } = useContext(AuthContext);
 
   const toggleDrawer = (event) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleLogin = async () => {
+  const isUserPresentInDb = (user) => {
+    let result = null;
+    if (user) {
+      result = firebase
+        .database()
+        .ref(`users`)
+        .child(user?.uid)
+        .get()
+        .then((snap) => snap.val());
+    }
+    return result;
+  };
+
+  const handleLogin = () => {
     firebase
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then((res) => {
-        console.log(res);
+      .then(async (response) => {
+        if (!(await isUserPresentInDb(response.user))) {
+          await history.push({
+            pathname: "/signup",
+            state: {
+              user: {
+                uid: response.user.uid,
+                displayName: response.user.displayName,
+                email: response.user.email,
+                photoURL: response.user.photoURL,
+              },
+            },
+          });
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   };
 
   const handleLogout = () => {
     firebase
       .auth()
       .signOut()
-      .then((res) => console.log(res));
+      .then((res) => res);
   };
+
+  console.log("user", user);
 
   return (
     <>
@@ -90,7 +123,7 @@ const NavbarWithoutAuth = (props) => {
           >
             <Logo />
           </StyledNavLink>
-          <SearchBar ref={searchBarRef} className="search-bar" />
+          <SearchBar className="search-bar" />
           <div className="outer-left-nav">
             <ul>
               {/* <SearchBar /> */}
@@ -108,25 +141,24 @@ const NavbarWithoutAuth = (props) => {
               })}
             </ul>
             <div className="left-nav">
-              {props.user ? (
+              {user ? (
                 <div
                   style={{
                     flexWrap: "nowrap",
                   }}
                   className="center"
                 >
-                  <Tooltip
-                    title={`Hi ${props.user?.displayName.split(" ")[0]}`}
-                  >
+                  <Tooltip title={`Hi ${user?.displayName?.split(" ")[0]}`}>
                     <Avatar
                       style={{
                         maxHeight: "3rem",
+                        maxWidth: "3rem",
                         marginRight: "1rem",
                       }}
                     >
                       <img
-                        src={props.user?.photoURL}
-                        alt={props.user?.displayName?.charAt(0)}
+                        src={user?.photoURL}
+                        alt={user?.displayName?.charAt(0)}
                         style={{ maxHeight: "100%" }}
                       />
                     </Avatar>
@@ -172,7 +204,7 @@ const NavbarWithoutAuth = (props) => {
           style={{ position: "relative", marginTop: "-1px" }}
           className="sub-nav"
         >
-          <SearchBar ref={searchBarRef} width="100%" />
+          <SearchBar width="100%" />
         </nav>
       </div>
       <Drawer
@@ -185,6 +217,4 @@ const NavbarWithoutAuth = (props) => {
       </Drawer>
     </>
   );
-};
-
-export const Navbar = withAuth(NavbarWithoutAuth);
+});

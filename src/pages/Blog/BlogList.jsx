@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { BlogCard } from ".";
-import { StyledFab, StyledNavLink } from "../../components";
+import { StyledFab, StyledNavLink, AuthContext } from "../../components";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -23,6 +23,7 @@ export const BlogList = ({
   location,
   autoHeight,
 }) => {
+  const { user } = useContext(AuthContext);
   React.useEffect(() => window.scrollTo(0, 0), []);
 
   const history = useHistory();
@@ -37,6 +38,7 @@ export const BlogList = ({
       <div
         className="center"
         style={{
+          display: "inline-flex",
           flexWrap: direction === "row" ? "nowrap" : "wrap",
         }}
       >
@@ -60,22 +62,24 @@ export const BlogList = ({
           );
         })}
       </div>
-      <StyledNavLink to="/blog-create">
-        <StyledFab
-          variant="extended"
-          ref={fabRef}
-          primary
-          style={{
-            position: "fixed",
-            bottom: "1rem",
-            right: "2rem",
-            display: noFab ? "none" : "inline-flex",
-          }}
-        >
-          <AddIcon />
-          Add Blog
-        </StyledFab>
-      </StyledNavLink>
+      {user && (
+        <StyledNavLink to="/blog-create">
+          <StyledFab
+            variant="extended"
+            ref={fabRef}
+            primary
+            style={{
+              position: "fixed",
+              bottom: "1rem",
+              right: "2rem",
+              display: noFab ? "none" : "inline-flex",
+            }}
+          >
+            <AddIcon />
+            Add Blog
+          </StyledFab>
+        </StyledNavLink>
+      )}
     </BlogListContainer>
   );
 };

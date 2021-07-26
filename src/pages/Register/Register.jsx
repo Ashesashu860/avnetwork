@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Stepper,
   Step,
@@ -6,10 +6,14 @@ import {
   makeStyles,
   Checkbox,
   withStyles,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import { StyledButton } from "../../components";
 import { TermsOfUse } from "..";
 import "./register.css";
+import firebase from "../../config/firebase-config";
 
 const CustomCheckbox = withStyles({
   root: {
@@ -44,7 +48,9 @@ function getSteps() {
   return ["Gmail Login", "Select a Category", "Terms of Use"];
 }
 
-export const Register = () => {
+export const Register = (props) => {
+  const { user } = props.location.state;
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -55,6 +61,16 @@ export const Register = () => {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === 2 && checked) {
+      firebase
+        .database()
+        .ref(`users/${user.uid}`)
+        .set({
+          ...user,
+          category,
+        })
+        .then((res) => props.history.push("/"));
+    }
   };
 
   const handleBack = () => {
@@ -66,17 +82,57 @@ export const Register = () => {
       case 0:
         return "Login with your Gmail account";
       case 1:
-        return "Tell us your preferred category";
+        return `Hi ${
+          user.displayName.split(" ")[0]
+        }, Tell us about your preferred category`;
       case 2:
         return "Last step to be our member";
+      case 3:
+        return "Signing you up. Please Wait...";
       default:
-        return "Please Wait...";
     }
   }
 
   const [checked, setChecked] = React.useState(false);
 
   const handleCheckboxChange = (event) => setChecked(event.target.checked);
+
+  const [category, setCategory] = useState("");
+
+  const onCategoryChange = (event) => setCategory(event.target.value);
+
+  const categories = ["Integrator", "Dealer", "Rental", "Freelancer"];
+
+  const getRenderItem = (activeStep) => {
+    switch (activeStep) {
+      case 1:
+        return (
+          <FormControl
+            variant="outlined"
+            style={{ minWidth: "90%", margin: "1rem" }}
+          >
+            <InputLabel>Category</InputLabel>
+            <Select
+              native
+              defaultValue=""
+              value={category}
+              onChange={onCategoryChange}
+              label="Category"
+            >
+              <option value={""}></option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+        );
+      case 2:
+        return <TermsOfUse />;
+      default:
+    }
+  };
 
   return (
     <div
@@ -91,7 +147,7 @@ export const Register = () => {
         }}
       >
         <h1>{getStepContent(activeStep)}</h1>
-        <div className="terms">{activeStep === 2 && <TermsOfUse />}</div>
+        <div className="terms center">{getRenderItem(activeStep)}</div>
 
         <div className="stepper">
           {activeStep === 2 && (
@@ -112,26 +168,34 @@ export const Register = () => {
               );
             })}
           </Stepper>
-          <div className="center">
-            <StyledButton
-              disabled={activeStep === 1}
-              onClick={handleBack}
-              className={classes.button}
-              secondary
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              onClick={handleNext}
-              disabled={
-                activeStep === steps.length || (activeStep === 2 && !checked)
-              }
-              className={classes.button}
-              primary
-            >
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </StyledButton>
-          </div>
+          {activeStep !== steps.length && (
+            <div className="center">
+              <StyledButton
+                disabled={activeStep === 1}
+                onClick={handleBack}
+                className={classes.button}
+                secondary
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                onClick={handleNext}
+                disabled={
+                  activeStep === steps.length ||
+                  !category ||
+                  (activeStep === 2 && !checked)
+                }
+                className={classes.button}
+                {...(activeStep === steps.length ||
+                !category ||
+                (activeStep === 2 && !checked)
+                  ? { secondary: true }
+                  : { primary: true })}
+              >
+                {activeStep > steps.length - 2 ? "Finish" : "Next"}
+              </StyledButton>
+            </div>
+          )}
         </div>
       </div>
     </div>
