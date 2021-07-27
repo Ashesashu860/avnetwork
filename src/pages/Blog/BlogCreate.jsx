@@ -1,133 +1,112 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import ReactQuill from "react-quill";
 import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
-import { StyledFab } from "../../components";
+import { StyledFab, AuthContext, DialogBox, Alert } from "../../components";
 import { Grid, Select, FormControl, InputLabel } from "@material-ui/core";
 import firebase from "../../config/firebase-config";
 import BlogCreateModel from "../../models/BlogCreate";
+import { withRouter } from "react-router-dom";
+import { modules, formats } from "./BlogCreateModules";
 
 const atValues = [
   { id: 1, value: "Fredrik Sundqvist" },
   { id: 2, value: "Patrik Sjölin" },
 ];
 
-export const BlogCreate = () => {
-  const modules = React.useMemo(
-    () => ({
-      toolbar: [
-        [{ header: [1, 2, 3, 4, false] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link", "image", "video"],
-        [
-          { align: "" },
-          { align: "center" },
-          { align: "right" },
-          { align: "justify" },
-        ],
-      ],
-      mention: {
-        allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-        mentionDenotationChars: ["@", "#"],
-        source: function (searchTerm, renderItem, mentionChar) {
-          let values;
-          if (mentionChar === "@" || mentionChar === "#") {
-            values = atValues;
-          }
-          if (searchTerm.length === 0) {
-            renderItem(values, searchTerm);
-          } else {
-            const matches = [];
-            for (let i = 0; i < values.length; i++)
-              if (
-                ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
-              )
-                matches.push(values[i]);
-            renderItem(matches, searchTerm);
-          }
-        },
-      },
-    }),
-    []
-  );
+export const BlogCreate = withRouter((props) => {
+  const { user } = useContext(AuthContext);
+  let editorRef = useRef();
 
-  const formats = React.useMemo(
-    () => [
-      "header",
-      "bold",
-      "italic",
-      "underline",
-      "strike",
-      "blockquote",
-      "list",
-      "bullet",
-      "indent",
-      "link",
-      "image",
-      "video",
-      "mention",
-      "align",
-    ],
-    []
-  );
-
-  let data = null;
-
-  const handleChange = (content, delta, source, editor) => {
-    //let has_attribues = delta.ops[1].attributes || "";
-    //console.log(has_attribues);
-    //const cursorPosition = e.quill.getSelection().index;
-    // this.quill.insertText(cursorPosition, "★");
-    //this.quill.setSelection(cursorPosition + 1);
-    data = content;
-  };
+  const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log("editor ref", editorRef.current.state.value);
   }, []);
 
-  const onPublishClick = (event) => {
-    //const firebase_db = firebase.database().ref();
-    //DELETE
-    // firebase.database().ref("test2/-MfRynEJ5zcTE-5WrLBG").remove();
-    //GET
-    // firebase
-    //     .database()
-    //     .ref()
-    //     .child("test")
-    //     .on("value", (snap) => console.log(snap.val()))
-    //GET BY ID
-    // firebase
-    //     .database()
-    //     .ref("test2/-MfRynEJ5zcTE-5WrLBG")
-    //     .on("value", (snap) => console.log(snap.val()))
-    //UPDATE
-    // firebase.database().ref("test2/-MfRynEJ5zcTE-5WrLBG").update({
-    //   blogContent: "ashes updated",
-    // });
-    //ADD
-    // firebase.database().ref("test2/id").push().set({ id: id, test: "testid1" });
-    // console.log("test", firebase.database().ref("test2").push());
-    //firebase.database().ref("test2/id").push().set(new BlogCreateModel());
-    // firebase.database().ref("users");
-    // .on("value", (snap) => console.log("firebase data", snap.val()));
-  };
-
   const [category, setCategory] = useState("");
-
+  const [dialogBoxProps, setDialogBoxProps] = useState(null);
+  const [alertProps, setAlertProps] = useState({
+    title: "",
+    severity: "error",
+    onClose: () => null,
+  });
   const onCategoryChange = (event) => setCategory(event.target.value);
 
-  const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
+  const handleDialogClose = () => {
+    setDialogBoxProps({
+      ...dialogBoxProps,
+      open: false,
+    });
+  };
+
+  const onAlertClose = () => {
+    setAlertProps({
+      ...alertProps,
+      title: "",
+    });
+  };
+
+  const onPublishClick = (event) => {
+    console.log("data", editorRef.current.state.value);
+    if (!editorRef.current.state.value) {
+      setAlertProps({
+        ...alertProps,
+        open: true,
+        title: "Unable to publish empty blog",
+        onClose: onAlertClose,
+      });
+      return;
+    }
+    if (!category) {
+      setAlertProps({
+        ...alertProps,
+        open: true,
+        title: "Please choose a valid category",
+        onClose: onAlertClose,
+      });
+      return;
+    }
+    setDialogBoxProps({
+      handleClose: handleDialogClose,
+      open: true,
+      title: "Publishing Your Blog...",
+    });
+    const blog = new BlogCreateModel(
+      user.uid,
+      user.displayName,
+      editorRef.current.state.value,
+      category
+    );
+    firebase
+      .database()
+      .ref(`blogs/${blog.id}`)
+      .set({ ...blog, timestamp: firebase.database.ServerValue.TIMESTAMP })
+      .then((res) =>
+        setDialogBoxProps({
+          open: true,
+          title: "Blog Published",
+          hideLoader: true,
+          buttonProps: {
+            title: "OK",
+            onButtonClick: (event) => {
+              props.history.push("/blogs");
+            },
+          },
+        })
+      );
+  };
 
   return (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
       <ReactQuill
         theme="snow"
         modules={modules}
-        onChange={handleChange}
         formats={formats}
         placeholder="Enter your thoughts..."
+        inputProps
+        ref={editorRef}
       >
         <div className="my-editing-area" />
       </ReactQuill>
@@ -156,7 +135,9 @@ export const BlogCreate = () => {
         >
           Publish
         </StyledFab>
+        <DialogBox {...dialogBoxProps} />
+        <Alert {...alertProps} />
       </Grid>
     </div>
   );
-};
+});

@@ -1,3 +1,12 @@
+import { connect } from "react-redux";
+import { setUserAction } from "./actions/actions";
+const mapStateToProps = (state) => state.user;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetUserAction: (user) => dispatch(setUserAction(user)),
+});
+
+export const withAuth = connect(mapStateToProps, mapDispatchToProps);
+
 // import React, { useEffect, useState } from "react";
 // import firebase from "../config/firebase-config";
 // import { connect } from "react-redux";

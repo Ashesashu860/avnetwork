@@ -10,8 +10,6 @@ class BlogCreateModel {
     this.liked = false;
     this.ratings = 0;
     this.category = category;
-    this.timestamp = new Date();
-    this.comments = [];
   }
 }
 

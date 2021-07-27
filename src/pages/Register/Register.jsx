@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Stepper,
   Step,
@@ -10,7 +10,7 @@ import {
   InputLabel,
   Select,
 } from "@material-ui/core";
-import { StyledButton } from "../../components";
+import { StyledButton, AuthContext } from "../../components";
 import { TermsOfUse } from "..";
 import "./register.css";
 import firebase from "../../config/firebase-config";
@@ -59,6 +59,8 @@ export const Register = (props) => {
   const [activeStep, setActiveStep] = React.useState(1);
   const steps = getSteps();
 
+  const { setUser } = useContext(AuthContext);
+
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === 2 && checked) {
@@ -69,7 +71,13 @@ export const Register = (props) => {
           ...user,
           category,
         })
-        .then((res) => props.history.push("/"));
+        .then((res) => {
+          setUser({
+            ...user,
+            category,
+          });
+          props.history.push("/");
+        });
     }
   };
 
@@ -114,7 +122,6 @@ export const Register = (props) => {
             <InputLabel>Category</InputLabel>
             <Select
               native
-              defaultValue=""
               value={category}
               onChange={onCategoryChange}
               label="Category"

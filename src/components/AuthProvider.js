@@ -3,7 +3,7 @@ import firebase from "../config/firebase-config";
 import { Loading } from "../pages";
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children, history }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children, history }) => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
+      console.log("AUTH", await isUserPresentInDb(user));
       setUser(await isUserPresentInDb(user));
       setLoading(false);
     });
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children, history }) => {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
       }}
     >
       {loading ? <Loading /> : children}
