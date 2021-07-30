@@ -55,7 +55,6 @@ export const InputWithButton = ({
       </Grid>
       <Grid container alignItems="center" style={{ width: "auto" }} item>
         <StyledInputFab
-          disabled
           round
           style={{
             backgroundColor: "var(--primary)",

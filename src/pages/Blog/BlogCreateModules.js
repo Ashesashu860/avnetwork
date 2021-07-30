@@ -48,3 +48,10 @@ export const formats = [
   "mention",
   "align",
 ];
+
+export const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
+
+export const atValues = [
+  { id: 1, value: "Name1" },
+  { id: 2, value: "Name2" },
+];

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { setUserAction } from "./actions/actions";
+import { setUserAction } from "./actions/user_actions";
 const mapStateToProps = (state) => state.user;
 const mapDispatchToProps = (dispatch) => ({
   dispatchSetUserAction: (user) => dispatch(setUserAction(user)),

@@ -1,20 +1,25 @@
-import { useRef, useEffect, useContext } from "react";
+import { useRef, useEffect } from "react";
 import BlogSvg from "../../../assets/blog_create.svg";
 import {
   MainContainer,
   ContentContainer,
   StyledNavLink,
   StyledFab,
-  AuthContext,
 } from "../../../components";
 import "./blog-landing-page.css";
 import { BlogList } from "..";
 import { mockBlogs } from "../../../mocks";
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-export const BlogLandingPage = () => {
+const mapState = (state) => ({
+  user: state.user,
+});
+
+export const BlogLandingPage = withRouter(({ history }) => {
   const addBlogRef = useRef(null);
 
-  const { user } = useContext(AuthContext);
+  const { user } = useSelector(mapState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,4 +102,4 @@ export const BlogLandingPage = () => {
       />
     </>
   );
-};
+});

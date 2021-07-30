@@ -2,15 +2,21 @@ import React from "react";
 import { Dialog, DialogTitle } from "@material-ui/core";
 import Logo from "../assets/logo.svg";
 import { LoaderIcon, StyledFab } from "../components";
+import { useDispatch } from "react-redux";
+import { setDialogBoxPropsAction } from "../redux/actions";
 
 export const DialogBox = (props) => {
-  const { handleClose, open, title, hideLoader, buttonProps } = props;
-
+  const dispatch = useDispatch();
+  const { title, hideLoader, buttonProps } = props;
+  const onClose = (event) => {
+    buttonProps?.onButtonClick(event);
+    dispatch(setDialogBoxPropsAction(""));
+  };
   return (
     <Dialog
-      onClose={handleClose}
+      onClose={() => null}
       aria-labelledby="simple-dialog-title"
-      open={open}
+      open={!!title}
     >
       <div
         className="center"
@@ -22,9 +28,7 @@ export const DialogBox = (props) => {
         </DialogTitle>
         {!hideLoader && <LoaderIcon />}
         {buttonProps && (
-          <StyledFab onClick={buttonProps?.onButtonClick}>
-            {buttonProps?.title}
-          </StyledFab>
+          <StyledFab onClick={onClose}>{buttonProps?.title}</StyledFab>
         )}
       </div>
     </Dialog>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Stepper,
   Step,
@@ -10,10 +10,12 @@ import {
   InputLabel,
   Select,
 } from "@material-ui/core";
-import { StyledButton, AuthContext } from "../../components";
+import { StyledButton } from "../../components";
 import { TermsOfUse } from "..";
 import "./register.css";
 import firebase from "../../config/firebase-config";
+import { useDispatch } from "react-redux";
+import { setUserInDbAction } from "../../redux/actions";
 
 const CustomCheckbox = withStyles({
   root: {
@@ -51,6 +53,8 @@ function getSteps() {
 export const Register = (props) => {
   const { user } = props.location.state;
 
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -59,25 +63,18 @@ export const Register = (props) => {
   const [activeStep, setActiveStep] = React.useState(1);
   const steps = getSteps();
 
-  const { setUser } = useContext(AuthContext);
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     if (activeStep === 2 && checked) {
-      firebase
-        .database()
-        .ref(`users/${user.uid}`)
-        .set({
-          ...user,
-          category,
-        })
-        .then((res) => {
-          setUser({
+      dispatch(
+        setUserInDbAction(
+          {
             ...user,
             category,
-          });
-          props.history.push("/");
-        });
+          },
+          props.history
+        )
+      );
     }
   };
 

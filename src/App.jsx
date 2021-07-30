@@ -1,12 +1,10 @@
 import "./App.css";
-import React from "react";
-import "react-quill/dist/quill.snow.css";
-import { Provider } from "react-redux";
+import React, { useEffect } from "react";
+import { Provider, useDispatch } from "react-redux";
 import store from "./redux/store";
-import { Main, Loading } from "./pages";
-import { withAuth } from "./redux/containers";
+import { Main } from "./pages";
 
-const App = (props) => {
+const App = () => {
   return (
     <Provider store={store}>
       <Main />

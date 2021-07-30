@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { BlogCard } from ".";
-import { StyledFab, StyledNavLink, AuthContext } from "../../components";
+import { StyledFab, StyledNavLink } from "../../components";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { getBlogsAction } from "../../redux/actions";
 
 const BlogListContainer = styled.div`
   overflow: auto;
@@ -13,20 +15,27 @@ const BlogListContainer = styled.div`
   padding: 1rem;
 `;
 
+const mapState = (state) => ({
+  blogs: state.blogs,
+  user: state.user,
+});
+
 export const BlogList = ({
   fabRef,
   noFab,
   style,
-  blogs,
   className,
   direction,
-  location,
   autoHeight,
 }) => {
-  const { user } = useContext(AuthContext);
-  React.useEffect(() => window.scrollTo(0, 0), []);
-
+  const { blogs, user } = useSelector(mapState);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(getBlogsAction());
+  }, []);
 
   return (
     <BlogListContainer
@@ -42,25 +51,35 @@ export const BlogList = ({
           flexWrap: direction === "row" ? "nowrap" : "wrap",
         }}
       >
-        {(blogs || location.blogs).map((blog, index) => {
-          const blogDate =
-            blog.timestamp.getDate() +
-            "/" +
-            (blog.timestamp.getMonth() + 1) +
-            "/" +
-            blog.timestamp.getFullYear();
-          return (
-            <BlogCard
-              key={index}
-              blogDate={blogDate}
-              {...blog}
-              title={`${blog.title} ${index}`}
-              onClick={(event) => {
-                history.push(`/blogs/${index}`, blog);
-              }}
-            />
-          );
-        })}
+        {!blogs ? (
+          <h4>No Blogs</h4>
+        ) : (
+          blogs.map((blog, index) => {
+            const blogTimestamp = new Date(blog.timestamp);
+            const blogDate =
+              blogTimestamp.getDate() +
+              "/" +
+              (blogTimestamp.getMonth() + 1) +
+              "/" +
+              blogTimestamp.getFullYear();
+            return (
+              <BlogCard
+                key={index}
+                blogDate={blogDate}
+                {...blog}
+                content={blog.content.replace(/<[^>]+>/g, " ")}
+                onClick={(event) => {
+                  history.push({
+                    pathname: `/blogs/${blog.id}`,
+                    state: {
+                      id: blog.id,
+                    },
+                  });
+                }}
+              />
+            );
+          })
+        )}
       </div>
       {user && (
         <StyledNavLink to="/blog-create">

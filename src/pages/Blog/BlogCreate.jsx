@@ -1,123 +1,98 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
-import { StyledFab, AuthContext, DialogBox, Alert } from "../../components";
+import { StyledFab, StyledInput } from "../../components";
 import { Grid, Select, FormControl, InputLabel } from "@material-ui/core";
-import firebase from "../../config/firebase-config";
 import BlogCreateModel from "../../models/BlogCreate";
 import { withRouter } from "react-router-dom";
-import { modules, formats } from "./BlogCreateModules";
+import { modules, formats, categories } from "./BlogCreateModules";
+import { useDispatch, useSelector } from "react-redux";
+import { addBlogAction, setAlertAction } from "../../redux/actions";
+import "react-quill/dist/quill.snow.css";
 
-const atValues = [
-  { id: 1, value: "Fredrik Sundqvist" },
-  { id: 2, value: "Patrik Sjölin" },
-];
+const mapState = (state) => ({
+  user: state.user,
+});
 
-export const BlogCreate = withRouter((props) => {
-  const { user } = useContext(AuthContext);
+export const BlogCreate = withRouter(({ history }) => {
   let editorRef = useRef();
-
-  const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
+  const dispatch = useDispatch();
+  const { user } = useSelector(mapState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("editor ref", editorRef.current.state.value);
   }, []);
 
-  const [category, setCategory] = useState("");
-  const [dialogBoxProps, setDialogBoxProps] = useState(null);
-  const [alertProps, setAlertProps] = useState({
+  const [blog, setBlog] = useState({
     title: "",
-    severity: "error",
-    onClose: () => null,
+    category: "",
   });
-  const onCategoryChange = (event) => setCategory(event.target.value);
-
-  const handleDialogClose = () => {
-    setDialogBoxProps({
-      ...dialogBoxProps,
-      open: false,
-    });
-  };
-
-  const onAlertClose = () => {
-    setAlertProps({
-      ...alertProps,
-      title: "",
-    });
+  const onChange = (event) => {
+    if (event.target) {
+      setBlog({
+        ...blog,
+        [event?.target?.name]: event?.target?.value,
+      });
+    }
   };
 
   const onPublishClick = (event) => {
-    console.log("data", editorRef.current.state.value);
+    if (!blog.title) {
+      dispatch(setAlertAction("Please give a suitable title"));
+      return;
+    }
     if (!editorRef.current.state.value) {
-      setAlertProps({
-        ...alertProps,
-        open: true,
-        title: "Unable to publish empty blog",
-        onClose: onAlertClose,
-      });
+      dispatch(setAlertAction("Unable to publish empty blog"));
       return;
     }
-    if (!category) {
-      setAlertProps({
-        ...alertProps,
-        open: true,
-        title: "Please choose a valid category",
-        onClose: onAlertClose,
-      });
+    if (!blog.category) {
+      dispatch(setAlertAction("Please choose a valid category"));
       return;
     }
-    setDialogBoxProps({
-      handleClose: handleDialogClose,
-      open: true,
-      title: "Publishing Your Blog...",
-    });
-    const blog = new BlogCreateModel(
+    const newBlog = new BlogCreateModel(
       user.uid,
       user.displayName,
+      blog.title,
       editorRef.current.state.value,
-      category
+      blog.category
     );
-    firebase
-      .database()
-      .ref(`blogs/${blog.id}`)
-      .set({ ...blog, timestamp: firebase.database.ServerValue.TIMESTAMP })
-      .then((res) =>
-        setDialogBoxProps({
-          open: true,
-          title: "Blog Published",
-          hideLoader: true,
-          buttonProps: {
-            title: "OK",
-            onButtonClick: (event) => {
-              props.history.push("/blogs");
-            },
-          },
-        })
-      );
+    dispatch(addBlogAction(newBlog, history));
   };
 
   return (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
+      <StyledInput
+        type="text"
+        value={blog.title}
+        name="title"
+        onChange={onChange}
+        style={{
+          margin: 0,
+          height: "3.5rem",
+          border: "1px solid #ccc",
+          padding: "0 1.2rem",
+          textAlign: "center",
+        }}
+        placeholder="Enter the title..."
+      />
       <ReactQuill
         theme="snow"
         modules={modules}
         formats={formats}
         placeholder="Enter your thoughts..."
-        inputProps
+        name="content"
         ref={editorRef}
-      >
-        <div className="my-editing-area" />
-      </ReactQuill>
+      />
       <Grid container justify="flex-end">
         <FormControl style={{ minWidth: "8rem", margin: "1rem" }}>
           <InputLabel>Category</InputLabel>
           <Select
             native
             defaultValue=""
-            value={category}
-            onChange={onCategoryChange}
+            name="category"
+            value={blog.category}
+            onChange={onChange}
             label="Category"
           >
             <option value={""}></option>
@@ -135,8 +110,6 @@ export const BlogCreate = withRouter((props) => {
         >
           Publish
         </StyledFab>
-        <DialogBox {...dialogBoxProps} />
-        <Alert {...alertProps} />
       </Grid>
     </div>
   );

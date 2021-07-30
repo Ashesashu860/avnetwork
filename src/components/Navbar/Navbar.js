@@ -1,19 +1,18 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef } from "react";
 import "./navbar.css";
-import {
-  StyledNavLink,
-  StyledFab,
-  SearchBar,
-  Logo,
-  AuthContext,
-} from "../../components";
+import { StyledNavLink, StyledFab, SearchBar, Logo } from "../../components";
 import { Avatar, Drawer, IconButton, Tooltip } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import styled from "styled-components";
 import { DrawerLayout } from "../DrawerLayout";
 import GoogleLogo from "../../assets/google.png";
-import firebase from "../../config/firebase-config";
 import { withRouter } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUserAction,
+  logoutUserAction,
+} from "../../redux/actions/user_actions";
+import { navLinks } from "./NavbarLinks";
 
 const HamburgerIcon = styled.div`
   display: none;
@@ -23,27 +22,14 @@ const HamburgerIcon = styled.div`
   }
 `;
 
-export const Navbar = withRouter(({ history }) => {
-  const navLinks = [
-    {
-      name: "Blog",
-      link: "/blog",
-    },
-    {
-      name: "Market Place",
-      link: "/market_place",
-    },
-    {
-      name: "Job Portal",
-      link: "/job_portal",
-    },
-    {
-      name: "Tutorials",
-      link: "/tutorials",
-    },
-  ];
+const mapState = (state) => ({
+  user: state.user,
+});
 
+export const Navbar = withRouter(({ history }) => {
   const navRef = useRef(null);
+
+  const { user } = useSelector(mapState);
 
   React.useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -54,55 +40,20 @@ export const Navbar = withRouter(({ history }) => {
   }, []);
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const { user } = useContext(AuthContext);
 
   const toggleDrawer = (event) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const isUserPresentInDb = (user) => {
-    let result = null;
-    if (user) {
-      result = firebase
-        .database()
-        .ref(`users`)
-        .child(user?.uid)
-        .get()
-        .then((snap) => snap.val());
-    }
-    return result;
-  };
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
-    firebase
-      .auth()
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(async (response) => {
-        if (!(await isUserPresentInDb(response.user))) {
-          await history.push({
-            pathname: "/signup",
-            state: {
-              user: {
-                uid: response.user.uid,
-                displayName: response.user.displayName,
-                email: response.user.email,
-                photoURL: response.user.photoURL,
-              },
-            },
-          });
-        }
-      })
-      .catch((err) => err);
+    dispatch(loginUserAction(history));
   };
 
   const handleLogout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then((res) => res);
+    dispatch(logoutUserAction(history));
   };
-
-  console.log("user", user);
 
   return (
     <>
@@ -148,7 +99,7 @@ export const Navbar = withRouter(({ history }) => {
                   }}
                   className="center"
                 >
-                  <Tooltip title={`Hi ${user?.displayName?.split(" ")[0]}`}>
+                  <Tooltip title={`Hi`}>
                     <Avatar
                       style={{
                         maxHeight: "3rem",
@@ -218,3 +169,5 @@ export const Navbar = withRouter(({ history }) => {
     </>
   );
 });
+
+//export const Navbar = connect(mapState)(NavbarWithoutConnect);
