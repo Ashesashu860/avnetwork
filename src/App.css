@@ -5,6 +5,7 @@
 
 :root {
   --primary: #74609e;
+  --primaryLight: #e0c7ff;
   --secondary: #e0e0e0;
   --tertiary: rgba(0, 0, 0, 0.3);
   --text-dark: #616161;

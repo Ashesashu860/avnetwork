@@ -45,7 +45,9 @@ export const BlogLandingPage = withRouter(({ history }) => {
           }
           spacing="2.5rem"
         >
-          <div style={{ height: "2.5rem", display: "flex" }}>
+          <div
+            style={{ height: "2.5rem", display: "flex", marginBottom: "2rem" }}
+          >
             <StyledNavLink
               to={{
                 pathname: "/blogs",
@@ -66,7 +68,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
             )}
           </div>
         </ContentContainer>
-        <div className="center" style={{ width: "30%" }}>
+        {/* <div className="center" style={{ width: "30%" }}>
           <div
             style={{
               height: "5rem",
@@ -76,7 +78,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
           >
             AD
           </div>
-        </div>
+        </div> */}
       </MainContainer>
       <ContentContainer
         subHeading={"Latest Blogs"}

@@ -164,10 +164,8 @@ export const Navbar = withRouter(({ history }) => {
         open={drawerOpen}
         onClose={toggleDrawer}
       >
-        <DrawerLayout />
+        <DrawerLayout toggleDrawer={toggleDrawer} />
       </Drawer>
     </>
   );
 });
-
-//export const Navbar = connect(mapState)(NavbarWithoutConnect);

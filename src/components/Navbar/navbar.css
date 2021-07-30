@@ -75,9 +75,12 @@ nav ul > *:not(:last-child) {
   ul {
     display: none;
   }
+  .left-nav {
+    display: none;
+  }
 
   .drawer .MuiDrawer-paper {
-    width: 40%;
+    width: 60vw;
   }
 }
 
