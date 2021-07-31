@@ -19,11 +19,25 @@ export function* getBlogFromDb(action) {
 }
 
 export function* getBlogsFromDb() {
-  yield put(setDialogBoxPropsAction("Fetching Blogs..."));
-  const result = yield firebase.database().ref(`blogs`).get();
-  const db_data = yield Object.values(result.val());
-  yield put(setDialogBoxPropsAction(""));
-  yield put(getBlogsSuccessAction(db_data));
+  try {
+    yield put(setDialogBoxPropsAction("Fetching Blogs..."));
+    console.log("before get");
+    //const result = yield firebase.database().ref(`blogs`);
+    const result = yield new Promise((resolve, reject) => {
+      firebase
+        .database()
+        .ref(`blogs`)
+        .on("value", (snap) => {
+          resolve(snap.val());
+        });
+    });
+    yield console.log("result", result);
+    const db_data = yield Object.values(result);
+    yield put(setDialogBoxPropsAction(""));
+    yield put(getBlogsSuccessAction(db_data));
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 export function* deleteBlogFromDb(action) {
