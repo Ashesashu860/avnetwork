@@ -1,5 +1,5 @@
 import React from "react";
-import { InputWithButton, StyledFab } from "../../components";
+import { InputWithButton, StyledFab, Spinner } from "../../components";
 import CommentIcon from "@material-ui/icons/Comment";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -12,10 +12,14 @@ import {
   getBlogWithIdAction,
   setAlertAction,
   addCommentInBlogAction,
+  toggleCurrentBlogLikeAction,
+  getCurrentBlogLikeAction,
+  getCurrentBlogCommentsAction,
 } from "../../redux/actions";
 import parse from "html-react-parser";
 import { useParams, useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { CommentCard } from ".";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -31,25 +35,25 @@ const ViewBlogContainer = styled.div`
   }
 `;
 
-const StyledCard = styled.div`
-  padding: 1.5rem 2.5rem;
-  margin: 0.5rem 0;
-  background-color: #eee;
-  width: 100%;
-  border-radius: 8px !important;
-  & > *:not(:last-child) {
-    margin-bottom: 0.6rem;
-  }
-`;
-
 const mapState = (state) => ({
   currentBlog: state.currentBlog,
   user: state.user,
+  isCurrentBlogLiked: state.isCurrentBlogLiked,
+  isCurrentBlogLikeLoading: state.isCurrentBlogLikeLoading,
+  currentBlogComments: state.currentBlogComments,
+  isCurrentBlogCommentsLoading: state.isCurrentBlogCommentsLoading,
 });
 
 export const ViewBlog = (props) => {
   const dispatch = useDispatch();
-  const { currentBlog, user } = useSelector(mapState);
+  const {
+    currentBlog,
+    user,
+    isCurrentBlogLiked,
+    isCurrentBlogLikeLoading,
+    currentBlogComments,
+    isCurrentBlogCommentsLoading,
+  } = useSelector(mapState);
   const params = useParams();
   const history = useHistory();
   const blogId = props?.location?.state?.id || params.id;
@@ -64,10 +68,11 @@ export const ViewBlog = (props) => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     blogId && dispatch(getBlogWithIdAction(blogId));
+    user?.uid && dispatch(getCurrentBlogLikeAction(blogId, user?.uid));
+    blogId && dispatch(getCurrentBlogCommentsAction(blogId));
   }, []);
 
   const [comment, setComment] = React.useState("");
-  const [like, setLike] = React.useState(false);
 
   const onCommentChange = (event) => setComment(event.target.value);
   const onCommentSubmit = () => {
@@ -82,10 +87,10 @@ export const ViewBlog = (props) => {
     dispatch(
       addCommentInBlogAction(
         blogId,
+        user,
         {
           id: uuidv4(),
-          value: comment,
-          userName: user.displayName,
+          comment,
         },
         history
       )
@@ -93,7 +98,9 @@ export const ViewBlog = (props) => {
     setComment("");
   };
 
-  const onLike = (event) => setLike(!like);
+  const onLike = (event) => {
+    dispatch(toggleCurrentBlogLikeAction(currentBlog.id, user?.uid));
+  };
 
   return (
     <ViewBlogContainer className="wrapper center">
@@ -103,12 +110,19 @@ export const ViewBlog = (props) => {
         <Grid container wrap="nowrap">
           <StyledFab
             onClick={onLike}
-            primary={like}
-            secondary={!like}
+            primary={isCurrentBlogLiked}
+            secondary={!isCurrentBlogLiked}
             style={{ marginRight: "1rem" }}
+            disabled={isCurrentBlogLikeLoading}
             round
           >
-            {like ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            {isCurrentBlogLikeLoading ? (
+              <Spinner color="#fff" />
+            ) : isCurrentBlogLiked ? (
+              <FavoriteIcon />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </StyledFab>
           <InputWithButton
             inputValue={comment}
@@ -132,10 +146,7 @@ export const ViewBlog = (props) => {
           <span style={{ marginRight: "1rem" }}>
             {currentBlog?.likes} Likes
           </span>
-          <span>
-            {currentBlog?.comments ? currentBlog?.comments.length : "0"}{" "}
-            Comments
-          </span>
+          <span>{currentBlog?.comments || "0"} Comments</span>
         </Grid>
         <Rating
           disabled
@@ -152,33 +163,36 @@ export const ViewBlog = (props) => {
       </Grid>
       <h3>Comments</h3>
       <Grid container>
-        {currentBlog?.comments ? (
-          Object.values(currentBlog?.comments).map((comment) => {
+        {isCurrentBlogCommentsLoading ? (
+          <Spinner />
+        ) : currentBlogComments ? (
+          Object.values(currentBlogComments).map((comment) => {
             return (
-              <StyledCard>
-                <Grid
-                  container
-                  wrap="nowrap"
-                  style={{ justifyContent: "space-between" }}
-                >
-                  <h5>{comment.userName}</h5>
-                  <span style={{ fontSize: "0.9rem" }}>
-                    {getFormattedDate(comment.timestamp)}
-                  </span>
-                </Grid>
-                <div
-                  style={{
-                    width: "100%",
-                  }}
-                >
-                  {comment.value}
-                </div>
-              </StyledCard>
+              <CommentCard
+                username={comment?.username}
+                date={getFormattedDate(comment?.timestamp)}
+                comment={comment?.comment}
+                photoURL={comment?.photoURL}
+              />
             );
           })
         ) : (
           <p>Be the first one to comment.</p>
         )}
+        {/* {currentBlog?.comments ? (
+          Object.values(currentBlog?.comments).map((comment) => {
+            return (
+              <CommentCard
+                username={comment?.userName}
+                date={getFormattedDate(comment?.timestamp)}
+                comment={comment?.value}
+                photoURL={comment?.photoURL}
+              />
+            );
+          })
+        ) : (
+          <p>Be the first one to comment.</p>
+        )} */}
       </Grid>
     </ViewBlogContainer>
   );

@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { useEffect } from "react";
-import { Provider, useDispatch } from "react-redux";
+import React from "react";
+import { Provider } from "react-redux";
 import store from "./redux/store";
 import { Main } from "./pages";
 

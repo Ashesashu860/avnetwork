@@ -8,7 +8,7 @@ import BlogCreateModel from "../../models/BlogCreate";
 import { withRouter } from "react-router-dom";
 import { modules, formats, categories } from "./BlogCreateModules";
 import { useDispatch, useSelector } from "react-redux";
-import { addBlogAction, setAlertAction } from "../../redux/actions";
+import { addBlogInDbAction, setAlertAction } from "../../redux/actions";
 import "react-quill/dist/quill.snow.css";
 
 const mapState = (state) => ({
@@ -57,7 +57,7 @@ export const BlogCreate = withRouter(({ history }) => {
       editorRef.current.state.value,
       blog.category
     );
-    dispatch(addBlogAction(newBlog, history));
+    dispatch(addBlogInDbAction(newBlog, history));
   };
 
   return (

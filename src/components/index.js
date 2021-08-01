@@ -14,3 +14,4 @@ export * from "./AuthProvider";
 export * from "./LoaderIcon";
 export * from "./DialogBox";
 export * from "./Alert";
+export * from "./Spinner";

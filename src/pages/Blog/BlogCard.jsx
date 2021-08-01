@@ -62,7 +62,15 @@ export const BlogCard = ({
 }) => {
   return (
     <StyledCard onClick={onClick}>
-      <h3>{title}</h3>
+      <h3
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {title}
+      </h3>
       <p
         style={{
           maxWidth: "100%",

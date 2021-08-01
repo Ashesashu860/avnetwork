@@ -2,6 +2,10 @@ const initialState = {
   user: null,
   blogs: null,
   currentBlog: null,
+  isCurrentBlogLiked: false,
+  currentBlogComments: null,
+  isCurrentBlogLikeLoading: false,
+  isCurrentBlogCommentsLoading: false,
   isLoading: false,
   dialogBoxProps: {
     title: "",
@@ -41,10 +45,30 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         blogs: action.payload.blogs,
       };
-    case "GET_BLOG_WITH_ID_SUCCESS":
+    case "SET_CURRENT_BLOG":
       return {
         ...state,
         currentBlog: action.payload.blog,
+      };
+    case "SET_LIKE":
+      return {
+        ...state,
+        isCurrentBlogLiked: action.payload.isLiked,
+      };
+    case "SET_CURRENT_BLOG_COMMENTS":
+      return {
+        ...state,
+        currentBlogComments: action.payload.currentBlogComments,
+      };
+    case "TOGGLE_LIKE_LOADING":
+      return {
+        ...state,
+        isCurrentBlogLikeLoading: action.payload.shouldLoad,
+      };
+    case "TOGGLE_COMMENTS_LOADING":
+      return {
+        ...state,
+        isCurrentBlogCommentsLoading: action.payload.shouldLoad,
       };
     default:
       return state;

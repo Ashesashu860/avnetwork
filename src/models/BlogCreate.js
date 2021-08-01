@@ -8,7 +8,6 @@ class BlogCreateModel {
     this.content = content;
     this.author = author;
     this.likes = 0;
-    this.liked = false;
     this.ratings = 0;
     this.category = category;
   }

@@ -106,7 +106,7 @@ export const Register = (props) => {
 
   const onCategoryChange = (event) => setCategory(event.target.value);
 
-  const categories = ["Integrator", "Dealer", "Rental", "Freelancer"];
+  const categories = ["Integrator", "Dealer", "Rental", "Freelancer", "Guest"];
 
   const getRenderItem = (activeStep) => {
     switch (activeStep) {

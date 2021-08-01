@@ -3,3 +3,4 @@ export * from "./BlogCard";
 export * from "./BlogLandingPage";
 export * from "./BlogCreate";
 export * from "./ViewBlog";
+export * from "./CommentCard";
