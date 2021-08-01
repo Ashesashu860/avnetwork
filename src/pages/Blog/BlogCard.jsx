@@ -113,7 +113,7 @@ export const BlogCard = ({
           <FavoriteIcon />
           <span>{likes}</span>
           <CommentIcon />
-          <span>{comments ? Object.values(comments).length : "0"}</span>
+          <span>{comments || "0"}</span>
         </StyledFooter>
       </Grid>
     </StyledCard>
