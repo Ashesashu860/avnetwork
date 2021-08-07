@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Avatar, IconButton } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Grid, Avatar } from "@material-ui/core";
 
 const StyledCard = styled.div`
   padding: 1.5rem;

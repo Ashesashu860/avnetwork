@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "quill-mention";
 import "quill-mention/dist/quill.mention.css";
@@ -16,7 +16,7 @@ const mapState = (state) => ({
 });
 
 export const BlogCreate = withRouter(({ history }) => {
-  let editorRef = useRef();
+  const currentBlog = history.location.state?.currentBlog;
   const dispatch = useDispatch();
   const { user } = useSelector(mapState);
 
@@ -25,9 +25,11 @@ export const BlogCreate = withRouter(({ history }) => {
   }, []);
 
   const [blog, setBlog] = useState({
-    title: "",
-    category: "",
+    title: currentBlog?.title || "",
+    category: currentBlog?.category || "",
   });
+  const [blogContent, setBlogContent] = useState(currentBlog?.content || "");
+
   const onChange = (event) => {
     if (event.target) {
       setBlog({
@@ -37,12 +39,17 @@ export const BlogCreate = withRouter(({ history }) => {
     }
   };
 
+  const onBlogContentChange = (value) => {
+    console.log("content", value);
+    setBlogContent(value);
+  };
+
   const onPublishClick = (event) => {
     if (!blog.title) {
       dispatch(setAlertAction("Please give a suitable title"));
       return;
     }
-    if (!editorRef.current.state.value) {
+    if (!blogContent) {
       dispatch(setAlertAction("Unable to publish empty blog"));
       return;
     }
@@ -51,15 +58,16 @@ export const BlogCreate = withRouter(({ history }) => {
       return;
     }
     const newBlog = new BlogCreateModel(
+      currentBlog?.id,
       user.uid,
       user.displayName,
       blog.title,
-      editorRef.current.state.value,
+      blogContent,
       blog.category
     );
     dispatch(addBlogInDbAction(newBlog, history));
   };
-
+  console.log("history state", history.location);
   return (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
       <StyledInput
@@ -82,7 +90,8 @@ export const BlogCreate = withRouter(({ history }) => {
         formats={formats}
         placeholder="Enter your thoughts..."
         name="content"
-        ref={editorRef}
+        onChange={onBlogContentChange}
+        value={blogContent}
       />
       <Grid container justify="flex-end">
         <FormControl style={{ minWidth: "8rem", margin: "1rem" }}>
@@ -108,7 +117,7 @@ export const BlogCreate = withRouter(({ history }) => {
           primary
           onClick={onPublishClick}
         >
-          Publish
+          {history.location.state?.currentBlog ? "Update" : "Publish"}
         </StyledFab>
       </Grid>
     </div>

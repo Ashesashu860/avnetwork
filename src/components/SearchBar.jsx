@@ -34,8 +34,17 @@ const StyledMenu = styled(Menu)`
 `;
 
 export const SearchBar = ({ className, style, width }) => {
+  const categories = [
+    "Category",
+    "Integrators",
+    "Rentals",
+    "Dealers",
+    "Freelancers",
+  ];
+
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedCateory, setSelectedCateory] = React.useState("Category");
+  const [selectedCateoryIndex, setSelectedCateoryIndex] = React.useState(0);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -44,7 +53,10 @@ export const SearchBar = ({ className, style, width }) => {
     setAnchorEl(null);
   };
 
-  const handleChange = (event) => setSelectedCateory(event.target.value);
+  const handleCategoryChange = (event, index) => {
+    setSelectedCateoryIndex(index);
+    setAnchorEl(null);
+  };
 
   return (
     <SearchContainer
@@ -75,7 +87,7 @@ export const SearchBar = ({ className, style, width }) => {
             padding: "0 0.8rem",
           }}
         >
-          {selectedCateory}
+          {categories[selectedCateoryIndex]}
           <ExpandMoreIcon />
         </Button>
         <StyledMenu
@@ -83,11 +95,17 @@ export const SearchBar = ({ className, style, width }) => {
           keepMounted
           open={Boolean(anchorEl)}
           onClose={handleClose}
-          onChange={handleChange}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          {categories.map((category, index) => (
+            <MenuItem
+              key={category}
+              disabled={index === 0}
+              selected={index === selectedCateoryIndex}
+              onClick={(event) => handleCategoryChange(event, index)}
+            >
+              {category}
+            </MenuItem>
+          ))}
         </StyledMenu>
       </Grid>
       <Grid container alignItems="center" style={{ width: "auto" }} item>

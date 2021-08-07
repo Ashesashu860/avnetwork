@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 class BlogCreateModel {
-  constructor(userId, author, title, content, category) {
-    this.id = uuidv4();
+  constructor(blogId, userId, author, title, content, category) {
+    this.id = blogId || uuidv4();
     this.userId = userId;
     this.title = title;
     this.content = content;

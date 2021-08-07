@@ -8,9 +8,9 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const StyledCard = styled(Card)`
   position: relative;
-  padding: 2rem 2.5rem;
+  padding: 2.5rem 3rem;
   margin: 1rem 0.5rem;
-  height: 16.5rem;
+  height: 17rem;
   min-width: 25rem;
   max-width: 25rem;
   border-radius: 16px !important;

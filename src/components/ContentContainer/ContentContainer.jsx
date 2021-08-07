@@ -19,7 +19,7 @@ export const ContentContainer = ({
 }) => {
   return (
     <StyledDiv
-      className={`${className} content-container`}
+      className={`content-container ${className}`}
       style={style}
       spacing={spacing}
     >

@@ -97,11 +97,10 @@ export const toggleCommentsLoadingAction = (shouldLoad) => ({
   },
 });
 
-// export const deleteBlogAction = (blogId, userId, history) => ({
-//   type: "DELETE_BLOG",
-//   payload: {
-//     blogId,
-//     userId,
-//     history,
-//   },
-// });
+export const deleteBlogAction = (blogId, history) => ({
+  type: "DELETE_BLOG",
+  payload: {
+    blogId,
+    history,
+  },
+});

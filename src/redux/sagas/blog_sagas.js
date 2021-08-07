@@ -11,6 +11,7 @@ import {
   setCurrentBlogCommentsAction,
 } from "../actions";
 
+//GET DATA FROM DB
 const getDatafromDb = (path) => {
   return new Promise((resolve, reject) => {
     firebase
@@ -22,13 +23,11 @@ const getDatafromDb = (path) => {
   });
 };
 
+//GET BLOG WITH ID IN DB
 export function* getBlogWithIdFromDb(action) {
   try {
     yield put(setDialogBoxPropsAction("Fetching Your Blog..."));
     const blog = yield getDatafromDb(`blogs/${action.payload.blogId}`);
-    // const isCurrentBlogLiked = yield getDatafromDb(
-    //   `blogLikes/${action.payload.blogId}/${action.payload.userId}`
-    // );
     yield put(setCurrentBlogAction(blog));
     yield put(setDialogBoxPropsAction(""));
   } catch (error) {
@@ -36,6 +35,7 @@ export function* getBlogWithIdFromDb(action) {
   }
 }
 
+//GET ALL BLOGS FROM DB
 export function* getBlogsFromDb() {
   try {
     yield put(setDialogBoxPropsAction("Fetching Blogs..."));
@@ -48,10 +48,15 @@ export function* getBlogsFromDb() {
   }
 }
 
+//DELETE BLOG FROM DB
 export function* deleteBlogFromDb(action) {
   try {
     yield put(setDialogBoxPropsAction("Deleting Blog..."));
-    yield firebase.database().ref(`blogs`).child(action.payload.id).remove();
+    yield firebase
+      .database()
+      .ref(`blogs`)
+      .child(action.payload.blogId)
+      .remove();
     yield put(
       setDialogBoxPropsAction(
         "Blog Deleted",
@@ -64,13 +69,12 @@ export function* deleteBlogFromDb(action) {
         true
       )
     );
-    yield getBlogWithIdFromDb(action);
   } catch (error) {
     setAlertAction(error);
   }
 }
 
-//COMMENT
+//GET CURRENT COMMENT FROM DB
 export function* getCurrentBlogCommentsSaga(action) {
   try {
     yield put(toggleCommentsLoadingAction(true));
@@ -84,6 +88,7 @@ export function* getCurrentBlogCommentsSaga(action) {
   }
 }
 
+//ADD COMMENT IN DB
 export function* addCommentInBlogInDb(action) {
   try {
     yield put(setDialogBoxPropsAction("Posting Comment..."));
@@ -102,16 +107,6 @@ export function* addCommentInBlogInDb(action) {
       .database()
       .ref(`blogs/${action.payload.blogId}/comments`);
     yield numberOfCommentsRef.transaction((comments) => comments + 1);
-    // yield firebase
-    //   .database()
-    //   .ref(`blogs`)
-    //   .child(action.payload.blogId)
-    //   .child("comments")
-    //   .child(action.payload.comment.id)
-    //   .set({
-    //     ...action.payload.comment,
-    //     timestamp: firebase.database.ServerValue.TIMESTAMP,
-    //   });
     yield getCurrentBlogCommentsSaga(action);
     yield getBlogWithIdFromDb(action);
   } catch (error) {
@@ -119,7 +114,7 @@ export function* addCommentInBlogInDb(action) {
   }
 }
 
-//LIKE
+//GET CURRENT LIKE FROM DB
 export function* getCurrentBlogLikeSaga(action) {
   try {
     yield put(toggleLikeLoadingAction(true));
@@ -133,6 +128,7 @@ export function* getCurrentBlogLikeSaga(action) {
   }
 }
 
+//SET CURRENT LIKE IN DB
 export function* toggleCurrentBlogLikeInDb(action) {
   try {
     yield put(toggleLikeLoadingAction(true));
@@ -164,7 +160,7 @@ export function* toggleCurrentBlogLikeInDb(action) {
   }
 }
 
-//ADD
+//ADD BLOG IN DB
 export function* addBlogInDb(action) {
   try {
     yield put(setDialogBoxPropsAction("Publishing your blog..."));

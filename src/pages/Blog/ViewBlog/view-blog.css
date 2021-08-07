@@ -1,0 +1,39 @@
+.blog_operations > *:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.blog-content {
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 2rem;
+}
+
+.hide_at_600 {
+  display: inline-flex !important;
+}
+
+@media screen and (max-width: 600px) {
+  .hide_at_600 {
+    display: none !important;
+  }
+}
+
+.show_at_600 {
+  display: none !important;
+}
+
+@media screen and (max-width: 600px) {
+  .show_at_600 {
+    display: inline-flex !important;
+  }
+}
+
+.ad_square {
+  margin-top: 1rem;
+  min-width: 100%;
+  min-height: 16rem;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

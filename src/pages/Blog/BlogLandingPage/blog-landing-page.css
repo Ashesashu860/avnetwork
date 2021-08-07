@@ -27,3 +27,13 @@
     max-height: 40vmin;
   }
 }
+
+.blog_landing_content {
+  padding-bottom: 3rem;
+}
+
+@media screen and (max-width: 560px) {
+  .blog_landing_content {
+    padding-bottom: 6rem;
+  }
+}

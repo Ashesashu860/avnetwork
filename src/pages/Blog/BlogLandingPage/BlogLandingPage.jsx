@@ -44,6 +44,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
             "Whether sharing your expertise, knowledge, or whatever’s on your mind, you’re in good company on AVnetwork. Sign up to discover the knowledge spread by thousands of people."
           }
           spacing="2.5rem"
+          className="blog_landing_content"
         >
           <div
             style={{ height: "2.5rem", display: "flex", marginBottom: "2rem" }}

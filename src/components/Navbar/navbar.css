@@ -79,6 +79,11 @@ nav ul > *:not(:last-child) {
     display: none;
   }
 
+  .sub-nav {
+    display: block !important;
+    padding-top: 0 !important;
+  }
+
   .drawer .MuiDrawer-paper {
     width: 60vw;
   }

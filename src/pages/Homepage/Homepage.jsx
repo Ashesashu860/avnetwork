@@ -55,9 +55,11 @@ export const Homepage = (props) => {
       fullHeightHover
       indicatorContainerProps={{
         style: {
-          marginTop: "-1.27rem", // 5
+          height: "3rem",
+          marginTop: "-3.27rem", // 5
         },
       }}
+      autoPlay={false}
     >
       {sliderData.map((item, i) => (
         <Item key={i} item={item} />
@@ -74,17 +76,7 @@ const Item = ({ item }) => {
       className="wrapper fix_wrapper slide"
       style={{ position: "relative", backgroundImage: `url(${image})` }}
     >
-      <div
-        className="center slide_content"
-        style={{
-          position: "absolute",
-          bottom: "0",
-          paddingBottom: "4rem",
-          flexDirection: "column",
-          minWidth: "100%",
-          backgroundImage: "linear-gradient(to bottom, transparent, black 90%)",
-        }}
-      >
+      <div className="center slide_content">
         <h1>{title}</h1>
         <p style={{ textAlign: "center" }}>{description}</p>
         <StyledNavLink
