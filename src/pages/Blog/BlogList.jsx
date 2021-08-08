@@ -68,6 +68,9 @@ export const BlogList = ({
   const filteredBlogs = !selectedCategory
     ? blogs
     : blogs?.filter((blog) => blog?.category === selectedCategory);
+  const sortedBlogs = filteredBlogs?.sort(
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+  );
 
   const onCategoryClick = (index) => {
     setSelectedCategory(categories[index]);
@@ -111,10 +114,10 @@ export const BlogList = ({
               flexWrap: direction === "row" ? "nowrap" : "wrap",
             }}
           >
-            {!filteredBlogs?.length ? (
+            {!sortedBlogs?.length ? (
               <h4 style={{ padding: "1rem" }}>No Blogs</h4>
             ) : (
-              filteredBlogs?.map((blog, index) => {
+              sortedBlogs?.map((blog, index) => {
                 return (
                   <BlogCard
                     key={index}

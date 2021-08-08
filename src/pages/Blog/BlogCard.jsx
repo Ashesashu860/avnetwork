@@ -52,9 +52,20 @@ const StyledParagraph = styled.p`
   position: relative;
   text-align: justify;
   margin-bottom: 0 !important;
+  &::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    content: "";
+    height: 2rem;
+    width: 100%;
+    background-image: linear-gradient(transparent, #fff);
+  }
 `;
 
 const FooterContainer = styled.div`
+  position: relative;
+  margin-top: 1rem;
   & > *:not(:last-child) {
     margin-bottom: 0.5rem;
   }
@@ -83,7 +94,7 @@ export const BlogCard = ({
         {title}
       </h3>
       <StyledParagraph>{content}</StyledParagraph>
-      <Divider />
+
       <FooterContainer>
         <Grid container justify="space-between" alignItems="center">
           <h5>{`${author}`}</h5>
