@@ -5,7 +5,7 @@
 
 :root {
   --primary: #74609e;
-  --primaryLight: #e0c7ff;
+  --primaryLight: #ead9ff;
   --secondary: #e0e0e0;
   --tertiary: rgba(0, 0, 0, 0.3);
   --text-dark: #616161;
@@ -14,6 +14,7 @@
   color: var(--text-dark);
   font-size: 14px;
   --backup-primary: #74609e;
+  --background: rgb(250, 250, 250);
 }
 
 h1,
@@ -36,18 +37,17 @@ h1 {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif !important;
   font-weight: 500;
-  /* transition: 0.3s ease; */
 }
 
 .wrapper {
   min-height: 100vh !important;
-  padding-top: 89px !important;
-  background-color: rgb(250, 250, 250);
+  padding-top: 77px !important;
+  background-color: var(--background);
   overflow: hidden;
 }
 
 .fix_wrapper {
-  max-height: calc(100vh - 89px);
+  max-height: calc(100vh - 77px);
 }
 
 @media screen and (max-width: 1150px) {
@@ -55,10 +55,10 @@ h1 {
     font-size: 2rem;
   }
   .wrapper {
-    padding-top: 167px !important;
+    padding-top: 145px !important;
   }
   .fix_wrapper {
-    max-height: calc(100vh - 167px);
+    max-height: calc(100vh - 145px);
   }
 }
 
@@ -67,16 +67,19 @@ h1 {
     font-size: 12px;
   }
   .wrapper {
-    padding-top: 132px !important;
+    padding-top: 124px !important;
   }
   .fix_wrapper {
-    max-height: calc(100vh - 132px);
+    max-height: calc(100vh - 124px);
   }
 }
 
-@media screen and (max-width: 320px) {
-  :root {
-    font-size: 12px;
+@media screen and (max-width: 570px) {
+  .wrapper {
+    padding-top: 119px !important;
+  }
+  .fix_wrapper {
+    max-height: calc(100vh - 119px);
   }
 }
 
@@ -85,15 +88,3 @@ h1 {
   align-items: center;
   justify-content: center;
 }
-/* .wrapper::after {
-  position: absolute;
-  content: "";
-  min-height: 30vh;
-  min-width: 30vh;
-  background-color: var(--primary);
-  border-radius: 50%;
-  filter: blur(1rem);
-  opacity: 0.5;
-  transform: scale(150%);
-  transition: 4s ease-in;
-} */

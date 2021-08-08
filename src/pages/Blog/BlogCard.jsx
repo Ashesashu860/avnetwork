@@ -24,15 +24,6 @@ const StyledCard = styled(Card)`
     color: var(--text-medium);
     font-weight: bold;
   }
-
-  // &::before {
-  //   position: absolute;
-  //   content: "";
-  //   border-radius: 50%;
-  //   background-color: var(--primary);
-  //   height: 100%;
-  //   width: 100%;
-  // }
 `;
 
 const StyledFooter = styled(Grid)`
@@ -50,6 +41,25 @@ const StyledFooter = styled(Grid)`
   }
 `;
 
+const StyledParagraph = styled.p`
+  max-width: 100%;
+  width: 100%;
+  height: 4.5rem;
+  overflow: hidden;
+  color: var(--text-medium);
+  font-size: 0.85rem;
+  text-verflow: ellipsis;
+  position: relative;
+  text-align: justify;
+  margin-bottom: 0 !important;
+`;
+
+const FooterContainer = styled.div`
+  & > *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+`;
+
 export const BlogCard = ({
   title,
   content,
@@ -59,6 +69,7 @@ export const BlogCard = ({
   author,
   onClick,
   blogDate,
+  category,
 }) => {
   return (
     <StyledCard onClick={onClick}>
@@ -71,51 +82,42 @@ export const BlogCard = ({
       >
         {title}
       </h3>
-      <p
-        style={{
-          maxWidth: "100%",
-          width: "100%",
-          height: "4.5rem",
-          overflow: "hidden",
-          color: "var(--text-medium)",
-          fontSize: "0.85rem",
-          textOverflow: "ellipsis",
-          position: "relative",
-          textAlign: "justify",
-        }}
-      >
-        {content}
-      </p>
+      <StyledParagraph>{content}</StyledParagraph>
       <Divider />
-      <Grid container justify="space-between" alignItems="center">
-        <h5>{`Author: ${author}`}</h5>
-        <span
-          style={{
-            fontSize: "0.9rem",
-            color: "var(--tertiary)",
-            fontWeight: "bold",
-          }}
-        >
-          {blogDate}
-        </span>
-      </Grid>
-      <Grid container justify="space-between" alignItems="center">
-        <Rating
-          name="customized-empty"
-          defaultValue={ratings}
-          precision={0.5}
-          //style={{ color: "var(--primary)" }}
-          style={{ zIndex: "0" }}
-          readOnly
-          emptyIcon={<StarBorderIcon fontSize="inherit" />}
-        />
-        <StyledFooter container direction="row">
-          <FavoriteIcon />
-          <span>{likes}</span>
-          <CommentIcon />
-          <span>{comments || "0"}</span>
-        </StyledFooter>
-      </Grid>
+      <FooterContainer>
+        <Grid container justify="space-between" alignItems="center">
+          <h5>{`${author}`}</h5>
+        </Grid>
+        <Grid container justify="space-between" alignItems="center">
+          <h5>{`${category}`}</h5>
+          <span
+            style={{
+              fontSize: "0.9rem",
+              color: "var(--tertiary)",
+              fontWeight: "bold",
+            }}
+          >
+            {blogDate}
+          </span>
+        </Grid>
+        <Grid container justify="space-between" alignItems="center">
+          <Rating
+            name="customized-empty"
+            defaultValue={ratings}
+            precision={0.5}
+            //style={{ color: "var(--primary)" }}
+            style={{ zIndex: "0" }}
+            readOnly
+            emptyIcon={<StarBorderIcon fontSize="inherit" />}
+          />
+          <StyledFooter container direction="row">
+            <FavoriteIcon />
+            <span>{likes}</span>
+            <CommentIcon />
+            <span>{comments || "0"}</span>
+          </StyledFooter>
+        </Grid>
+      </FooterContainer>
     </StyledCard>
   );
 };

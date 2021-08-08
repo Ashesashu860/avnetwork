@@ -26,6 +26,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { CommentCard } from "..";
 import "./view-blog.css";
+import { getFormattedDate } from "../BlogCreateModules";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -65,13 +66,6 @@ export const ViewBlog = (props) => {
 
   const blogId = props?.location?.state?.id || params.id;
 
-  const getFormattedDate = (timestamp) => {
-    const dateTime = new Date(timestamp);
-    return `${dateTime.getDate()}/${
-      dateTime.getMonth() + 1
-    }/${dateTime.getFullYear()}`;
-  };
-
   React.useEffect(() => {
     window.scrollTo(0, 0);
     blogId && dispatch(getBlogWithIdAction(blogId));
@@ -108,41 +102,55 @@ export const ViewBlog = (props) => {
   const onLike = (event) => {
     dispatch(toggleCurrentBlogLikeAction(currentBlog.id, user?.uid));
   };
-  console.log(
-    "parse(currentBlog.content)",
-    currentBlog?.content && parse(currentBlog?.content)
-  );
 
   //APPEND ADS IN BLOG
   useEffect(() => {
-    const ad1 = document.createElement("div");
-    ad1.innerText = "Place your ad here 1";
-    ad1.classList.add("ad_square");
     const ad2 = document.createElement("div");
-    ad2.innerText = "Place your ad here 2";
+    ad2.innerText = "Place your ad here 1";
     ad2.classList.add("ad_square");
+    ad2.id = "blog_ad_2";
+
+    const ad3 = document.createElement("div");
+    ad3.innerText = "Place your ad here 2";
+    ad3.classList.add("ad_square");
+    ad3.id = "blog_ad_3";
+
     if (currentBlog?.content) {
-      if (document?.getElementsByTagName("p")?.[2])
-        document
-          .getElementsByClassName("blog-content")[0]
-          .insertBefore(ad1, document.getElementsByTagName("p")[2]);
-      if (document?.getElementsByTagName("p")?.[4])
-        document
-          .getElementsByClassName("blog-content")[0]
-          .insertBefore(ad2, document.getElementsByTagName("p")[4]);
+      const allParagraphs = document
+        .getElementsByClassName("blog-content")[0]
+        .getElementsByTagName("p");
+      const noOfParagraphs = allParagraphs.length;
+      const oneThirdParagraph = Math.floor(noOfParagraphs / 3);
+      console.log(
+        "noOfParagraphs",
+        noOfParagraphs,
+        "oneThirdParagraph",
+        oneThirdParagraph
+      );
+      if (allParagraphs[oneThirdParagraph])
+        if (!document.getElementById("blog_ad_2"))
+          document
+            .getElementsByClassName("blog-content")[0]
+            .insertBefore(ad2, allParagraphs[oneThirdParagraph]);
+      if (allParagraphs[oneThirdParagraph * 2])
+        if (!document.getElementById("blog_ad_3"))
+          document
+            .getElementsByClassName("blog-content")[0]
+            .insertBefore(ad3, allParagraphs[oneThirdParagraph * 2]);
     }
-  }, []);
+  }, [currentBlog?.content]);
 
   return (
     <ViewBlogContainer className="wrapper center">
       <h1>{currentBlog?.title}</h1>
       <div
+        id="blog_ad_1"
         className="center"
         style={{
           backgroundColor: "#ddd",
           minWidth: "100%",
-          minHeight: "3rem",
-          maxHeight: "3rem",
+          minHeight: "7rem",
+          maxHeight: "7rem",
         }}
       >
         Place your ad here
@@ -151,6 +159,7 @@ export const ViewBlog = (props) => {
         {currentBlog?.content && parse(currentBlog.content)}
       </div>
       <div
+        id="blog_ad_4"
         className="center"
         style={{
           backgroundColor: "#ddd",
@@ -252,7 +261,7 @@ export const ViewBlog = (props) => {
         alignItems="center"
         style={{ marginBottom: "1rem" }}
       >
-        <Grid wrap="nowrap" style={{ display: "inline-flex" }}>
+        <Grid style={{ display: "inline-flex" }}>
           <span style={{ marginRight: "1rem" }}>
             {currentBlog?.likes} Likes
           </span>

@@ -49,7 +49,20 @@ export const formats = [
   "align",
 ];
 
-export const categories = ["AV Cables", "Speakers", "Displays", "Lighting"];
+export const categories = [
+  "AV Cables",
+  "Speakers",
+  "Displays",
+  "Lighting",
+  "Trussing Systems",
+];
+
+export const getFormattedDate = (timestamp) => {
+  const dateTime = new Date(timestamp);
+  return `${dateTime.getDate()}/${
+    dateTime.getMonth() + 1
+  }/${dateTime.getFullYear()}`;
+};
 
 export const atValues = [
   { id: 1, value: "Name1" },

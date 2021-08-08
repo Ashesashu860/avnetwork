@@ -40,7 +40,6 @@ export const BlogCreate = withRouter(({ history }) => {
   };
 
   const onBlogContentChange = (value) => {
-    console.log("content", value);
     setBlogContent(value);
   };
 
@@ -63,11 +62,13 @@ export const BlogCreate = withRouter(({ history }) => {
       user.displayName,
       blog.title,
       blogContent,
-      blog.category
+      blog.category,
+      currentBlog?.likes || 0,
+      currentBlog?.comments || 0,
+      currentBlog?.ratings || 0
     );
     dispatch(addBlogInDbAction(newBlog, history));
   };
-  console.log("history state", history.location);
   return (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
       <StyledInput

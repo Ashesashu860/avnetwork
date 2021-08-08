@@ -8,6 +8,10 @@
   padding: 2rem;
 }
 
+.blog-content img {
+  max-width: 100%;
+}
+
 .hide_at_600 {
   display: inline-flex !important;
 }

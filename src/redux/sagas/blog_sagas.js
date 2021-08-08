@@ -57,6 +57,16 @@ export function* deleteBlogFromDb(action) {
       .ref(`blogs`)
       .child(action.payload.blogId)
       .remove();
+    yield firebase
+      .database()
+      .ref(`blogLikes`)
+      .child(action.payload.blogId)
+      .remove();
+    yield firebase
+      .database()
+      .ref(`blogComments`)
+      .child(action.payload.blogId)
+      .remove();
     yield put(
       setDialogBoxPropsAction(
         "Blog Deleted",
