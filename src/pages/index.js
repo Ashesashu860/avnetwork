@@ -11,3 +11,4 @@ export * from "./Register";
 export * from "./TermsOfUse";
 export * from "./Loading";
 export * from "./Main";
+export * from "./Admin";

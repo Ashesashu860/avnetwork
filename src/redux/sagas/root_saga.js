@@ -4,6 +4,8 @@ import {
   signOutUser,
   setUserInDb,
   checkUserAuth,
+  getAllUsersSaga,
+  toggleBlogWritePermissionSaga,
 } from "./user_sagas";
 import {
   getBlogWithIdFromDb,
@@ -17,9 +19,15 @@ import {
 } from "./blog_sagas";
 
 export function* rootSaga() {
+  //USER
   yield takeLatest("SIGN_IN_USER", signInUser);
   yield takeLatest("SIGN_OUT_USER", signOutUser);
   yield takeLatest("SET_USER_IN_DB", setUserInDb);
+  yield takeLatest("GET_ALL_USERS", getAllUsersSaga);
+  yield takeLatest(
+    "TOGGLE_BLOG_WRITE_PERMISSION",
+    toggleBlogWritePermissionSaga
+  );
   //BLOG
   yield takeLatest("GET_BLOGS", getBlogsFromDb);
   yield takeLatest("GET_BLOG_WITH_ID", getBlogWithIdFromDb);

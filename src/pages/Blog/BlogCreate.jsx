@@ -10,6 +10,7 @@ import { modules, formats, categories } from "./BlogCreateModules";
 import { useDispatch, useSelector } from "react-redux";
 import { addBlogInDbAction, setAlertAction } from "../../redux/actions";
 import "react-quill/dist/quill.snow.css";
+import { Redirect } from "react-router-dom";
 
 const mapState = (state) => ({
   user: state.user,
@@ -69,7 +70,7 @@ export const BlogCreate = withRouter(({ history }) => {
     );
     dispatch(addBlogInDbAction(newBlog, history));
   };
-  return (
+  return user?.canWriteBlogs ? (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
       <StyledInput
         type="text"
@@ -122,5 +123,7 @@ export const BlogCreate = withRouter(({ history }) => {
         </StyledFab>
       </Grid>
     </div>
+  ) : (
+    <Redirect to="/" />
   );
 });

@@ -30,12 +30,18 @@ export const DrawerLayout = (props) => {
   const history = useHistory();
 
   const handleLogout = () => {
+    props.toggleDrawer();
     dispatch(logoutUserAction(history));
   };
 
   const handleLogin = () => {
     dispatch(loginUserAction(history));
   };
+
+  const filteredLinks =
+    user?.category === "Admin"
+      ? navLinks
+      : navLinks.filter((link) => link.name !== "Admin");
 
   return (
     <div
@@ -118,7 +124,7 @@ export const DrawerLayout = (props) => {
         )}
         <StyledUl>
           {/* <SearchBar /> */}
-          {navLinks.map((navlink) => {
+          {filteredLinks.map((navlink) => {
             return (
               <StyledNavLink
                 key={navlink.name}

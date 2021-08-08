@@ -55,6 +55,11 @@ export const Navbar = withRouter(({ history }) => {
     dispatch(logoutUserAction(history));
   };
 
+  const filteredLinks =
+    user?.category === "Admin"
+      ? navLinks
+      : navLinks.filter((link) => link.name !== "Admin");
+
   return (
     <>
       <div style={{ position: "fixed", zIndex: "1000" }} ref={navRef}>
@@ -78,7 +83,7 @@ export const Navbar = withRouter(({ history }) => {
           <div className="outer-left-nav">
             <ul>
               {/* <SearchBar /> */}
-              {navLinks.map((navlink) => {
+              {filteredLinks.map((navlink) => {
                 return (
                   <StyledNavLink
                     key={navlink.name}

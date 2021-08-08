@@ -60,7 +60,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
                 View Blogs
               </StyledFab>
             </StyledNavLink>
-            {user && (
+            {user?.canWriteBlogs && (
               <StyledNavLink to="/blog-create">
                 <StyledFab variant="extended" bold primary>
                   New Blog

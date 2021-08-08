@@ -33,3 +33,21 @@ export const logoutUserAction = (history) => ({
     history,
   },
 });
+
+export const getAllUsersAction = () => ({
+  type: "GET_ALL_USERS",
+});
+
+export const setAllUsersAction = (users) => ({
+  type: "SET_ALL_USERS",
+  payload: {
+    users,
+  },
+});
+
+export const toggleBlogWritePermissionAction = (userId) => ({
+  type: "TOGGLE_BLOG_WRITE_PERMISSION",
+  payload: {
+    userId,
+  },
+});

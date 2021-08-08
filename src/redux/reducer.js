@@ -7,6 +7,7 @@ const initialState = {
   isCurrentBlogLikeLoading: false,
   isCurrentBlogCommentsLoading: false,
   isLoading: false,
+  users: null,
   dialogBoxProps: {
     title: "",
     buttonProps: null,
@@ -23,6 +24,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
+      };
+    case "SET_ALL_USERS":
+      return {
+        ...state,
+        users: action.payload.users,
       };
     case "SET_LOADER":
       return {
@@ -70,6 +76,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         isCurrentBlogCommentsLoading: action.payload.shouldLoad,
       };
+
     default:
       return state;
   }

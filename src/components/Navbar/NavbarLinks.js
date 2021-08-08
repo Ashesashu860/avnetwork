@@ -15,4 +15,8 @@ export const navLinks = [
     name: "Tutorials",
     link: "/tutorials",
   },
+  {
+    name: "Admin",
+    link: "/admin",
+  },
 ];

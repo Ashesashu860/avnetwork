@@ -138,7 +138,7 @@ export const BlogList = ({
             )}
           </div>
         </div>
-        {user && (
+        {user?.canWriteBlogs && (
           <StyledNavLink to="/blog-create">
             <StyledFab
               variant="extended"
