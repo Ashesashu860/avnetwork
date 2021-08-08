@@ -23,6 +23,7 @@ const CategoriesContainer = styled.div`
     content: "";
     left: -2px;
     width: 1.5rem;
+    z-index: 1;
     background-image: linear-gradient(to right, var(--background), transparent);
     height: 100%;
   }
@@ -41,6 +42,9 @@ const CategoriesSubContainer = styled(Grid)`
   padding: 0 1rem;
   & > *:not(:last-child) {
     margin-right: 0.5rem;
+  }
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
