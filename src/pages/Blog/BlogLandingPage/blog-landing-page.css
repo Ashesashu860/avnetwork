@@ -23,6 +23,10 @@
 }
 
 @media screen and (max-width: 750px) {
+  .blog-containers {
+    max-height: 26rem;
+  }
+
   .blog-containers > img {
     max-height: 40vmin;
   }
