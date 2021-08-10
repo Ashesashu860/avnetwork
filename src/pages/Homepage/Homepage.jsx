@@ -59,7 +59,6 @@ export const Homepage = (props) => {
           marginTop: "-3.27rem", // 5
         },
       }}
-      autoPlay={false}
     >
       {sliderData.map((item, i) => (
         <Item key={i} item={item} />
