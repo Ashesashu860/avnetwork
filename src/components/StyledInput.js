@@ -10,6 +10,6 @@ export const StyledInput = styled.input`
   font-size: 1rem;
   background-color: transparent;
   &::placeholder {
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
   }
 `;

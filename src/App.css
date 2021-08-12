@@ -12,9 +12,10 @@
   --text-medium: #9e9e9e;
   --text-light: #e0e0e0;
   color: var(--text-dark);
-  font-size: 14px;
+  font-size: 16px;
   --backup-primary: #74609e;
-  --background: rgb(250, 250, 250);
+  --background: rgb(247, 247, 247);
+  --backup-background: rgb(250, 250, 250);
 }
 
 h1,
@@ -62,10 +63,13 @@ h1 {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 850px) {
   :root {
     font-size: 12px;
   }
+}
+
+@media screen and (max-width: 768px) {
   .wrapper {
     padding-top: 124px !important;
   }

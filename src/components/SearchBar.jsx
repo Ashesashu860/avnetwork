@@ -79,8 +79,7 @@ export const SearchBar = ({ className, style, width }) => {
           style={{
             backgroundColor: "#eee",
             borderRadius: "6px 0 0 6px",
-            marginTop: "-1px",
-            marginRight: "-2px",
+            marginTop: "1px",
             height: "37px",
             fontSize: "0.7rem",
             fontWeight: "bold",

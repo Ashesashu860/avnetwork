@@ -18,4 +18,5 @@ export const buttonCss = css`
   padding: 0.6rem 1.2rem !important;
   border-radius: 0.3rem !important;
   ${(props) => props.primary && "color: white !important"};
+  ${(props) => props.secondary && "border: 1px solid #ddd !important"}
 `;

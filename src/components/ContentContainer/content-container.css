@@ -1,7 +1,7 @@
 .content-container {
   flex-direction: column;
   padding: 2rem 3rem;
-  align-items: flex-start !important;
+  align-items: flex-start;
 }
 
 .content-container > p {

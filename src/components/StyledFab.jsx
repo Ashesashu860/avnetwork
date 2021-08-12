@@ -10,5 +10,8 @@ export const StyledFab = styled(Fab)`
   ${buttonCss};
   border-radius: ${(props) => (props.round ? "50%" : "24px")} !important;
   max-height: 3.5rem;
-  ${(props) => props.round && "max-width: 3.5rem"}
+  ${(props) => props.round && "max-width: 3.5rem"};
+  ${(props) =>
+    !props.disabled &&
+    "box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 18%) !important"};
 `;

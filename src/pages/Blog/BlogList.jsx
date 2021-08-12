@@ -1,12 +1,12 @@
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { BlogCard } from ".";
-import { StyledFab, StyledNavLink } from "../../components";
+import { StyledFab, StyledNavLink, ShadowContainer } from "../../components";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getBlogsAction } from "../../redux/actions";
-import { Grid, Chip } from "@material-ui/core";
+import { Chip } from "@material-ui/core";
 import { categories, getFormattedDate } from "./BlogCreateModules";
 
 const BlogListContainer = styled.div`
@@ -14,38 +14,6 @@ const BlogListContainer = styled.div`
     (props.autoHeight || props.direction === "row") &&
     "min-height: auto !important;"}
   padding: 1rem;
-`;
-
-const CategoriesContainer = styled.div`
-  position: relative;
-  &::before {
-    position: absolute;
-    content: "";
-    left: -2px;
-    width: 1.5rem;
-    z-index: 1;
-    background-image: linear-gradient(to right, var(--background), transparent);
-    height: 100%;
-  }
-  &::after {
-    position: absolute;
-    content: "";
-    width: 1.5rem;
-    right: -2px;
-    background-image: linear-gradient(to left, var(--background), transparent);
-    height: 100%;
-  }
-`;
-
-const CategoriesSubContainer = styled(Grid)`
-  overflow: auto;
-  padding: 0 1rem;
-  & > *:not(:last-child) {
-    margin-right: 0.5rem;
-  }
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const mapState = (state) => ({
@@ -89,24 +57,24 @@ export const BlogList = ({
       style={style}
     >
       <div style={{ paddingTop: "1rem" }}>
-        <CategoriesContainer className="center">
-          <CategoriesSubContainer container wrap="nowrap">
-            {categories.map((category, index) => (
-              <Chip
-                key={category}
-                style={
-                  category === selectedCategory
-                    ? { backgroundColor: "var(--primary)", color: "#fff" }
-                    : { backgroundColor: "var(--primaryLight)" }
-                }
-                clickable
-                onClick={() => onCategoryClick(index)}
-                label={category}
-              />
-            ))}
-          </CategoriesSubContainer>
-        </CategoriesContainer>
-        <div style={{ overflow: "auto" }}>
+        <ShadowContainer>
+          {categories.map((category, index) => (
+            <Chip
+              key={category}
+              style={
+                category === selectedCategory
+                  ? { backgroundColor: "var(--primary)", color: "#fff" }
+                  : {
+                      backgroundColor: "var(--primaryLight)",
+                    }
+              }
+              clickable
+              onClick={() => onCategoryClick(index)}
+              label={category}
+            />
+          ))}
+        </ShadowContainer>
+        <ShadowContainer>
           <div
             className="center"
             style={{
@@ -137,7 +105,7 @@ export const BlogList = ({
               })
             )}
           </div>
-        </div>
+        </ShadowContainer>
         {user?.canWriteBlogs && (
           <StyledNavLink to="/blog-create">
             <StyledFab
