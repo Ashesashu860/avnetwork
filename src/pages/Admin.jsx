@@ -8,25 +8,26 @@ import {
 } from "../redux/actions";
 import { ContentContainer } from "../components";
 
-const mapState = (state) => ({
-  users: state?.users,
-  user: state.user,
-});
+const mapState = (state) => state.users;
 
 export const Admin = () => {
-  const { users, user } = useSelector(mapState);
+  const { allUsers, currentUser } = useSelector(mapState);
   const dispatch = useDispatch();
 
-  useEffect(
-    () => user?.category === "Admin" && dispatch(getAllUsersAction()),
-    []
-  );
+  useEffect(() => {
+    currentUser?.category === "Admin" && dispatch(getAllUsersAction());
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
+  }, []);
 
   const onCheckboxChange = (event) => {
-    user?.uid && dispatch(toggleBlogWritePermissionAction(event.target.value));
+    currentUser?.uid &&
+      dispatch(toggleBlogWritePermissionAction(event.target.value));
   };
 
-  return user?.category === "Admin" ? (
+  return currentUser?.category === "Admin" ? (
     <div className="wrapper">
       <ContentContainer subHeading={"Can Write Blogs"} content={""} />
       <Grid
@@ -35,7 +36,7 @@ export const Admin = () => {
         direction="column"
         style={{ padding: "0 2rem" }}
       >
-        {users?.map((user) => (
+        {allUsers?.map((user) => (
           <Grid item style={{ borderBottom: "1px solid #ddd" }}>
             <span>
               <Checkbox

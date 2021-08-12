@@ -13,13 +13,13 @@ import "react-quill/dist/quill.snow.css";
 import { Redirect } from "react-router-dom";
 
 const mapState = (state) => ({
-  user: state.user,
+  currentUser: state.user.currentUser,
 });
 
 export const BlogCreate = withRouter(({ history }) => {
   const currentBlog = history.location.state?.currentBlog;
   const dispatch = useDispatch();
-  const { user } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -59,8 +59,8 @@ export const BlogCreate = withRouter(({ history }) => {
     }
     const newBlog = new BlogCreateModel(
       currentBlog?.id,
-      user.uid,
-      user.displayName,
+      currentUser.uid,
+      currentUser.displayName,
       blog.title,
       blogContent,
       blog.category,
@@ -70,7 +70,7 @@ export const BlogCreate = withRouter(({ history }) => {
     );
     dispatch(addBlogInDbAction(newBlog, history));
   };
-  return user?.canWriteBlogs ? (
+  return currentUser?.canWriteBlogs ? (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
       <StyledInput
         type="text"

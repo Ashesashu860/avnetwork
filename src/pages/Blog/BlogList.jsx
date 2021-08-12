@@ -17,8 +17,8 @@ const BlogListContainer = styled.div`
 `;
 
 const mapState = (state) => ({
-  blogs: state.blogs,
-  user: state.user,
+  allBlogs: state.blogs.allBlogs,
+  currentUser: state.users.currentUser,
 });
 
 export const BlogList = ({
@@ -29,13 +29,13 @@ export const BlogList = ({
   direction,
   autoHeight,
 }) => {
-  const { blogs, user } = useSelector(mapState);
+  const { allBlogs, currentUseruser } = useSelector(mapState);
   const history = useHistory();
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const filteredBlogs = !selectedCategory
-    ? blogs
-    : blogs?.filter((blog) => blog?.category === selectedCategory);
+    ? allBlogs
+    : allBlogs?.filter((blog) => blog?.category === selectedCategory);
   const sortedBlogs = filteredBlogs?.sort(
     (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
   );
@@ -47,6 +47,10 @@ export const BlogList = ({
   React.useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getBlogsAction());
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -106,7 +110,7 @@ export const BlogList = ({
             )}
           </div>
         </ShadowContainer>
-        {user?.canWriteBlogs && (
+        {currentUseruser?.canWriteBlogs && (
           <StyledNavLink to="/blog-create">
             <StyledFab
               variant="extended"

@@ -23,13 +23,13 @@ const HamburgerIcon = styled.div`
 `;
 
 const mapState = (state) => ({
-  user: state.user,
+  currentUser: state.users.currentUser,
 });
 
 export const Navbar = withRouter(({ history }) => {
   const navRef = useRef(null);
 
-  const { user } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
 
   React.useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -37,6 +37,10 @@ export const Navbar = withRouter(({ history }) => {
         ? navRef?.current?.classList.add("navbar_shadow")
         : navRef?.current?.classList.remove("navbar_shadow");
     });
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -56,7 +60,7 @@ export const Navbar = withRouter(({ history }) => {
   };
 
   const filteredLinks =
-    user?.category === "Admin"
+    currentUser?.category === "Admin"
       ? navLinks
       : navLinks.filter((link) => link.name !== "Admin");
 
@@ -97,7 +101,7 @@ export const Navbar = withRouter(({ history }) => {
               })}
             </ul>
             <div className="left-nav">
-              {user ? (
+              {currentUser ? (
                 <div
                   style={{
                     flexWrap: "nowrap",
@@ -113,8 +117,8 @@ export const Navbar = withRouter(({ history }) => {
                       }}
                     >
                       <img
-                        src={user?.photoURL}
-                        alt={user?.displayName?.charAt(0)}
+                        src={currentUser?.photoURL}
+                        alt={currentUser?.displayName?.charAt(0)}
                         style={{ maxHeight: "100%" }}
                       />
                     </Avatar>

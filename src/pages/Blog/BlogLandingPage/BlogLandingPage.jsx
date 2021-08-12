@@ -13,13 +13,13 @@ import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 const mapState = (state) => ({
-  user: state.user,
+  currentUser: state.users.currentUser,
 });
 
 export const BlogLandingPage = withRouter(({ history }) => {
   const addBlogRef = useRef(null);
 
-  const { user } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,6 +30,10 @@ export const BlogLandingPage = withRouter(({ history }) => {
           : (addBlogRef.current.style.display = "none");
       }
     });
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -60,7 +64,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
                 View Blogs
               </StyledFab>
             </StyledNavLink>
-            {user?.canWriteBlogs && (
+            {currentUser?.canWriteBlogs && (
               <StyledNavLink to="/blog-create">
                 <StyledFab variant="extended" bold primary>
                   New Blog

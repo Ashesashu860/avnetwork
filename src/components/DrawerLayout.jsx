@@ -24,8 +24,12 @@ const StyledUl = styled.ul`
   margin: 2rem 0;
 `;
 
+const mapState = (state) => ({
+  currentUser: state.users.currentUser,
+});
+
 export const DrawerLayout = (props) => {
-  const user = useSelector((state) => state.user);
+  const { currentUser } = useSelector(mapState);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -39,7 +43,7 @@ export const DrawerLayout = (props) => {
   };
 
   const filteredLinks =
-    user?.category === "Admin"
+    currentUser?.category === "Admin"
       ? navLinks
       : navLinks.filter((link) => link.name !== "Admin");
 
@@ -73,7 +77,7 @@ export const DrawerLayout = (props) => {
             left: "50%",
           }}
         >
-          {user ? (
+          {currentUser ? (
             <Avatar
               style={{
                 maxHeight: "10rem",
@@ -81,8 +85,8 @@ export const DrawerLayout = (props) => {
               }}
             >
               <img
-                src={user?.photoURL}
-                alt={user?.displayName?.charAt(0)}
+                src={currentUser?.photoURL}
+                alt={currentUser?.displayName?.charAt(0)}
                 style={{ maxHeight: "100%" }}
               />
             </Avatar>
@@ -119,8 +123,10 @@ export const DrawerLayout = (props) => {
           justifyContent: "space-between",
         }}
       >
-        {user && (
-          <Username>{`Hi, ${user?.displayName?.split(" ")[0]}`}</Username>
+        {currentUser && (
+          <Username>{`Hi, ${
+            currentUser?.displayName?.split(" ")[0]
+          }`}</Username>
         )}
         <StyledUl>
           {/* <SearchBar /> */}
@@ -139,7 +145,7 @@ export const DrawerLayout = (props) => {
             );
           })}
         </StyledUl>
-        {user && (
+        {currentUser && (
           <StyledFab
             variant="extended"
             bold

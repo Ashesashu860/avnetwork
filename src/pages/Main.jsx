@@ -22,12 +22,14 @@ import {
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 
-const mapState = (state) => ({
-  dialogBoxProps: state.dialogBoxProps,
-  alertProps: state.alertProps,
-  isLoading: state.isLoading,
-  user: state.user,
-});
+const mapState = (state) => {
+  console.log("STATE", state);
+  return {
+    dialogBoxProps: state.root.dialogBoxProps,
+    alertProps: state.root.alertProps,
+    isLoading: state.root.isLoading,
+  };
+};
 
 export const Main = () => {
   const { dialogBoxProps, alertProps, isLoading } = useSelector(mapState);
@@ -40,6 +42,10 @@ export const Main = () => {
   useEffect(() => {
     setAlertOpen(!alertProps.title);
     dispatch(checkUserAuth(history));
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, []);
   return (
     <BrowserRouter>

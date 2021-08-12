@@ -43,19 +43,19 @@ const ViewBlogContainer = styled.div`
 `;
 
 const mapState = (state) => ({
-  currentBlog: state.currentBlog,
-  user: state.user,
-  isCurrentBlogLiked: state.isCurrentBlogLiked,
-  isCurrentBlogLikeLoading: state.isCurrentBlogLikeLoading,
-  currentBlogComments: state.currentBlogComments,
-  isCurrentBlogCommentsLoading: state.isCurrentBlogCommentsLoading,
+  currentBlog: state.blogs.currentBlog,
+  currentUser: state.users.currentUser,
+  isCurrentBlogLiked: state.blogs.isCurrentBlogLiked,
+  isCurrentBlogLikeLoading: state.blogs.isCurrentBlogLikeLoading,
+  currentBlogComments: state.blogs.currentBlogComments,
+  isCurrentBlogCommentsLoading: state.blogs.isCurrentBlogCommentsLoading,
 });
 
 export const ViewBlog = (props) => {
   const dispatch = useDispatch();
   const {
     currentBlog,
-    user,
+    currentUser,
     isCurrentBlogLiked,
     isCurrentBlogLikeLoading,
     currentBlogComments,
@@ -69,15 +69,20 @@ export const ViewBlog = (props) => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     blogId && dispatch(getBlogWithIdAction(blogId));
-    user?.uid && dispatch(getCurrentBlogLikeAction(blogId, user?.uid));
+    currentUser?.uid &&
+      dispatch(getCurrentBlogLikeAction(blogId, currentUser?.uid));
     blogId && dispatch(getCurrentBlogCommentsAction(blogId));
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   const [comment, setComment] = React.useState("");
 
   const onCommentChange = (event) => setComment(event.target.value);
   const onCommentSubmit = () => {
-    if (!user) {
+    if (!currentUser) {
       dispatch(setAlertAction("Login to post a comment"));
       return;
     }
@@ -88,7 +93,7 @@ export const ViewBlog = (props) => {
     dispatch(
       addCommentInBlogAction(
         blogId,
-        user,
+        currentUser,
         {
           id: uuidv4(),
           comment,
@@ -100,7 +105,7 @@ export const ViewBlog = (props) => {
   };
 
   const onLike = (event) => {
-    dispatch(toggleCurrentBlogLikeAction(currentBlog.id, user?.uid));
+    dispatch(toggleCurrentBlogLikeAction(currentBlog.id, currentUser?.uid));
   };
 
   //APPEND ADS IN BLOG
@@ -138,6 +143,11 @@ export const ViewBlog = (props) => {
             .getElementsByClassName("blog-content")[0]
             .insertBefore(ad3, allParagraphs[oneThirdParagraph * 2]);
     }
+
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
   }, [currentBlog?.content]);
 
   return (
@@ -171,7 +181,7 @@ export const ViewBlog = (props) => {
         Place your ad here
       </div>
       <Grid container wrap="nowrap" justify="space-between" alignItems="center">
-        {user ? (
+        {currentUser ? (
           <Grid
             container
             wrap="nowrap"
@@ -202,7 +212,7 @@ export const ViewBlog = (props) => {
               placeholder="Comment..."
               className="hide_at_600"
             />
-            {currentBlog?.userId === user?.uid && (
+            {currentBlog?.userId === currentUser?.uid && (
               <StyledFab
                 primary
                 round
@@ -216,7 +226,7 @@ export const ViewBlog = (props) => {
                 <EditIcon />
               </StyledFab>
             )}
-            {currentBlog?.userId === user?.uid && (
+            {currentBlog?.userId === currentUser?.uid && (
               <StyledFab
                 primary
                 round
@@ -244,7 +254,7 @@ export const ViewBlog = (props) => {
           <ShareIcon />
         </StyledFab>
       </Grid>
-      {user && (
+      {currentUser && (
         <InputWithButton
           inputValue={comment}
           onChange={onCommentChange}
