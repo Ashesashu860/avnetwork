@@ -22,14 +22,11 @@ import {
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
 
-const mapState = (state) => {
-  console.log("STATE", state);
-  return {
-    dialogBoxProps: state.root.dialogBoxProps,
-    alertProps: state.root.alertProps,
-    isLoading: state.root.isLoading,
-  };
-};
+const mapState = (state) => ({
+  dialogBoxProps: state.root.dialogBoxProps,
+  alertProps: state.root.alertProps,
+  isLoading: state.root.isLoading,
+});
 
 export const Main = () => {
   const { dialogBoxProps, alertProps, isLoading } = useSelector(mapState);

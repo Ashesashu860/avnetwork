@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ContentContainer } from "../../../components";
-import { TextField, InputAdornment, Grid, Avatar } from "@material-ui/core";
+import {
+  TextField,
+  InputAdornment,
+  Avatar,
+  CircularProgress,
+} from "@material-ui/core";
 import styled from "styled-components";
-import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import { AddImageCard } from "./AddImageCard";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadProductImage } from "../../../redux/actions";
+import { v4 as uuidv4 } from "uuid";
 
 const StyledTextBox = styled(TextField)`
   width: 40rem;
@@ -70,11 +78,63 @@ const StyledLegend = styled.legend`
   color: var(--primary);
 `;
 
+const StyledImageContainer = styled.div`
+  & > * {
+    margin-bottom: 1rem;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 1rem;
+  }
+`;
+
+const StyledLoadingCard = styled(Avatar)`
+  height: 7rem !important;
+  width: 7rem !important;
+  position: relative !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  &::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    filter: blur(4px);
+  }
+`;
+
+const mapState = (state) => ({
+  isProductImageUploading: state.marketPlace.isProductImageUploading,
+  currentProduct: state.marketPlace.currentProduct,
+  cuurentUser: state.users.cuurentUser,
+});
+
 export const CreateProduct = () => {
+  const { isProductImageUploading, currentProduct, cuurentUser } =
+    useSelector(mapState);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [product, setProduct] = useState({
+    id: currentProduct?.id || uuidv4(),
+    title: currentProduct?.title,
+    brand: currentProduct?.brand,
+    price: currentProduct?.price,
+    description: currentProduct?.description,
+    user: cuurentUser?.uid,
+    images: currentProduct?.images,
+  });
+  const dispatch = useDispatch();
+
   const onImageChange = (event) => {
     console.log("Photo", event.target.files[0]);
+    setSelectedImage(URL.createObjectURL(event.target.files[0]));
+    dispatch(uploadProductImage(product.id, event.target.files[0]));
   };
 
+  useEffect(() => {
+    !isProductImageUploading && setSelectedImage(null);
+  }, [isProductImageUploading]);
+
+  console.log("currentProduct", currentProduct);
   return (
     <div
       className="center"
@@ -105,36 +165,40 @@ export const CreateProduct = () => {
           variant="outlined"
         />
         <h4>Upload upto 4 photos of the product</h4>
-        <Grid container>
-          <Avatar
-            variant="rounded"
-            style={{ backgroundColor: "#ddd", height: "7rem", width: "7rem" }}
-            onClick={() => document.getElementById("product_image").click()}
-          >
-            <AddAPhotoIcon style={{ color: "var(--primary)" }} />
-            <input
-              id="product_image"
-              type="file"
-              onChange={onImageChange}
-              style={{ display: "none" }}
+        <StyledImageContainer className="center">
+          {isProductImageUploading && (
+            <ProductImageCard
+              selectedImage={selectedImage}
+              loading={isProductImageUploading}
             />
-          </Avatar>
-        </Grid>
+          )}
+          {currentProduct?.images?.map((image) => (
+            <ProductImageCard selectedImage={image} loading={false} />
+          ))}
+          <AddImageCard onImageChange={onImageChange} />
+        </StyledImageContainer>
       </StyledForm>
     </div>
   );
 };
 
-// const PhotoCard = () => {
-//   const Container = styled.div`
-//     width: 7rem;
-//     height: 7rem;
-//     border: 1px solid var(--primary);
-//     border-radius: 4px;
-//   `;
-//   return (
-//     <Container className="center">
-//       <AddAPhotoIcon style={{ color: "var(--primary)" }} />
-//     </Container>
-//   );
-// };
+const ProductImageCard = ({ selectedImage, loading }) => (
+  <StyledLoadingCard
+    variant="rounded"
+    style={{
+      backgroundImage: `url(${selectedImage})`,
+    }}
+  >
+    <div
+      className="center"
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#00000055",
+      }}
+    >
+      <CircularProgress variant="indeterminate" color="#fff" />
+    </div>
+  </StyledLoadingCard>
+);

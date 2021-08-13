@@ -10,18 +10,7 @@ import {
   toggleCommentsLoadingAction,
   setCurrentBlogCommentsAction,
 } from "../actions";
-
-//GET DATA FROM DB
-const getDatafromDb = (path) => {
-  return new Promise((resolve, reject) => {
-    firebase
-      .database()
-      .ref(path)
-      .on("value", (snap) => {
-        resolve(snap?.val());
-      });
-  });
-};
+import { getDatafromDb } from "./saga_utilities";
 
 //GET BLOG WITH ID IN DB
 export function* getBlogWithIdFromDb(action) {
