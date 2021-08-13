@@ -17,7 +17,7 @@ import {
   getCurrentBlogLikeSaga,
   getCurrentBlogCommentsSaga,
 } from "./blog_sagas";
-import { uploadProductImageSaga } from "./market_place_sagas";
+import { addProductInDbSaga } from "./market_place_sagas";
 
 export function* rootSaga() {
   //USER
@@ -40,5 +40,5 @@ export function* rootSaga() {
   yield takeLatest("TOGGLE_CURRENT_BLOG_LIKE", toggleCurrentBlogLikeInDb);
   yield takeLatest("GET_CURRENT_BLOG_COMMENTS", getCurrentBlogCommentsSaga);
   //MARKET PLACE
-  yield takeLatest("UPLOAD_PRODUCT_IMAGE", uploadProductImageSaga);
+  yield takeLatest("ADD_PRODUCT_IN_DB", addProductInDbSaga);
 }

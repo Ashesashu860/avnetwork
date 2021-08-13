@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { ContentContainer } from "../../../components";
-import {
-  TextField,
-  InputAdornment,
-  Avatar,
-  CircularProgress,
-} from "@material-ui/core";
+import { ContentContainer, StyledFab } from "../../../components";
+import { TextField, InputAdornment, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { AddImageCard } from "./AddImageCard";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadProductImage } from "../../../redux/actions";
+import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
+import { ProductImageCard } from "./ProductImageCard";
+import { useHistory } from "react-router-dom";
 
 const StyledTextBox = styled(TextField)`
   width: 40rem;
@@ -48,7 +45,7 @@ const StyledForm = styled.form`
 `;
 
 const StyledTextArea = styled.fieldset`
-  border: 1px solid var(--primary);
+  border: 1px solid ${(props) => (props.error ? "#f44336" : "var(--primary)")};
   border-radius: 4px;
   & textarea {
     padding: 0.5rem 1rem;
@@ -75,66 +72,103 @@ const StyledLegend = styled.legend`
   font-size: 0.7rem;
   margin-left: 0.7rem;
   padding: 0.5rem;
-  color: var(--primary);
+  color: ${(props) => (props.error ? "#f44336" : "var(--primary)")};
 `;
 
 const StyledImageContainer = styled.div`
   & > * {
     margin-bottom: 1rem;
-  }
-
-  & > *:not(:last-child) {
     margin-right: 1rem;
   }
 `;
 
-const StyledLoadingCard = styled(Avatar)`
-  height: 7rem !important;
-  width: 7rem !important;
-  position: relative !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  &::after {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    filter: blur(4px);
-  }
+const ErrorText = styled.span`
+  color: #f44336;
+  font-size: 0.75rem;
+  margin-left: 1rem;
 `;
 
 const mapState = (state) => ({
-  isProductImageUploading: state.marketPlace.isProductImageUploading,
   currentProduct: state.marketPlace.currentProduct,
-  cuurentUser: state.users.cuurentUser,
+  currentUser: state.users.currentUser,
 });
 
+const initialErrors = {
+  title: "",
+  brand: "",
+  price: "",
+  description: "",
+};
+
 export const CreateProduct = () => {
-  const { isProductImageUploading, currentProduct, cuurentUser } =
-    useSelector(mapState);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const { currentProduct, currentUser } = useSelector(mapState);
+
   const [product, setProduct] = useState({
     id: currentProduct?.id || uuidv4(),
     title: currentProduct?.title,
     brand: currentProduct?.brand,
     price: currentProduct?.price,
     description: currentProduct?.description,
-    user: cuurentUser?.uid,
-    images: currentProduct?.images,
+    user: currentUser?.uid,
+    images: currentProduct?.images || [],
   });
+
+  const [errors, setErrors] = useState(initialErrors);
+
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const onChange = (event) => {
+    console.log("onChange", event.target.value);
+    setProduct({
+      ...product,
+      [event.target.name]: event.target.value,
+    });
+    setErrors({
+      ...errors,
+      [event.target.name]: "",
+    });
+  };
+
+  const onBlur = (event) => {
+    setErrors({
+      ...errors,
+      [event.target.name]:
+        !event.target.value && `${event.target.name} is required`,
+    });
+  };
 
   const onImageChange = (event) => {
     console.log("Photo", event.target.files[0]);
-    setSelectedImage(URL.createObjectURL(event.target.files[0]));
-    dispatch(uploadProductImage(product.id, event.target.files[0]));
+    setProduct({
+      ...product,
+      images: [...product?.images, event.target.files[0]],
+    });
   };
 
-  useEffect(() => {
-    !isProductImageUploading && setSelectedImage(null);
-  }, [isProductImageUploading]);
+  const onDeleteImage = (imageIndex) => {
+    setProduct({
+      ...product,
+      images: product?.images.filter((image, index) => imageIndex !== index),
+    });
+  };
 
-  console.log("currentProduct", currentProduct);
+  const isAllFieldsValid = () => {
+    const errorObject = initialErrors;
+    Object.keys(initialErrors).forEach((item) => {
+      errorObject[item] = !product[item] && `${item} is required`;
+    });
+    setErrors({
+      ...errorObject,
+    });
+    return !Object.values(errorObject).reduce((a, b) => a + b);
+  };
+
+  const onCreateProduct = (event) => {
+    isAllFieldsValid() &&
+      dispatch(addProductInDbAction(product, currentUser?.uid, history));
+  };
+
   return (
     <div
       className="center"
@@ -146,59 +180,73 @@ export const CreateProduct = () => {
         content={"Fill the required details to post your product"}
       />
       <StyledForm className="center" style={{ flexDirection: "column" }}>
-        <StyledTextBox label="Title *" variant="outlined" />
+        <StyledTextBox
+          label="Title *"
+          variant="outlined"
+          name="title"
+          onChange={onChange}
+          onBlur={onBlur}
+          error={!!errors.title}
+          helperText={errors.title}
+        />
         <StyledTextBox
           label="Brand *"
           variant="outlined"
+          name="brand"
           style={{ marginBottom: "1.2rem" }}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={!!errors.brand}
+          helperText={errors.brand}
         />
-        <StyledTextArea>
-          <StyledLegend>Description *</StyledLegend>
-          <textarea />
-        </StyledTextArea>
+        <div>
+          <StyledTextArea error={!!errors.description}>
+            <StyledLegend error={!!errors.description}>
+              Description *
+            </StyledLegend>
+            <textarea name="description" onChange={onChange} onBlur={onBlur} />
+          </StyledTextArea>
+          {errors.description && <ErrorText>{errors.description}</ErrorText>}
+        </div>
         <StyledTextBox
           InputProps={{
             startAdornment: <InputAdornment position="start">₹</InputAdornment>,
             type: "number",
           }}
+          onChange={onChange}
+          onBlur={onBlur}
           label="Price *"
           variant="outlined"
+          name="price"
+          error={!!errors.price}
+          helperText={errors.price}
         />
         <h4>Upload upto 4 photos of the product</h4>
-        <StyledImageContainer className="center">
-          {isProductImageUploading && (
+        <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
+          {product?.images?.map((image, index) => (
             <ProductImageCard
-              selectedImage={selectedImage}
-              loading={isProductImageUploading}
+              selectedImage={image}
+              onDeleteImage={() => onDeleteImage(index)}
             />
-          )}
-          {currentProduct?.images?.map((image) => (
-            <ProductImageCard selectedImage={image} loading={false} />
           ))}
-          <AddImageCard onImageChange={onImageChange} />
+          {product?.images?.length < 4 && (
+            <AddImageCard onImageChange={onImageChange} />
+          )}
         </StyledImageContainer>
       </StyledForm>
+      <Grid container wrap="nowrap" alignItems="center" justify="center">
+        <StyledFab
+          variant="extended"
+          bold
+          secondary
+          style={{ marginRight: "1rem" }}
+        >
+          Cancel
+        </StyledFab>
+        <StyledFab variant="extended" bold primary onClick={onCreateProduct}>
+          Create
+        </StyledFab>
+      </Grid>
     </div>
   );
 };
-
-const ProductImageCard = ({ selectedImage, loading }) => (
-  <StyledLoadingCard
-    variant="rounded"
-    style={{
-      backgroundImage: `url(${selectedImage})`,
-    }}
-  >
-    <div
-      className="center"
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#00000055",
-      }}
-    >
-      <CircularProgress variant="indeterminate" color="#fff" />
-    </div>
-  </StyledLoadingCard>
-);
