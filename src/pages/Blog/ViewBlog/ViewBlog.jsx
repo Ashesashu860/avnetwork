@@ -126,12 +126,6 @@ export const ViewBlog = (props) => {
         .getElementsByTagName("p");
       const noOfParagraphs = allParagraphs.length;
       const oneThirdParagraph = Math.floor(noOfParagraphs / 3);
-      console.log(
-        "noOfParagraphs",
-        noOfParagraphs,
-        "oneThirdParagraph",
-        oneThirdParagraph
-      );
       if (allParagraphs[oneThirdParagraph])
         if (!document.getElementById("blog_ad_2"))
           document

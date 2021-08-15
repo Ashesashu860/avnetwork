@@ -11,3 +11,8 @@ export const getDatafromDb = (path) => {
       });
   });
 };
+
+//SET DATA IN DB
+export const setDataInDb = (path, objectToSave) => {
+  return firebase.database().ref(path).set(objectToSave);
+};

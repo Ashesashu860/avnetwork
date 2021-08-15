@@ -12,7 +12,7 @@
   --text-medium: #9e9e9e;
   --text-light: #e0e0e0;
   color: var(--text-dark);
-  font-size: 16px;
+  font-size: 14px;
   --backup-primary: #74609e;
   --background: rgb(247, 247, 247);
   --backup-background: rgb(250, 250, 250);

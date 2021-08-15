@@ -1,6 +1,14 @@
 import firebase from "../../config/firebase-config";
-import { setDialogBoxPropsAction } from "../actions";
+import {
+  setAllMarketPlaceProducts,
+  setDialogBoxPropsAction,
+  setCurrentMarketPlaceProductAction,
+  //INTERESTED ACTIONS
+  interestedUsersForProductLoadingAction,
+  setAllInterestedUsersForProductInStateAction,
+} from "../actions";
 import { put } from "redux-saga/effects";
+import { getDatafromDb } from "./saga_utilities";
 // import { getDatafromDb } from "./saga_utilities";
 
 export function* addProductInDbSaga(action) {
@@ -44,54 +52,51 @@ export function* addProductInDbSaga(action) {
   );
 }
 
-// function* getCurrentProductImagesSaga(action) {
-//   const allImages = yield getDatafromDb(
-//     `marketPlaceProducts/${action.payload.productId}`
-//   );
-//   yield setCurrentProjectImagesInState(Object.values(allImages));
-// }
+export function* getAllMarketPlaceProductsSaga() {
+  yield put(setDialogBoxPropsAction("Getting all products..."));
+  const allProducts = yield getDatafromDb("/marketPlaceProducts");
+  yield put(setAllMarketPlaceProducts(Object.values(allProducts)));
+  yield put(setDialogBoxPropsAction(""));
+}
 
-// //UPLOAD PRODUCT IMAGE IN STORAGE AND URL IN DB
-// export function* uploadProductImageSaga(action) {
-//   yield put(toggleProductImageUploadLoading(true));
+export function* getCurrentMarketPlaceProductSaga(action) {
+  yield put(setDialogBoxPropsAction("Getting product details..."));
+  const currentProduct = yield getDatafromDb(
+    `/marketPlaceProducts/${action.payload.productId}`
+  );
+  yield put(setCurrentMarketPlaceProductAction(currentProduct));
+  yield put(setDialogBoxPropsAction(""));
+}
 
-//   const productStorageRef = yield firebase
-//     .storage()
-//     .ref(`marketPlaceProduct/${action.payload.productId}`);
-//   const imageStorageRef = yield productStorageRef.child(
-//     action.payload.imageObject.name
-//   );
+export function* setInterestForProductInDbSaga(action) {
+  const interestedUsersRef = yield firebase
+    .database()
+    .ref(`/marketPlaceProducts/${action.payload.productId}/interestedUsers`);
+  yield interestedUsersRef.on("child_changed", (snap) => {
+    console.log("CHANGE");
+  });
+  const interestedRef = yield firebase
+    .database()
+    .ref(
+      `/marketPlaceProducts/${action.payload.productId}/interestedUsers/${action.payload.userId}`
+    );
+  yield action.payload.interested
+    ? yield interestedRef.set(true)
+    : yield interestedRef.remove();
+  yield getCurrentMarketPlaceProductSaga(action);
+  // yield getAllInterestedUsersForProductSaga(action);
+}
 
-//   console.log("ImageRef", imageStorageRef);
-
-//   yield imageStorageRef.put(action.payload.imageObject);
-//   const downloadURL = yield imageStorageRef.getDownloadURL();
-
-//   yield firebase
-//     .database()
-//     .ref(`marketPlaceProducts/${action.payload.productId}/images`)
-//     .push(downloadURL);
-//   yield put(toggleProductImageUploadLoading(false));
-//   yield getCurrentProductImagesSaga(action);
-//   yield imageRef.put(action.payload.imageObject).on(
-//     "state_changed",
-//     (snap) => {
-//       let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
-//       console.log("ImageRef percentage", percentage);
-//     },
-//     (error) => {
-//       console.log("ERROR", error);
-//       put(setAlertAction(error));
-//     },
-//     () => {
-//       const downloadURL = imageRef.getDownloadURL();
-//       console.log("downloadURL", downloadURL);
-//       put(toggleProductImageUploadLoading(false));
-//       put(uploadProductImageSuccess(downloadURL));
-//       firebase
-//         .database()
-//         .ref(`marketPlaceProducts/${action.payload.productId}/images`)
-//         .push(downloadURL);
-//     }
-//   );
-//}
+export function* getAllInterestedUsersForProductSaga(action) {
+  yield put(interestedUsersForProductLoadingAction(true));
+  const interestedUserIds = yield getDatafromDb(
+    `/marketPlaceProducts/${action.payload.productId}/interestedUsers`
+  );
+  const interestedUsers = [];
+  for (const interestedUserId in interestedUserIds) {
+    const user = yield getDatafromDb(`/users/${interestedUserId}`);
+    yield interestedUsers.push(user);
+  }
+  yield put(setAllInterestedUsersForProductInStateAction(interestedUsers));
+  yield put(interestedUsersForProductLoadingAction(false));
+}

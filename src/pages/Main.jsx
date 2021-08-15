@@ -18,6 +18,8 @@ import {
   Register,
   Loading,
   Admin,
+  CreateProduct,
+  ViewProduct,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -65,6 +67,8 @@ export const Main = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Register} />
           <Route exact path="/admin" component={Admin} />
+          <Route exact path="/post_product" component={CreateProduct} />
+          <Route exact path="/products/:id" component={ViewProduct} />
           <Footer />
           <DialogBox {...dialogBoxProps} />
           <Alert {...alertProps} onClose={onAlertClose} open={alertOpen} />

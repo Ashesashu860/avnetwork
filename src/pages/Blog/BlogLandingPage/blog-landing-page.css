@@ -2,8 +2,8 @@
   padding: 1rem 3rem;
 }
 
-.blog-containers > img {
-  max-height: 60vmin;
+.blog-containers img {
+  max-height: 60vmin !important;
 }
 
 .remove_top_padding {
@@ -11,14 +11,14 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .blog-containers > img {
-    max-height: 40vmin;
+  .blog-containers img {
+    max-height: 40vmin !important;
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .blog-containers > img {
-    max-height: 30vmin;
+  .blog-containers img {
+    max-height: 30vmin !important;
   }
 }
 
@@ -27,8 +27,8 @@
     max-height: 26rem;
   }
 
-  .blog-containers > img {
-    max-height: 40vmin;
+  .blog-containers img {
+    max-height: 40vmin !important;
   }
 }
 

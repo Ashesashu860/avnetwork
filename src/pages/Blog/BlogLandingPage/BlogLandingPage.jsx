@@ -53,13 +53,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
           <div
             style={{ height: "2.5rem", display: "flex", marginBottom: "2rem" }}
           >
-            <StyledNavLink
-              to={{
-                pathname: "/blogs",
-                blogs: mockBlogs,
-              }}
-              style={{ marginRight: "0.5rem" }}
-            >
+            <StyledNavLink to="/blogs" style={{ marginRight: "0.5rem" }}>
               <StyledFab variant="extended" bold secondary>
                 View Blogs
               </StyledFab>
@@ -73,17 +67,6 @@ export const BlogLandingPage = withRouter(({ history }) => {
             )}
           </div>
         </ContentContainer>
-        {/* <div className="center" style={{ width: "30%" }}>
-          <div
-            style={{
-              height: "5rem",
-              width: "100%",
-            }}
-            className="center"
-          >
-            AD
-          </div>
-        </div> */}
       </MainContainer>
       <ContentContainer
         subHeading={"Latest Blogs"}

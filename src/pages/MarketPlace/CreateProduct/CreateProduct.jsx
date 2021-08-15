@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ContentContainer, StyledFab } from "../../../components";
 import { TextField, InputAdornment, Grid } from "@material-ui/core";
 import styled from "styled-components";
@@ -89,7 +89,6 @@ const ErrorText = styled.span`
 `;
 
 const mapState = (state) => ({
-  currentProduct: state.marketPlace.currentProduct,
   currentUser: state.users.currentUser,
 });
 
@@ -101,16 +100,15 @@ const initialErrors = {
 };
 
 export const CreateProduct = () => {
-  const { currentProduct, currentUser } = useSelector(mapState);
-
+  const { currentUser } = useSelector(mapState);
   const [product, setProduct] = useState({
-    id: currentProduct?.id || uuidv4(),
-    title: currentProduct?.title,
-    brand: currentProduct?.brand,
-    price: currentProduct?.price,
-    description: currentProduct?.description,
-    user: currentUser?.uid,
-    images: currentProduct?.images || [],
+    id: uuidv4(),
+    title: "",
+    brand: "",
+    price: "",
+    description: "",
+    user: "",
+    images: [],
   });
 
   const [errors, setErrors] = useState(initialErrors);
@@ -169,9 +167,10 @@ export const CreateProduct = () => {
       dispatch(addProductInDbAction(product, currentUser?.uid, history));
   };
 
+  console.log("Create Product", product);
   return (
     <div
-      className="center"
+      className="wrapper center"
       style={{ flexDirection: "column", paddingBottom: "2rem" }}
     >
       <ContentContainer

@@ -17,7 +17,13 @@ import {
   getCurrentBlogLikeSaga,
   getCurrentBlogCommentsSaga,
 } from "./blog_sagas";
-import { addProductInDbSaga } from "./market_place_sagas";
+import {
+  addProductInDbSaga,
+  getAllMarketPlaceProductsSaga,
+  getCurrentMarketPlaceProductSaga,
+  setInterestForProductInDbSaga,
+  getAllInterestedUsersForProductSaga,
+} from "./market_place_sagas";
 
 export function* rootSaga() {
   //USER
@@ -41,4 +47,20 @@ export function* rootSaga() {
   yield takeLatest("GET_CURRENT_BLOG_COMMENTS", getCurrentBlogCommentsSaga);
   //MARKET PLACE
   yield takeLatest("ADD_PRODUCT_IN_DB", addProductInDbSaga);
+  yield takeLatest(
+    "GET_ALL_MARKET_PLACE_PRODUCTS",
+    getAllMarketPlaceProductsSaga
+  );
+  yield takeLatest(
+    "GET_CURRENT_MARKET_PLACE_PRODUCT",
+    getCurrentMarketPlaceProductSaga
+  );
+  yield takeLatest(
+    "SET_INTEREST_FOR_PRODUCT_IN_DB",
+    setInterestForProductInDbSaga
+  );
+  yield takeLatest(
+    "GET_ALL_INTERESTED_USERS_FOR_PRODUCT",
+    getAllInterestedUsersForProductSaga
+  );
 }

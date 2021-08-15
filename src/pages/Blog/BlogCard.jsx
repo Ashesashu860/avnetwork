@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Grid, Divider } from "@material-ui/core";
+import { Card, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorder";

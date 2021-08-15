@@ -59,6 +59,12 @@ export const Homepage = (props) => {
           marginTop: "-3.27rem", // 5
         },
       }}
+      navButtonsAlwaysVisible
+      navButtonsProps={{
+        style: {
+          opacity: 0.4,
+        },
+      }}
     >
       {sliderData.map((item, i) => (
         <Item key={i} item={item} />

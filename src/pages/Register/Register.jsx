@@ -9,11 +9,11 @@ import {
   FormControl,
   InputLabel,
   Select,
+  TextField,
 } from "@material-ui/core";
 import { StyledButton } from "../../components";
 import { TermsOfUse } from "..";
 import "./register.css";
-import firebase from "../../config/firebase-config";
 import { useDispatch } from "react-redux";
 import { setUserInDbAction } from "../../redux/actions";
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Gmail Login", "Select a Category", "Terms of Use"];
+  return ["Gmail Login", "Basic Details", "Terms of Use"];
 }
 
 export const Register = (props) => {
@@ -70,7 +70,7 @@ export const Register = (props) => {
         setUserInDbAction(
           {
             ...user,
-            category,
+            ...basicDetails,
           },
           props.history
         )
@@ -87,9 +87,7 @@ export const Register = (props) => {
       case 0:
         return "Login with your Gmail account";
       case 1:
-        return `Hi ${
-          user.displayName.split(" ")[0]
-        }, Tell us about your preferred category`;
+        return `Hi ${user.displayName.split(" ")[0]}, Just a few more details`;
       case 2:
         return "Last step to be our member";
       case 3:
@@ -102,9 +100,17 @@ export const Register = (props) => {
 
   const handleCheckboxChange = (event) => setChecked(event.target.checked);
 
-  const [category, setCategory] = useState("");
+  const [basicDetails, setBasicDetails] = useState({
+    category: "",
+    phoneNumber: "",
+  });
 
-  const onCategoryChange = (event) => setCategory(event.target.value);
+  const onChange = (event) => {
+    setBasicDetails({
+      ...basicDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const categories = ["Integrator", "Dealer", "Rental", "Freelancer", "Guest"];
 
@@ -112,25 +118,36 @@ export const Register = (props) => {
     switch (activeStep) {
       case 1:
         return (
-          <FormControl
-            variant="outlined"
-            style={{ minWidth: "90%", margin: "1rem" }}
-          >
-            <InputLabel>Category</InputLabel>
-            <Select
-              native
-              value={category}
-              onChange={onCategoryChange}
-              label="Category"
+          <div>
+            <FormControl
+              variant="outlined"
+              style={{ minWidth: "90%", margin: "1rem" }}
             >
-              <option value={""}></option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
+              <InputLabel>Category</InputLabel>
+              <Select
+                native
+                value={basicDetails.category}
+                onChange={onChange}
+                name="category"
+                label="Category"
+              >
+                <option value={""}></option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              value={basicDetails.phoneNumber}
+              name="phoneNumber"
+              onChange={onChange}
+              variant="outlined"
+              placeholder="Phone Number"
+              style={{ minWidth: "90%", margin: "1rem" }}
+            />
+          </div>
         );
       case 2:
         return <TermsOfUse />;
@@ -186,12 +203,14 @@ export const Register = (props) => {
                 onClick={handleNext}
                 disabled={
                   activeStep === steps.length ||
-                  !category ||
+                  !basicDetails.category ||
+                  !basicDetails.phoneNumber ||
                   (activeStep === 2 && !checked)
                 }
                 className={classes.button}
                 {...(activeStep === steps.length ||
-                !category ||
+                !basicDetails.category ||
+                !basicDetails.phoneNumber ||
                 (activeStep === 2 && !checked)
                   ? { secondary: true }
                   : { primary: true })}
