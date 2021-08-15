@@ -113,15 +113,15 @@ export const ViewProduct = (props) => {
             <h3>Description</h3>
             <p>{currentProduct?.description}</p>
           </div>
-          {currentUser && (
-            <div
-              style={{
-                height: "2.5rem",
-                display: "flex",
-                marginTop: "1rem",
-                marginLeft: "-1rem",
-              }}
-            >
+          <div
+            style={{
+              height: "2.5rem",
+              display: "flex",
+              marginTop: "1rem",
+              marginLeft: "-1rem",
+            }}
+          >
+            {currentUser ? (
               <Checkbox
                 // disableRipple
                 onClick={onInterestedClick}
@@ -145,8 +145,10 @@ export const ViewProduct = (props) => {
                 }
                 {...props}
               />
-            </div>
-          )}
+            ) : (
+              <h3>Login to show interest to this product</h3>
+            )}
+          </div>
         </StyledContentContainer>
       </MainContainer>
       {currentProduct?.userId === currentUser?.uid && (
