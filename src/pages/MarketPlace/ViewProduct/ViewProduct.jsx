@@ -113,38 +113,40 @@ export const ViewProduct = (props) => {
             <h3>Description</h3>
             <p>{currentProduct?.description}</p>
           </div>
-          <div
-            style={{
-              height: "2.5rem",
-              display: "flex",
-              marginTop: "1rem",
-              marginLeft: "-1rem",
-            }}
-          >
-            <Checkbox
-              // disableRipple
-              onClick={onInterestedClick}
-              checked={
-                !!(
-                  currentProduct?.interestedUsers &&
-                  Object.keys(currentProduct?.interestedUsers).includes(
-                    currentUser?.uid
+          {currentUser && (
+            <div
+              style={{
+                height: "2.5rem",
+                display: "flex",
+                marginTop: "1rem",
+                marginLeft: "-1rem",
+              }}
+            >
+              <Checkbox
+                // disableRipple
+                onClick={onInterestedClick}
+                checked={
+                  !!(
+                    currentProduct?.interestedUsers &&
+                    Object.keys(currentProduct?.interestedUsers).includes(
+                      currentUser?.uid
+                    )
                   )
-                )
-              }
-              checkedIcon={
-                <StyledFab variant="extended" bold secondary>
-                  Not Interested
-                </StyledFab>
-              }
-              icon={
-                <StyledFab variant="extended" bold primary>
-                  Interested
-                </StyledFab>
-              }
-              {...props}
-            />
-          </div>
+                }
+                checkedIcon={
+                  <StyledFab variant="extended" bold secondary>
+                    Not Interested
+                  </StyledFab>
+                }
+                icon={
+                  <StyledFab variant="extended" bold primary>
+                    Interested
+                  </StyledFab>
+                }
+                {...props}
+              />
+            </div>
+          )}
         </StyledContentContainer>
       </MainContainer>
       {currentProduct?.userId === currentUser?.uid && (

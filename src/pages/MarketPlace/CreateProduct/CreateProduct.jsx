@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { ProductImageCard } from "./ProductImageCard";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 const StyledTextBox = styled(TextField)`
   width: 40rem;
@@ -168,7 +168,9 @@ export const CreateProduct = () => {
   };
 
   console.log("Create Product", product);
-  return (
+  return !currentUser ? (
+    <Redirect to="/" />
+  ) : (
     <div
       className="wrapper center"
       style={{ flexDirection: "column", paddingBottom: "2rem" }}

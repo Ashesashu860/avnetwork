@@ -13,10 +13,11 @@ import MarketPlaceSvg from "../../assets/market_place_logo.svg";
 
 const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,
+  currentUser: state.users.currentUser,
 });
 
 export const MarketPlace = () => {
-  const { allProducts } = useSelector(mapState);
+  const { allProducts, currentUser } = useSelector(mapState);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -39,15 +40,21 @@ export const MarketPlace = () => {
           spacing="2.5rem"
           className="blog_landing_content"
         >
-          <div
-            style={{ height: "2.5rem", display: "flex", marginBottom: "2rem" }}
-          >
-            <StyledNavLink to="/post_product">
-              <StyledFab variant="extended" bold primary>
-                Post your Product
-              </StyledFab>
-            </StyledNavLink>
-          </div>
+          {currentUser && (
+            <div
+              style={{
+                height: "2.5rem",
+                display: "flex",
+                marginBottom: "2rem",
+              }}
+            >
+              <StyledNavLink to="/post_product">
+                <StyledFab variant="extended" bold primary>
+                  Post your Product
+                </StyledFab>
+              </StyledNavLink>
+            </div>
+          )}
         </ContentContainer>
       </MainContainer>
       <ContentContainer
