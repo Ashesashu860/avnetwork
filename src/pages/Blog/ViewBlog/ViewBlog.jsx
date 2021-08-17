@@ -27,6 +27,7 @@ import { v4 as uuidv4 } from "uuid";
 import { CommentCard } from "..";
 import "./view-blog.css";
 import { getFormattedDate } from "../BlogCreateModules";
+import NarrowAd from "../../../assets/ads/narrow_ad.jpg";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -151,13 +152,10 @@ export const ViewBlog = (props) => {
         id="blog_ad_1"
         className="center"
         style={{
-          backgroundColor: "#ddd",
           minWidth: "100%",
-          minHeight: "7rem",
-          maxHeight: "7rem",
         }}
       >
-        Place your ad here
+        <img src={NarrowAd} alt="ad 1" style={{ maxWidth: "100%" }} />
       </div>
       <div className="blog-content">
         {currentBlog?.content && parse(currentBlog.content)}
@@ -166,13 +164,10 @@ export const ViewBlog = (props) => {
         id="blog_ad_4"
         className="center"
         style={{
-          backgroundColor: "#ddd",
           minWidth: "100%",
-          minHeight: "8rem",
-          maxHeight: "8rem",
         }}
       >
-        Place your ad here
+        <img src={NarrowAd} alt="ad 4" style={{ maxWidth: "100%" }} />
       </div>
       <Grid container wrap="nowrap" justify="space-between" alignItems="center">
         {currentUser ? (

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { ContentContainer, StyledFab } from "../../../components";
-import { TextField, InputAdornment, Grid } from "@material-ui/core";
+import {
+  TextField,
+  InputAdornment,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+} from "@material-ui/core";
 import styled from "styled-components";
 import { AddImageCard } from "./AddImageCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +51,9 @@ const StyledForm = styled.form`
   }
 `;
 
+const StyledSelect = styled(Select)`
+  border: 1px solid ${(props) => (props.error ? "#f44336" : "var(--primary)")};
+`;
 const StyledTextArea = styled.fieldset`
   border: 1px solid ${(props) => (props.error ? "#f44336" : "var(--primary)")};
   border-radius: 4px;
@@ -86,6 +96,7 @@ const ErrorText = styled.span`
   color: #f44336;
   font-size: 0.75rem;
   margin-left: 1rem;
+  margin-top: 0.4rem;
 `;
 
 const mapState = (state) => ({
@@ -94,9 +105,27 @@ const mapState = (state) => ({
 
 const initialErrors = {
   title: "",
+  location: "",
+  sellarName: "",
+  category: "",
   brand: "",
-  price: "",
   description: "",
+  stock: "",
+};
+
+const categories = [
+  "Cables and connectors",
+  "Display panels and systems",
+  "Speakers And amplifier",
+  "Lighting equipment",
+  "Accessories",
+  "Trussing systems",
+  "Automation systems",
+];
+
+const toSentenceCase = (str) => {
+  const res = str.replace(/([A-Z])/g, " $1");
+  return res.charAt(0).toUpperCase() + res.slice(1);
 };
 
 export const CreateProduct = () => {
@@ -104,9 +133,12 @@ export const CreateProduct = () => {
   const [product, setProduct] = useState({
     id: uuidv4(),
     title: "",
+    location: "",
+    sellarName: "",
+    category: "",
     brand: "",
-    price: "",
     description: "",
+    stock: "",
     user: "",
     images: [],
   });
@@ -132,7 +164,8 @@ export const CreateProduct = () => {
     setErrors({
       ...errors,
       [event.target.name]:
-        !event.target.value && `${event.target.name} is required`,
+        !event.target.value &&
+        `${toSentenceCase(event.target.name)} is required`,
     });
   };
 
@@ -167,6 +200,14 @@ export const CreateProduct = () => {
       dispatch(addProductInDbAction(product, currentUser?.uid, history));
   };
 
+  // title: "",
+  //   location: "",
+  //   sellarName: "",
+  //   category: "",
+  //   brand: "",
+  //   description: "",
+  //   stock: "",
+
   console.log("Create Product", product);
   return !currentUser ? (
     <Redirect to="/" />
@@ -191,15 +232,54 @@ export const CreateProduct = () => {
           helperText={errors.title}
         />
         <StyledTextBox
+          label="Location *"
+          variant="outlined"
+          name="location"
+          onChange={onChange}
+          onBlur={onBlur}
+          error={!!errors.location}
+          helperText={errors.location}
+        />
+        <StyledTextBox
+          label="Sellar Name *"
+          variant="outlined"
+          name="sellarName"
+          onChange={onChange}
+          onBlur={onBlur}
+          error={!!errors.sellarName}
+          helperText={errors.sellarName}
+        />
+        <StyledTextBox
           label="Brand *"
           variant="outlined"
           name="brand"
-          style={{ marginBottom: "1.2rem" }}
           onChange={onChange}
           onBlur={onBlur}
           error={!!errors.brand}
           helperText={errors.brand}
         />
+        <FormControl
+          variant="outlined"
+          style={{ minWidth: "100%", maxWidth: "100%" }}
+        >
+          <InputLabel>Category *</InputLabel>
+          <StyledSelect
+            native
+            onChange={onChange}
+            onBlur={onBlur}
+            name="category"
+            label="Category"
+            error={!!errors.category}
+          >
+            <option value={""}></option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </StyledSelect>
+          {errors.category && <ErrorText>{errors.category}</ErrorText>}
+        </FormControl>
         <div>
           <StyledTextArea error={!!errors.description}>
             <StyledLegend error={!!errors.description}>
@@ -221,6 +301,18 @@ export const CreateProduct = () => {
           name="price"
           error={!!errors.price}
           helperText={errors.price}
+        />
+        <StyledTextBox
+          InputProps={{
+            type: "number",
+          }}
+          onChange={onChange}
+          onBlur={onBlur}
+          label="Stock *"
+          variant="outlined"
+          name="stock"
+          error={!!errors.stock}
+          helperText={errors.stock}
         />
         <h4>Upload upto 4 photos of the product</h4>
         <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>

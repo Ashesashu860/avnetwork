@@ -51,7 +51,7 @@ const StyledContentContainer = styled.div`
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
-  padding: 2rem !important;
+  padding: 2rem 3rem !important;
   & > *:not(:last-child) {
     margin-bottom: 1rem !important;
   }
@@ -107,7 +107,28 @@ export const ViewProduct = (props) => {
         </div>
         <StyledContentContainer>
           <h3>{currentProduct?.title}</h3>
-          <p>{currentProduct?.brand}</p>
+          <div
+            className="center"
+            style={{
+              justifyContent: "space-between",
+              minWidth: "100%",
+              maxWidth: "100%",
+            }}
+          >
+            <p>{currentProduct?.brand}</p>
+            <div
+              style={{
+                maxHeight: "100%",
+                border: "1px solid #2e7d32",
+                borderRadius: "12px",
+                padding: "2px 1rem",
+              }}
+            >
+              In Stock: {currentProduct?.stock}
+            </div>
+          </div>
+          <p>Sold by: {currentProduct?.sellarName}</p>
+          <p>Location: {currentProduct?.location}</p>
           <h2>Rs. {currentProduct?.price}/-</h2>
           <div>
             <h3>Description</h3>

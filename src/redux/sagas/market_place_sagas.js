@@ -14,7 +14,17 @@ import { getDatafromDb } from "./saga_utilities";
 export function* addProductInDbSaga(action) {
   yield put(setDialogBoxPropsAction("Posting Product..."));
 
-  const { id, title, brand, description, price } = yield action.payload.product;
+  const {
+    id,
+    title,
+    location,
+    sellarName,
+    category,
+    stock,
+    brand,
+    description,
+    price,
+  } = yield action.payload.product;
   const productDatabaseRef = yield firebase
     .database()
     .ref(`marketPlaceProducts/${id}`);
@@ -25,8 +35,12 @@ export function* addProductInDbSaga(action) {
   yield productDatabaseRef.set({
     id,
     title,
+    location,
     brand,
     description,
+    sellarName,
+    category,
+    stock,
     price,
     userId: action.payload.userId,
   });
