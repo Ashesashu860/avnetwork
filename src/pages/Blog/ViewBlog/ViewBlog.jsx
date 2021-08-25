@@ -28,6 +28,8 @@ import { CommentCard } from "..";
 import "./view-blog.css";
 import { getFormattedDate } from "../BlogCreateModules";
 import NarrowAd from "../../../assets/ads/narrow_ad.jpg";
+import SquareAd1 from "../../../assets/ads/square_ad_1.jpg";
+import SquareAd2 from "../../../assets/ads/square_ad_2.jpg";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -112,31 +114,40 @@ export const ViewBlog = (props) => {
   //APPEND ADS IN BLOG
   useEffect(() => {
     const ad2 = document.createElement("div");
-    ad2.innerText = "Place your ad here 1";
+    // ad2.innerText = "Place your ad here 1";
+    const adImage2 = document.createElement("img");
+    adImage2.src = SquareAd1;
     ad2.classList.add("ad_square");
     ad2.id = "blog_ad_2";
+    ad2.appendChild(adImage2);
 
     const ad3 = document.createElement("div");
-    ad3.innerText = "Place your ad here 2";
+    // ad3.innerText = "Place your ad here 2";
+    const adImage3 = document.createElement("img");
+    adImage3.src = SquareAd2;
     ad3.classList.add("ad_square");
     ad3.id = "blog_ad_3";
+    ad3.appendChild(adImage3);
 
     if (currentBlog?.content) {
-      const allParagraphs = document
+      const allHeadings = document
         .getElementsByClassName("blog-content")[0]
-        .getElementsByTagName("p");
-      const noOfParagraphs = allParagraphs.length;
-      const oneThirdParagraph = Math.floor(noOfParagraphs / 3);
-      if (allParagraphs[oneThirdParagraph])
+        .querySelectorAll("h1, h2, h3, h4, h5, h6");
+      console.log("ALL HEADING", allHeadings);
+      const noOfheadings = allHeadings.length;
+      const oneThirdHeading = Math.floor(noOfheadings / 3);
+      console.log("oneThirdHeading", oneThirdHeading);
+      if (allHeadings[oneThirdHeading])
         if (!document.getElementById("blog_ad_2"))
           document
             .getElementsByClassName("blog-content")[0]
-            .insertBefore(ad2, allParagraphs[oneThirdParagraph]);
-      if (allParagraphs[oneThirdParagraph * 2])
+            .insertBefore(ad2, allHeadings[oneThirdHeading]);
+      console.log("twpThirdHeading", oneThirdHeading * 2);
+      if (allHeadings[oneThirdHeading * 2])
         if (!document.getElementById("blog_ad_3"))
           document
             .getElementsByClassName("blog-content")[0]
-            .insertBefore(ad3, allParagraphs[oneThirdParagraph * 2]);
+            .insertBefore(ad3, allHeadings[oneThirdHeading * 2]);
     }
 
     const abortController = new AbortController();

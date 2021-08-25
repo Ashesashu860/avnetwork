@@ -119,9 +119,12 @@ export const ViewProduct = (props) => {
             <div
               style={{
                 maxHeight: "100%",
-                border: "1px solid #2e7d32",
+                // border: "1px solid #2e7d32",
+                backgroundColor: "#C8E6C9",
+                color: "#4CAF50",
+                // fontWeight: "bold",
                 borderRadius: "12px",
-                padding: "2px 1rem",
+                padding: "0.5rem 1.5rem",
               }}
             >
               In Stock: {currentProduct?.stock}

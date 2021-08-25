@@ -134,12 +134,12 @@ export const CreateProduct = () => {
     id: uuidv4(),
     title: "",
     location: "",
-    sellarName: "",
+    sellarName: currentUser?.displayName,
     category: "",
     brand: "",
     description: "",
     stock: "",
-    user: "",
+    user: currentUser?.uid,
     images: [],
   });
 
@@ -239,15 +239,6 @@ export const CreateProduct = () => {
           onBlur={onBlur}
           error={!!errors.location}
           helperText={errors.location}
-        />
-        <StyledTextBox
-          label="Sellar Name *"
-          variant="outlined"
-          name="sellarName"
-          onChange={onChange}
-          onBlur={onBlur}
-          error={!!errors.sellarName}
-          helperText={errors.sellarName}
         />
         <StyledTextBox
           label="Brand *"

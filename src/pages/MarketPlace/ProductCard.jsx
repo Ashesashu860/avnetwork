@@ -7,7 +7,7 @@ const ProductCardContainer = styled(Card)`
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;
-  // border-radius: 4px;
+  border-radius: 0.8rem !important;
   // border: 1px solid #ddd;
   overflow: hidden;
   &:hover {
@@ -25,6 +25,7 @@ const ImageContainer = styled.div`
   background-repeat: no-repeat !important;
   background: ${(props) => `url(${props.image})`};
   width: 100%;
+  border-radius: 0.8rem !important;
   height: 16rem;
   background-color: rgb(247, 247, 247);
   background-position: center center;
@@ -35,11 +36,29 @@ const ProductContentContainer = styled.div`
   padding: 1rem;
   width: 100%;
   & > *:not(:last-child) {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.7rem;
   }
 `;
 
-export const ProductCard = ({ images, price, title, brand, onClick }) => {
+const Button = styled.div`
+  background-color: var(--primary);
+  color: #fff;
+  width: 100%;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
+  padding: 1rem;
+  text-align: center;
+`;
+
+export const ProductCard = ({
+  images,
+  price,
+  title,
+  brand,
+  onClick,
+  sellarName,
+  stock,
+}) => {
   return (
     <ProductCardContainer className="center" onClick={onClick}>
       {/* <Image src={Object.values(images)[0]} alt="sadas" /> */}
@@ -48,30 +67,61 @@ export const ProductCard = ({ images, price, title, brand, onClick }) => {
         <h3
           style={{
             width: "100%",
+            fontSize: "1.2rem",
+            fontWeight: "500",
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            fontSize: "1.2rem",
-            fontWeight: "500",
           }}
         >
           {title}
         </h3>
+
+        <div className="center" style={{ justifyContent: "space-between" }}>
+          <span
+            style={{
+              width: "fit-content",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize: "0.9rem",
+              color: "var(--text-medium)",
+              fontWeight: "normal",
+            }}
+          >
+            {brand}
+          </span>
+          <div
+            style={{
+              // border: "1px solid #2e7d32",
+              backgroundColor: "#C8E6C9",
+              color: "#4CAF50",
+              // fontWeight: "bold",
+              borderRadius: "0.5rem",
+              padding: "0.5rem 1rem",
+              maxWidth: "fit-content",
+              fontSize: "0.8rem",
+            }}
+          >
+            In Stock: {stock}
+          </div>
+        </div>
         <h5
           style={{
             width: "100%",
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            fontSize: "0.8rem",
+            fontSize: "0.9rem",
             color: "var(--text-medium)",
             fontWeight: "normal",
           }}
         >
-          {brand}
+          Sold By: {sellarName}
         </h5>
         <h3>Rs.{price}/-</h3>
       </ProductContentContainer>
+      <Button>CHECKOUT</Button>
     </ProductCardContainer>
   );
 };
