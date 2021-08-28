@@ -13,4 +13,5 @@ export * from "./Loading";
 export * from "./Main";
 export * from "./Admin";
 export * from "./PageNotFound";
+export * from "./UnderConstruction";
 export * from "./Profile";
