@@ -59,10 +59,18 @@ export const Navbar = withRouter(({ history }) => {
     dispatch(logoutUserAction(history));
   };
 
-  const filteredLinks =
-    currentUser?.category === "Admin"
+  const filteredLinks = currentUser
+    ? currentUser?.category === "Admin"
       ? navLinks
-      : navLinks.filter((link) => link.name !== "Admin");
+      : navLinks.filter((link) => link.name !== "Admin")
+    : navLinks.filter(
+        (link) => link.name !== "My Profile" && link.name !== "Admin"
+      );
+
+  // const filteredLinks =
+  //   currentUser?.category === "Admin"
+  //     ? navLinks
+  //     : navLinks.filter((link) => link.name !== "Admin");
 
   return (
     <>

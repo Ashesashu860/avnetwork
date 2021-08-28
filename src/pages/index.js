@@ -12,3 +12,5 @@ export * from "./TermsOfUse";
 export * from "./Loading";
 export * from "./Main";
 export * from "./Admin";
+export * from "./PageNotFound";
+export * from "./Profile";

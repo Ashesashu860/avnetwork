@@ -200,14 +200,6 @@ export const CreateProduct = () => {
       dispatch(addProductInDbAction(product, currentUser?.uid, history));
   };
 
-  // title: "",
-  //   location: "",
-  //   sellarName: "",
-  //   category: "",
-  //   brand: "",
-  //   description: "",
-  //   stock: "",
-
   console.log("Create Product", product);
   return !currentUser ? (
     <Redirect to="/" />

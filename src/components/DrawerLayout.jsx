@@ -22,6 +22,9 @@ const StyledUl = styled.ul`
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
+  & > a:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const mapState = (state) => ({
@@ -42,10 +45,17 @@ export const DrawerLayout = (props) => {
     dispatch(loginUserAction(history));
   };
 
-  const filteredLinks =
-    currentUser?.category === "Admin"
+  const filteredLinks = currentUser
+    ? currentUser?.category === "Admin"
       ? navLinks
-      : navLinks.filter((link) => link.name !== "Admin");
+      : navLinks.filter((link) => link.name !== "Admin")
+    : navLinks.filter(
+        (link) => link.name !== "My Profile" && link.name !== "Admin"
+      );
+  // const filteredLinks =
+  //   currentUser?.category === "Admin"
+  //     ? navLinks
+  //     : navLinks.filter((link) => link.name !== "Admin");
 
   return (
     <div

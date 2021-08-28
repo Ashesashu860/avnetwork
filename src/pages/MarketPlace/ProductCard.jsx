@@ -89,7 +89,7 @@ export const ProductCard = ({
               fontWeight: "normal",
             }}
           >
-            {brand}
+            Brand: {brand}
           </span>
           <div
             style={{

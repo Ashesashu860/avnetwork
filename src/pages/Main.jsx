@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Footer, DialogBox, Alert } from "../components";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import {
   Homepage,
   BlogList,
@@ -20,6 +20,8 @@ import {
   Admin,
   CreateProduct,
   ViewProduct,
+  Profile,
+  PageNotFound,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -47,33 +49,37 @@ export const Main = () => {
     };
   }, []);
   return (
-    <BrowserRouter>
+    <>
       {isLoading ? (
         <Loading />
       ) : (
-        <>
+        <BrowserRouter>
           <Navbar />
-          <Route exact path="/" component={Homepage} />
-          <Route exact path="/blog" component={BlogLandingPage} />
-          <Route exact path="/blogs" component={BlogList} />
-          <Route exact path="/blogs/:id" component={ViewBlog} />
-          <Route exact path="/blog-create" component={BlogCreate} />
-          <Route exact path="/network" component={Network} />
-          <Route exact path="/market_place" component={MarketPlace} />
-          <Route exact path="/job_portal" component={JobPortal} />
-          <Route exact path="/tutorials" component={Tutorials} />
-          <Route exact path="/about_us" component={AboutUs} />
-          <Route exact path="/contact_us" component={ContactUs} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Register} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/post_product" component={CreateProduct} />
-          <Route exact path="/products/:id" component={ViewProduct} />
+          <Switch>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/blog" component={BlogLandingPage} />
+            <Route exact path="/blogs" component={BlogList} />
+            <Route exact path="/blogs/:id" component={ViewBlog} />
+            <Route exact path="/blog-create" component={BlogCreate} />
+            <Route exact path="/network" component={Network} />
+            <Route exact path="/market_place" component={MarketPlace} />
+            <Route exact path="/job_portal" component={JobPortal} />
+            <Route exact path="/tutorials" component={Tutorials} />
+            <Route exact path="/about_us" component={AboutUs} />
+            <Route exact path="/contact_us" component={ContactUs} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Register} />
+            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/post_product" component={CreateProduct} />
+            <Route exact path="/products/:id" component={ViewProduct} />
+            <Route exact path="/profile" component={Profile} />
+            <Route component={PageNotFound} />
+          </Switch>
           <Footer />
           <DialogBox {...dialogBoxProps} />
           <Alert {...alertProps} onClose={onAlertClose} open={alertOpen} />
-        </>
+        </BrowserRouter>
       )}
-    </BrowserRouter>
+    </>
   );
 };

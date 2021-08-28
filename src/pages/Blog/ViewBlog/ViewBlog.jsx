@@ -43,6 +43,10 @@ const ViewBlogContainer = styled.div`
   & > p {
     text-align: justify;
   }
+
+  @media screen and (max-width: 768px) {
+    padding: 2rem;
+  }
 `;
 
 const mapState = (state) => ({

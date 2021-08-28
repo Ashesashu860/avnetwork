@@ -13,7 +13,7 @@ import "react-quill/dist/quill.snow.css";
 import { Redirect } from "react-router-dom";
 
 const mapState = (state) => ({
-  currentUser: state.user.currentUser,
+  currentUser: state?.user?.currentUser,
 });
 
 export const BlogCreate = withRouter(({ history }) => {
