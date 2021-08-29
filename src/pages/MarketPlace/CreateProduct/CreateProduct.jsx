@@ -9,6 +9,8 @@ import {
   ErrorText,
   StyledLegend,
   StyledImageContainer,
+  AddImageCard,
+  ProductImageCard,
 } from "../../../components";
 import {
   InputAdornment,
@@ -17,11 +19,9 @@ import {
   InputLabel,
 } from "@material-ui/core";
 
-import { AddImageCard } from "./AddImageCard";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
-import { ProductImageCard } from "./ProductImageCard";
 import { useHistory, Redirect } from "react-router-dom";
 
 const mapState = (state) => ({
@@ -94,7 +94,6 @@ export const CreateProduct = () => {
   };
 
   const onImageChange = (event) => {
-    console.log("Photo", event.target.files[0]);
     setProduct({
       ...product,
       images: [...product?.images, event.target.files[0]],

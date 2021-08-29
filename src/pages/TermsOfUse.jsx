@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const StyledDiv = styled.div`
   padding: 0.5rem 2rem !important;
+  max-width: 100%;
   overflow: auto !important;
   & * {
     margin: 1rem 0;

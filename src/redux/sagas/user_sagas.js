@@ -43,10 +43,37 @@ export function* getAllUsersSaga() {
 
 export function* setUserInDb(action) {
   yield put(setDialogBoxPropsAction("Signing Up..."));
-  yield firebase
+
+  const userWorkImages = yield [...action.payload.user.images];
+
+  const userDatabaseRef = yield firebase
     .database()
-    .ref(`users/${action.payload.user.uid}`)
-    .set(action.payload.user);
+    .ref(`users/${action.payload.user.uid}`);
+
+  const { category, displayName, email, phoneNumber, photoURL, uid } =
+    action.payload.user;
+
+  yield userDatabaseRef.set({
+    category,
+    displayName,
+    email,
+    phoneNumber,
+    photoURL,
+    uid,
+  });
+
+  if (userWorkImages.length > 0) {
+    const userStorageRef = yield firebase
+      .storage()
+      .ref(`userWorkImages/${action.payload.user.uid}`);
+    for (const image of userWorkImages) {
+      const imageStorageRef = yield userStorageRef.child(image.name);
+      yield imageStorageRef.put(image);
+      const imageDownloadURL = yield imageStorageRef.getDownloadURL();
+      yield userDatabaseRef.child("userWorkImages").push(imageDownloadURL);
+    }
+  }
+
   yield put(
     setDialogBoxPropsAction(
       "You are successfully registered",
@@ -127,10 +154,6 @@ export function* toggleBlogWritePermissionSaga(action) {
     const result = yield getDatafromDb(
       `users/${action.payload.userId}/canWriteBlogs`
     );
-    // const canWriteBlogsRef = yield firebase
-    //   .database()
-    //   .ref(`users/${action.payload.userId}/canWriteBlogs`);
-    // console.log("canWriteBlogsRef result", result);
     if (result) {
       yield firebase
         .database()

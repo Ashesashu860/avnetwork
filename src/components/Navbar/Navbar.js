@@ -67,11 +67,6 @@ export const Navbar = withRouter(({ history }) => {
         (link) => link.name !== "My Profile" && link.name !== "Admin"
       );
 
-  // const filteredLinks =
-  //   currentUser?.category === "Admin"
-  //     ? navLinks
-  //     : navLinks.filter((link) => link.name !== "Admin");
-
   return (
     <>
       <div style={{ position: "fixed", zIndex: "1000" }} ref={navRef}>

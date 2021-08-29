@@ -1,35 +1,6 @@
-.register_container {
-  position: relative;
-}
-
-.terms {
-  overflow: auto;
-  height: calc(100vh - 216px);
-  background-color: #eee;
-}
-
-.terms > div {
-  padding-bottom: 150px !important;
-}
-
 .stepper {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   max-width: 100%;
-  background-color: #fff;
-}
-
-@media screen and (max-width: 1150px) {
-  .terms {
-    min-height: 9rem;
-    height: auto;
-    max-height: calc(100vh - 276px);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .terms {
-    max-height: calc(100vh - 230px);
-  }
+  align-self: flex-end;
+  margin: 1rem 0;
 }

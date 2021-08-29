@@ -17,6 +17,7 @@ import "./register.css";
 import { useDispatch } from "react-redux";
 import { logoutUserAction, setUserInDbAction } from "../../redux/actions";
 import { Redirect } from "react-router-dom";
+import { BasicDetailsForm } from "./BasicDetailsForm";
 
 const CustomCheckbox = withStyles({
   root: {
@@ -106,6 +107,7 @@ export const Register = (props) => {
   const [basicDetails, setBasicDetails] = useState({
     category: "",
     phoneNumber: "",
+    images: [],
   });
 
   const onChange = (event) => {
@@ -115,42 +117,32 @@ export const Register = (props) => {
     });
   };
 
-  const categories = ["Integrator", "Dealer", "Rental", "Freelancer", "Guest"];
+  const onImageChange = (event) => {
+    setBasicDetails({
+      ...basicDetails,
+      images: [...basicDetails?.images, event.target.files[0]],
+    });
+  };
+
+  const onDeleteImage = (imageIndex) => {
+    setBasicDetails({
+      ...basicDetails,
+      images: basicDetails?.images.filter(
+        (image, index) => imageIndex !== index
+      ),
+    });
+  };
 
   const getRenderItem = (activeStep) => {
     switch (activeStep) {
       case 1:
         return (
-          <div>
-            <FormControl
-              variant="outlined"
-              style={{ minWidth: "90%", margin: "1rem" }}
-            >
-              <InputLabel>Category</InputLabel>
-              <Select
-                native
-                value={basicDetails.category}
-                onChange={onChange}
-                name="category"
-                label="Category"
-              >
-                <option value={""}></option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              value={basicDetails.phoneNumber}
-              name="phoneNumber"
-              onChange={onChange}
-              variant="outlined"
-              placeholder="Phone Number"
-              style={{ minWidth: "90%", margin: "1rem" }}
-            />
-          </div>
+          <BasicDetailsForm
+            basicDetails={basicDetails}
+            onChange={onChange}
+            onImageChange={onImageChange}
+            onDeleteImage={onDeleteImage}
+          />
         );
       case 2:
         return <TermsOfUse />;
@@ -162,17 +154,29 @@ export const Register = (props) => {
     <>
       {user ? (
         <div
-          className={`${classes.root} wrapper fix_wrapper register_container`}
+          className={`${classes.root} wrapper fix_wrapper center`}
+          style={{ flexDirection: "column" }}
         >
-          <div
+          <h2
             style={{
-              display: "flex",
-              flexDirection: "column",
-              position: "relative",
+              padding: "2rem 1rem",
+              alignSelf: "flex-start",
+              textAlign: "center",
+              width: "100%",
             }}
           >
-            <h1>{getStepContent(activeStep)}</h1>
-            <div className="terms center">{getRenderItem(activeStep)}</div>
+            {getStepContent(activeStep)}
+          </h2>
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "0.5rem",
+              flex: 1,
+              overflow: "auto",
+              width: "90%",
+            }}
+          >
+            {getRenderItem(activeStep)}
           </div>
           <div className="stepper">
             {activeStep === 2 && (
@@ -196,7 +200,7 @@ export const Register = (props) => {
               })}
             </Stepper>
             {activeStep !== steps.length && (
-              <div className="center">
+              <div className="center" style={{ marginTop: "1rem" }}>
                 <StyledButton
                   onClick={handleBack}
                   className={classes.button}
