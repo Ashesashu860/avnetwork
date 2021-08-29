@@ -1,103 +1,28 @@
 import React, { useState } from "react";
-import { ContentContainer, StyledFab } from "../../../components";
 import {
-  TextField,
+  ContentContainer,
+  StyledFab,
+  StyledForm,
+  StyledTextBox,
+  StyledTextArea,
+  StyledSelect,
+  ErrorText,
+  StyledLegend,
+  StyledImageContainer,
+} from "../../../components";
+import {
   InputAdornment,
   Grid,
   FormControl,
   InputLabel,
-  Select,
 } from "@material-ui/core";
-import styled from "styled-components";
+
 import { AddImageCard } from "./AddImageCard";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { ProductImageCard } from "./ProductImageCard";
 import { useHistory, Redirect } from "react-router-dom";
-
-const StyledTextBox = styled(TextField)`
-  width: 40rem;
-  @media screen and (max-width: 768px) {
-    width: 30rem;
-  }
-
-  @media screen and (max-width: 570px) {
-    width: 20rem;
-  }
-
-  & label.Mui-focused {
-    color: var(--primary);
-  }
-  & .MuiInput-underline:after {
-    border-bottom-color: var(--primary);
-  }
-  & .MuiOutlinedInput-root {
-    & fieldset {
-      border-color: var(--primary);
-    }
-    &:hover fieldset {
-      border-color: var(--primary);
-    }
-    &.Mui-focused fieldset {
-      border-color: var(--primary);
-    }
-  }
-`;
-
-const StyledForm = styled.form`
-  & > *:not(:last-child) {
-    margin-bottom: 2rem;
-  }
-`;
-
-const StyledSelect = styled(Select)`
-  border: 1px solid ${(props) => (props.error ? "#f44336" : "var(--primary)")};
-`;
-const StyledTextArea = styled.fieldset`
-  border: 1px solid ${(props) => (props.error ? "#f44336" : "var(--primary)")};
-  border-radius: 4px;
-  & textarea {
-    padding: 0.5rem 1rem;
-    width: 40rem;
-    height: 6rem;
-    @media screen and (max-width: 768px) {
-      width: 30rem;
-    }
-
-    @media screen and (max-width: 570px) {
-      width: 20rem;
-    }
-    background: transparent;
-    border: none;
-    outline: none;
-
-    &:focus {
-      outline: none;
-    }
-  }
-`;
-
-const StyledLegend = styled.legend`
-  font-size: 0.7rem;
-  margin-left: 0.7rem;
-  padding: 0.5rem;
-  color: ${(props) => (props.error ? "#f44336" : "var(--primary)")};
-`;
-
-const StyledImageContainer = styled.div`
-  & > * {
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-  }
-`;
-
-const ErrorText = styled.span`
-  color: #f44336;
-  font-size: 0.75rem;
-  margin-left: 1rem;
-  margin-top: 0.4rem;
-`;
 
 const mapState = (state) => ({
   currentUser: state.users.currentUser,
@@ -149,7 +74,6 @@ export const CreateProduct = () => {
   const history = useHistory();
 
   const onChange = (event) => {
-    console.log("onChange", event.target.value);
     setProduct({
       ...product,
       [event.target.name]: event.target.value,

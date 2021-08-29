@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Redirect } from "react-router-dom";
+import { StyledFab, StyledNavLink } from "../../components";
 
 const mapState = (state) => ({ currentUser: state.users.currentUser });
 
@@ -56,6 +57,19 @@ export const Profile = () => {
                   </IconButton>
                   {currentUser?.phoneNumber}
                 </div>
+              </div>
+              <div
+                style={{
+                  height: "2.5rem",
+                  display: "flex",
+                  marginBottom: "2rem",
+                }}
+              >
+                <StyledNavLink to="/edit_profile">
+                  <StyledFab variant="extended" bold primary>
+                    Edit Profile
+                  </StyledFab>
+                </StyledNavLink>
               </div>
             </div>
           </div>

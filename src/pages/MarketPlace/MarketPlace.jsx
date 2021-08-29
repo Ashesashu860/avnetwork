@@ -65,8 +65,9 @@ export const MarketPlace = () => {
         className="center"
         style={{ flexWrap: "wrap", backgroundColor: "#eee" }}
       >
-        {allProducts?.map((product) => (
+        {allProducts?.map((product, index) => (
           <ProductCard
+            key={index}
             {...product}
             onClick={() =>
               history.push({

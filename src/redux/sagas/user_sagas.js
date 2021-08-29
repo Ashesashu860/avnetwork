@@ -8,12 +8,15 @@ import {
   setAlertAction,
 } from "../actions";
 
-const constructUserDataFromUserAuth = (user) => ({
-  uid: user.uid,
-  displayName: user.displayName,
-  email: user.email,
-  photoURL: user.photoURL,
-});
+const constructUserDataFromUserAuth = (user) =>
+  user
+    ? {
+        uid: user?.uid,
+        displayName: user?.displayName,
+        email: user?.email,
+        photoURL: user?.photoURL,
+      }
+    : null;
 
 const getDatafromDb = (path) => {
   return new Promise((resolve, reject) => {

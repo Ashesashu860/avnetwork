@@ -23,6 +23,7 @@ import {
   Profile,
   PageNotFound,
   UnderConstruction,
+  EditProfile,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -54,7 +55,7 @@ export const Main = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <BrowserRouter>
+        <>
           <Navbar />
           <Switch>
             <Route exact path="/" component={Homepage} />
@@ -73,12 +74,13 @@ export const Main = () => {
             <Route exact path="/post_product" component={CreateProduct} />
             <Route exact path="/products/:id" component={ViewProduct} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/edit_profile" component={EditProfile} />
             <Route component={PageNotFound} />
           </Switch>
           <Footer />
           <DialogBox {...dialogBoxProps} />
           <Alert {...alertProps} onClose={onAlertClose} open={alertOpen} />
-        </BrowserRouter>
+        </>
       )}
     </>
   );

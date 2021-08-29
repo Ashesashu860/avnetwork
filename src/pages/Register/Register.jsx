@@ -15,7 +15,8 @@ import { StyledButton } from "../../components";
 import { TermsOfUse } from "..";
 import "./register.css";
 import { useDispatch } from "react-redux";
-import { setUserInDbAction } from "../../redux/actions";
+import { logoutUserAction, setUserInDbAction } from "../../redux/actions";
+import { Redirect } from "react-router-dom";
 
 const CustomCheckbox = withStyles({
   root: {
@@ -51,7 +52,7 @@ function getSteps() {
 }
 
 export const Register = (props) => {
-  const { user } = props.location.state;
+  const user = props.location?.state?.user;
 
   const dispatch = useDispatch();
 
@@ -79,7 +80,9 @@ export const Register = (props) => {
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    activeStep === 1
+      ? dispatch(logoutUserAction())
+      : setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   function getStepContent(step) {
@@ -155,72 +158,77 @@ export const Register = (props) => {
     }
   };
 
+  console.log("USER", user);
   return (
-    <div
-      className={`${classes.root} wrapper fix_wrapper`}
-      style={{ padding: "2rem" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          position: "relative",
-        }}
-      >
-        <h1>{getStepContent(activeStep)}</h1>
-        <div className="terms center">{getRenderItem(activeStep)}</div>
+    <>
+      {user ? (
+        <div className={`${classes.root} wrapper fix_wrapper`}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+            }}
+          >
+            <h1>{getStepContent(activeStep)}</h1>
+            <div className="terms center">{getRenderItem(activeStep)}</div>
 
-        <div className="stepper">
-          {activeStep === 2 && (
-            <div className="center">
-              <CustomCheckbox
-                onChange={handleCheckboxChange}
-                checked={checked}
-              />
-              <span style={{ opacity: "0.7" }}>I accept the terms of use.</span>
+            <div className="stepper">
+              {activeStep === 2 && (
+                <div className="center">
+                  <CustomCheckbox
+                    onChange={handleCheckboxChange}
+                    checked={checked}
+                  />
+                  <span style={{ opacity: "0.7" }}>
+                    I accept the terms of use.
+                  </span>
+                </div>
+              )}
+              <Stepper activeStep={activeStep}>
+                {steps.map((label, index) => {
+                  return (
+                    <Step key={label}>
+                      <StepLabel className={classes.step}>{label}</StepLabel>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+              {activeStep !== steps.length && (
+                <div className="center">
+                  <StyledButton
+                    onClick={handleBack}
+                    className={classes.button}
+                    secondary
+                  >
+                    {activeStep === 1 ? "Cancel" : "Back"}
+                  </StyledButton>
+                  <StyledButton
+                    onClick={handleNext}
+                    disabled={
+                      activeStep === steps.length ||
+                      !basicDetails.category ||
+                      !basicDetails.phoneNumber ||
+                      (activeStep === 2 && !checked)
+                    }
+                    className={classes.button}
+                    {...(activeStep === steps.length ||
+                    !basicDetails.category ||
+                    !basicDetails.phoneNumber ||
+                    (activeStep === 2 && !checked)
+                      ? { secondary: true }
+                      : { primary: true })}
+                  >
+                    {activeStep > steps.length - 2 ? "Finish" : "Next"}
+                  </StyledButton>
+                </div>
+              )}
             </div>
-          )}
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              return (
-                <Step key={label}>
-                  <StepLabel className={classes.step}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          {activeStep !== steps.length && (
-            <div className="center">
-              <StyledButton
-                disabled={activeStep === 1}
-                onClick={handleBack}
-                className={classes.button}
-                secondary
-              >
-                Back
-              </StyledButton>
-              <StyledButton
-                onClick={handleNext}
-                disabled={
-                  activeStep === steps.length ||
-                  !basicDetails.category ||
-                  !basicDetails.phoneNumber ||
-                  (activeStep === 2 && !checked)
-                }
-                className={classes.button}
-                {...(activeStep === steps.length ||
-                !basicDetails.category ||
-                !basicDetails.phoneNumber ||
-                (activeStep === 2 && !checked)
-                  ? { secondary: true }
-                  : { primary: true })}
-              >
-                {activeStep > steps.length - 2 ? "Finish" : "Next"}
-              </StyledButton>
-            </div>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
   );
 };

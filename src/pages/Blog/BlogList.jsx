@@ -29,7 +29,7 @@ export const BlogList = ({
   direction,
   autoHeight,
 }) => {
-  const { allBlogs, currentUseruser } = useSelector(mapState);
+  const { allBlogs, currentUser } = useSelector(mapState);
   const history = useHistory();
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = React.useState("");
@@ -110,7 +110,7 @@ export const BlogList = ({
             )}
           </div>
         </ShadowContainer>
-        {currentUseruser?.canWriteBlogs && (
+        {currentUser?.canWriteBlogs && (
           <StyledNavLink to="/blog-create">
             <StyledFab
               variant="extended"
