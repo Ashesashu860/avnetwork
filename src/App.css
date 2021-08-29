@@ -41,8 +41,7 @@ h1 {
 }
 
 .wrapper {
-  min-height: calc(var(--vh, 1vh) * 100) !important;
-  /* min-height: 100vh !important; */
+  min-height: 100vh !important;
   padding-top: 77px !important;
   background-color: var(--background);
   overflow: hidden;
