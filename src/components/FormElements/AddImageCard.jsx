@@ -5,7 +5,10 @@ export const AddImageCard = ({ onImageChange }) => (
   <Avatar
     variant="rounded"
     style={{ backgroundColor: "#ddd", height: "7rem", width: "7rem" }}
-    onClick={() => document.getElementById("product_image").click()}
+    onClick={() => {
+      document.getElementById("product_image").value = null;
+      document.getElementById("product_image").click();
+    }}
   >
     <AddAPhotoIcon style={{ color: "var(--primary)" }} />
     <input

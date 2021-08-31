@@ -44,7 +44,12 @@ const SubContainer = styled(Grid)`
 export const ShadowContainer = ({ children }) => {
   return (
     <Container>
-      <SubContainer container wrap="nowrap">
+      <SubContainer
+        container
+        wrap="nowrap"
+        alignItems="center"
+        justify="center"
+      >
         {children}
       </SubContainer>
     </Container>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ContentContainer,
   StyledFab,
@@ -73,6 +73,10 @@ export const CreateProduct = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const onChange = (event) => {
     setProduct({
       ...product,
@@ -123,7 +127,6 @@ export const CreateProduct = () => {
       dispatch(addProductInDbAction(product, currentUser?.uid, history));
   };
 
-  console.log("Create Product", product);
   return !currentUser ? (
     <Redirect to="/" />
   ) : (
@@ -224,7 +227,7 @@ export const CreateProduct = () => {
         <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
           {product?.images?.map((image, index) => (
             <ProductImageCard
-              selectedImage={image}
+              selectedImage={URL.createObjectURL(image)}
               onDeleteImage={() => onDeleteImage(index)}
             />
           ))}

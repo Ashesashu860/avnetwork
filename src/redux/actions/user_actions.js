@@ -5,6 +5,14 @@ export const setUserAction = (user) => ({
   },
 });
 
+export const updateUserAction = (user, history) => ({
+  type: "UPDATE_USER",
+  payload: {
+    user,
+    history,
+  },
+});
+
 export const checkUserAuth = (history) => ({
   type: "CHECK_USER_AUTH",
   payload: {

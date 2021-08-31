@@ -1,8 +1,19 @@
-export const navLinks = [
+export const loggedInLinks = [
   {
     name: "My Profile",
     link: "/profile",
   },
+  {
+    name: "Networks",
+    link: "/networks",
+  },
+  {
+    name: "Admin",
+    link: "/admin",
+  },
+];
+
+export const navLinks = [
   {
     name: "Blog",
     link: "/blog",
@@ -18,9 +29,5 @@ export const navLinks = [
   {
     name: "Tutorials",
     link: "/tutorials",
-  },
-  {
-    name: "Admin",
-    link: "/admin",
   },
 ];

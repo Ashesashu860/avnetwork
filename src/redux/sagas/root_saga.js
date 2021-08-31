@@ -6,6 +6,7 @@ import {
   checkUserAuth,
   getAllUsersSaga,
   toggleBlogWritePermissionSaga,
+  updateUserSaga,
 } from "./user_sagas";
 import {
   getBlogWithIdFromDb,
@@ -35,6 +36,7 @@ export function* rootSaga() {
     "TOGGLE_BLOG_WRITE_PERMISSION",
     toggleBlogWritePermissionSaga
   );
+  yield takeLatest("UPDATE_USER", updateUserSaga);
   //BLOG
   yield takeLatest("GET_BLOGS", getBlogsFromDb);
   yield takeLatest("GET_BLOG_WITH_ID", getBlogWithIdFromDb);

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Footer, DialogBox, Alert } from "../components";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import {
   Homepage,
   BlogList,
   BlogLandingPage,
   BlogCreate,
   ViewBlog,
-  Network,
   MarketPlace,
   JobPortal,
   Tutorials,
@@ -24,6 +23,8 @@ import {
   PageNotFound,
   UnderConstruction,
   EditProfile,
+  Networks,
+  ViewUser,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -75,6 +76,8 @@ export const Main = () => {
             <Route exact path="/products/:id" component={ViewProduct} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/edit_profile" component={EditProfile} />
+            <Route exact path="/networks" component={Networks} />
+            <Route exact path="/view_user" component={ViewUser} />
             <Route component={PageNotFound} />
           </Switch>
           <Footer />

@@ -7,6 +7,7 @@ import {
   setAllUsersAction,
   setAlertAction,
 } from "../actions";
+import { v4 as uuidv4 } from "uuid";
 
 const constructUserDataFromUserAuth = (user) =>
   user
@@ -44,7 +45,7 @@ export function* getAllUsersSaga() {
 export function* setUserInDb(action) {
   yield put(setDialogBoxPropsAction("Signing Up..."));
 
-  const userWorkImages = yield [...action.payload.user.images];
+  const userWorkImages = yield [...action.payload.user.userWorkImages];
 
   const userDatabaseRef = yield firebase
     .database()
@@ -63,14 +64,18 @@ export function* setUserInDb(action) {
   });
 
   if (userWorkImages.length > 0) {
-    const userStorageRef = yield firebase
+    const userWorkImagesStorageRef = yield firebase
       .storage()
       .ref(`userWorkImages/${action.payload.user.uid}`);
     for (const image of userWorkImages) {
-      const imageStorageRef = yield userStorageRef.child(image.name);
+      const imageId = uuidv4();
+      const imageStorageRef = yield userWorkImagesStorageRef.child(imageId);
       yield imageStorageRef.put(image);
       const imageDownloadURL = yield imageStorageRef.getDownloadURL();
-      yield userDatabaseRef.child("userWorkImages").push(imageDownloadURL);
+      yield userDatabaseRef
+        .child("userWorkImages")
+        .child(imageId)
+        .set(imageDownloadURL);
     }
   }
 
@@ -87,6 +92,77 @@ export function* setUserInDb(action) {
     )
   );
   yield put(setUserAction(action.payload.user));
+}
+
+export function* updateUserSaga(action) {
+  yield put(setDialogBoxPropsAction("Updating User..."));
+
+  const userDatabaseRef = yield firebase
+    .database()
+    .ref(`users/${action.payload.user.uid}`);
+
+  const {
+    category,
+    displayName,
+    email,
+    phoneNumber,
+    photoURL,
+    uid,
+    userWorkImages,
+    newImages,
+    deletedImages,
+  } = action.payload.user;
+
+  yield userDatabaseRef.set({
+    category,
+    displayName,
+    email,
+    phoneNumber,
+    photoURL,
+    uid,
+    userWorkImages,
+  });
+
+  const userWorkImagesStorageRef = yield firebase
+    .storage()
+    .ref(`userWorkImages/${action.payload.user.uid}`);
+
+  if (deletedImages?.length > 0) {
+    for (const image of deletedImages) {
+      yield userWorkImagesStorageRef.child(image).delete();
+    }
+  }
+
+  if (newImages.length > 0) {
+    const userWorkImagesStorageRef = yield firebase
+      .storage()
+      .ref(`userWorkImages/${action.payload.user.uid}`);
+    for (const image of newImages) {
+      const imageId = uuidv4();
+      const imageStorageRef = yield userWorkImagesStorageRef.child(imageId);
+      yield imageStorageRef.put(image);
+      const imageDownloadURL = yield imageStorageRef.getDownloadURL();
+      yield userDatabaseRef
+        .child("userWorkImages")
+        .child(imageId)
+        .set(imageDownloadURL);
+    }
+  }
+
+  yield put(
+    setDialogBoxPropsAction(
+      "User updated successfully",
+      {
+        title: "OK",
+        onButtonClick: (event) => {
+          action.payload.history.push("/profile");
+        },
+      },
+      true
+    )
+  );
+  const updatedUser = yield getUserFromDb(action.payload.user);
+  yield put(setUserAction(updatedUser));
 }
 
 const checkGoogleUser = () =>

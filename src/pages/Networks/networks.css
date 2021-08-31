@@ -1,0 +1,7 @@
+.network_container {
+  margin: 2rem;
+}
+
+.network_container > *:not(:last-child) {
+  margin-bottom: 1rem;
+}

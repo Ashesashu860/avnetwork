@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction, logoutUserAction } from "../redux/actions";
 import Logo from "../assets/logo.svg";
 import GoogleLogo from "../assets/google.png";
-import { navLinks } from "./Navbar/NavbarLinks";
+import { navLinks, loggedInLinks } from "./Navbar/NavbarLinks";
 import { StyledNavLink, StyledFab } from ".";
 import { useHistory } from "react-router-dom";
 
@@ -47,15 +47,9 @@ export const DrawerLayout = (props) => {
 
   const filteredLinks = currentUser
     ? currentUser?.category === "Admin"
-      ? navLinks
-      : navLinks.filter((link) => link.name !== "Admin")
-    : navLinks.filter(
-        (link) => link.name !== "My Profile" && link.name !== "Admin"
-      );
-  // const filteredLinks =
-  //   currentUser?.category === "Admin"
-  //     ? navLinks
-  //     : navLinks.filter((link) => link.name !== "Admin");
+      ? loggedInLinks.concat(navLinks)
+      : loggedInLinks.concat(navLinks).filter((link) => link.name !== "Admin")
+    : navLinks;
 
   return (
     <div

@@ -25,7 +25,7 @@ export const ProductImageCard = ({ selectedImage, onDeleteImage }) => (
   <StyledProductCard
     variant="rounded"
     style={{
-      backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
+      backgroundImage: `url(${selectedImage})`,
     }}
   >
     <StyledDeleteButton className="center" onClick={onDeleteImage}>

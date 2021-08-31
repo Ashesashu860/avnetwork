@@ -75,6 +75,7 @@ export const StyledImageContainer = styled.div`
     margin-bottom: 1rem;
     margin-right: 1rem;
   }
+  margin-bottom: 1rem;
 `;
 
 export const ErrorText = styled.span`

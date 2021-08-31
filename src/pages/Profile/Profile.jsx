@@ -1,77 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./profile.css";
-import { Avatar, IconButton } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import EmailIcon from "@material-ui/icons/Email";
-import PhoneIcon from "@material-ui/icons/Phone";
-import { Redirect } from "react-router-dom";
-import { StyledFab, StyledNavLink } from "../../components";
+import { Redirect, useHistory } from "react-router-dom";
+import { StyledFab } from "../../components";
+import { ViewUserTemplate } from "./ViewUserTemplate";
 
 const mapState = (state) => ({ currentUser: state.users.currentUser });
 
 export const Profile = () => {
   const { currentUser } = useSelector(mapState);
+  const history = useHistory();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
       {currentUser ? (
         <div className="wrapper">
-          <div className="header">
-            <div className="profile_photo">
-              <Avatar style={{ height: "6.5rem", width: "6.5rem" }}>
-                <img
-                  src={currentUser?.photoURL}
-                  alt={currentUser?.displayName?.charAt(0)}
-                  style={{ maxHeight: "100%" }}
-                />
-              </Avatar>
-            </div>
-            <div
-              className="center profile_content"
-              style={{ flexDirection: "column" }}
+          <ViewUserTemplate user={currentUser} />
+          <div className="center" style={{ margin: "1rem 0" }}>
+            <StyledFab
+              variant="extended"
+              bold
+              primary
+              onClick={() =>
+                history.push({
+                  pathname: "/edit_profile",
+                  state: currentUser,
+                })
+              }
             >
-              <h1>{currentUser?.displayName}</h1>
-              <p style={{ fontSize: "1.2rem" }}>{currentUser?.category}</p>
-              <div className="profile_list_contianer">
-                <div
-                  className="center"
-                  style={{ justifyContent: "flex-start" }}
-                >
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: "#ccc", marginRight: "1rem" }}
-                  >
-                    <EmailIcon />
-                  </IconButton>
-                  {currentUser?.email}
-                </div>
-                <div
-                  className="center"
-                  style={{ justifyContent: "flex-start" }}
-                >
-                  <IconButton
-                    disableRipple
-                    style={{ backgroundColor: "#ccc", marginRight: "1rem" }}
-                  >
-                    <PhoneIcon />
-                  </IconButton>
-                  {currentUser?.phoneNumber}
-                </div>
-              </div>
-              <div
-                style={{
-                  height: "2.5rem",
-                  display: "flex",
-                  marginBottom: "2rem",
-                }}
-              >
-                <StyledNavLink to="/edit_profile">
-                  <StyledFab variant="extended" bold primary>
-                    Edit Profile
-                  </StyledFab>
-                </StyledNavLink>
-              </div>
-            </div>
+              Edit Profile
+            </StyledFab>
           </div>
         </div>
       ) : (

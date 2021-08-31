@@ -1,6 +1,6 @@
 export * from "./Homepage";
 export * from "./Blog";
-export * from "./Network";
+export * from "./Networks";
 export * from "./MarketPlace";
 export * from "./JobPortal";
 export * from "./Tutorials";

@@ -48,6 +48,9 @@ h1 {
   background-color: var(--background);
   overflow: hidden;
   max-width: 100vw;
+  background-image: url(./assets/bg.svg);
+  background-repeat: no-repeat;
+  background-position: top right;
 }
 
 .fix_wrapper {

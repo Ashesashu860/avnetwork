@@ -12,7 +12,7 @@ import {
   loginUserAction,
   logoutUserAction,
 } from "../../redux/actions/user_actions";
-import { navLinks } from "./NavbarLinks";
+import { navLinks, loggedInLinks } from "./NavbarLinks";
 
 const HamburgerIcon = styled.div`
   display: none;
@@ -61,11 +61,9 @@ export const Navbar = withRouter(({ history }) => {
 
   const filteredLinks = currentUser
     ? currentUser?.category === "Admin"
-      ? navLinks
-      : navLinks.filter((link) => link.name !== "Admin")
-    : navLinks.filter(
-        (link) => link.name !== "My Profile" && link.name !== "Admin"
-      );
+      ? loggedInLinks.concat(navLinks)
+      : loggedInLinks.concat(navLinks).filter((link) => link.name !== "Admin")
+    : navLinks;
 
   return (
     <>
