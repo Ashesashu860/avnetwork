@@ -13,10 +13,6 @@ export const BasicDetailsForm = ({
   onImageChange,
   onDeleteImage,
 }) => {
-  // const userWorkImages = basicDetails?.update
-  //   ? basicDetails?.userWorkImages && Object.keys(basicDetails?.userWorkImages)
-  //   : basicDetails?.userWorkImages;
-
   return (
     <div
       className="center"
@@ -62,8 +58,10 @@ export const BasicDetailsForm = ({
       </h4>
       <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
         {[
-          ...Object.keys(basicDetails?.userWorkImages),
-          ...basicDetails?.newImages,
+          ...(basicDetails?.userWorkImages
+            ? Object.keys(basicDetails?.userWorkImages)
+            : []),
+          ...(basicDetails?.newImages || []),
         ].map((key, index) => {
           const image =
             typeof key === "string"
@@ -80,8 +78,10 @@ export const BasicDetailsForm = ({
           );
         })}
         {[
-          ...Object.keys(basicDetails?.userWorkImages),
-          ...basicDetails?.newImages,
+          ...(basicDetails?.userWorkImages
+            ? Object.keys(basicDetails?.userWorkImages)
+            : []),
+          ...(basicDetails?.newImages || []),
         ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
       </StyledImageContainer>
     </div>

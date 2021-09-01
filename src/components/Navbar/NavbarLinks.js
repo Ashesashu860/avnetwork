@@ -4,16 +4,16 @@ export const loggedInLinks = [
     link: "/profile",
   },
   {
-    name: "Networks",
-    link: "/networks",
-  },
-  {
     name: "Admin",
     link: "/admin",
   },
 ];
 
 export const navLinks = [
+  {
+    name: "Networks",
+    link: "/networks",
+  },
   {
     name: "Blog",
     link: "/blog",

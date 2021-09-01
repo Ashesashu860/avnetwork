@@ -45,7 +45,7 @@ export function* getAllUsersSaga() {
 export function* setUserInDb(action) {
   yield put(setDialogBoxPropsAction("Signing Up..."));
 
-  const userWorkImages = yield [...action.payload.user.userWorkImages];
+  const newImages = yield [...action.payload.user.newImages];
 
   const userDatabaseRef = yield firebase
     .database()
@@ -63,11 +63,11 @@ export function* setUserInDb(action) {
     uid,
   });
 
-  if (userWorkImages.length > 0) {
+  if (newImages.length > 0) {
     const userWorkImagesStorageRef = yield firebase
       .storage()
       .ref(`userWorkImages/${action.payload.user.uid}`);
-    for (const image of userWorkImages) {
+    for (const image of newImages) {
       const imageId = uuidv4();
       const imageStorageRef = yield userWorkImagesStorageRef.child(imageId);
       yield imageStorageRef.put(image);
@@ -91,7 +91,8 @@ export function* setUserInDb(action) {
       true
     )
   );
-  yield put(setUserAction(action.payload.user));
+  const updatedUser = yield getUserFromDb(action.payload.user);
+  yield put(setUserAction(updatedUser));
 }
 
 export function* updateUserSaga(action) {

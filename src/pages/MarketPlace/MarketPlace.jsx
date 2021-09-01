@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllMarketPlaceProducts } from "../../redux/actions";
 import { ProductCard } from "./ProductCard";
 import { useHistory } from "react-router-dom";
-import MarketPlaceSvg from "../../assets/market_place_logo.svg";
+import MarketPlaceSvg from "../../assets/market_place_home.svg";
 
 const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,

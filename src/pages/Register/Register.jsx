@@ -107,7 +107,7 @@ export const Register = (props) => {
   const [basicDetails, setBasicDetails] = useState({
     category: "",
     phoneNumber: "",
-    userWorkImages: [],
+    newImages: [],
   });
 
   const onChange = (event) => {
@@ -120,14 +120,14 @@ export const Register = (props) => {
   const onImageChange = (event) => {
     setBasicDetails({
       ...basicDetails,
-      userWorkImages: [...basicDetails?.userWorkImages, event.target.files[0]],
+      newImages: [...basicDetails?.newImages, event.target.files[0]],
     });
   };
 
   const onDeleteImage = (imageIndex) => {
     setBasicDetails({
       ...basicDetails,
-      userWorkImages: basicDetails?.userWorkImages.filter(
+      newImages: basicDetails?.newImages.filter(
         (image, index) => imageIndex !== index
       ),
     });
