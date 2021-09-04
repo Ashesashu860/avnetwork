@@ -72,7 +72,7 @@ export const InterestedCard = ({
               </StyledFab>
             </a>
             <a
-              href={`https://api.whatsapp.com/send?phone=${phoneNumber}&text=I am interested`}
+              href={`https://api.whatsapp.com/send?phone=+91${phoneNumber}&text=I am interested`}
               style={{ textDecoration: "none" }}
             >
               <StyledFab
