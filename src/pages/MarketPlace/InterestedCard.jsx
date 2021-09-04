@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Grid, Avatar } from "@material-ui/core";
 import PhoneIcon from "@material-ui/icons/Phone";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { StyledFab } from "../../components";
 
 const StyledCard = styled.div`
@@ -10,6 +11,14 @@ const StyledCard = styled.div`
   background-color: #eee;
   width: 100%;
   border-radius: 8px !important;
+`;
+
+const StyledCardContent = styled.div`
+  align-items: flex-start;
+  flex-direction: column;
+  & > *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const InterestedCard = ({
@@ -35,28 +44,13 @@ export const InterestedCard = ({
             style={{ maxHeight: "100%" }}
           />
         </Avatar>
-        <Grid container>
-          <Grid
-            container
-            wrap="nowrap"
-            style={{ justifyContent: "space-between" }}
-          >
-            <h5>{displayName}</h5>
-            {/* <span style={{ fontSize: "0.9rem" }}>{date}</span> */}
-          </Grid>
-          <div
-            className="center"
-            style={{
-              width: "100%",
-              marginTop: "0.5rem",
-              alignItems: "flex-start",
-              flexDirection: "column",
-            }}
-          >
-            I am interested in your product. Please contact me.
+        <StyledCardContent className="center">
+          <h5>{displayName}</h5>
+          <p>I am interested in your product. Please contact me.</p>
+          <div style={{ float: "left" }}>
             <a
               href={`tel:${phoneNumber}`}
-              style={{ textDecoration: "none", marginTop: "1rem" }}
+              style={{ textDecoration: "none", marginRight: "1rem" }}
             >
               <StyledFab
                 variant="extended"
@@ -77,8 +71,23 @@ export const InterestedCard = ({
                 Call me
               </StyledFab>
             </a>
+            <a
+              href={`https://api.whatsapp.com/send?phone=${phoneNumber}&text=I am interested`}
+              style={{ textDecoration: "none" }}
+            >
+              <StyledFab
+                bold
+                primary
+                style={{
+                  height: "3rem",
+                  maxWidth: "3rem",
+                }}
+              >
+                <WhatsAppIcon />
+              </StyledFab>
+            </a>
           </div>
-        </Grid>
+        </StyledCardContent>
         {/* <IconButton>
     <DeleteIcon />
   </IconButton> */}

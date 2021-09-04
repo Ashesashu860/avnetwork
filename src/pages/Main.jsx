@@ -25,6 +25,7 @@ import {
   EditProfile,
   Networks,
   ViewUser,
+  MarketPlaceHome,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
