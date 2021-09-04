@@ -26,6 +26,7 @@ import {
   Networks,
   ViewUser,
   MarketPlaceHome,
+  BlogHome,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
@@ -65,7 +66,7 @@ export const Main = () => {
             <Route exact path="/blogs" component={BlogList} />
             <Route exact path="/blogs/:id" component={ViewBlog} />
             <Route exact path="/blog-create" component={BlogCreate} />
-            <Route exact path="/market_place" component={MarketPlace} />
+            <Route exact path="/market_place" component={MarketPlaceHome} />
             <Route exact path="/job_portal" component={UnderConstruction} />
             <Route exact path="/tutorials" component={UnderConstruction} />
             <Route exact path="/about_us" component={UnderConstruction} />

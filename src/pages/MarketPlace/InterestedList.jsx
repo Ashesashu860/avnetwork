@@ -9,7 +9,7 @@ const mapState = (state) => ({
   allInterestedUsers: state.marketPlace.allInterestedUsers,
 });
 
-export const InterestedList = ({ productId, interestedUsersLength }) => {
+export const InterestedList = ({ productId, productTitle }) => {
   const { allInterestedUsersLoading, allInterestedUsers } =
     useSelector(mapState);
   const dispatch = useDispatch();
@@ -17,6 +17,10 @@ export const InterestedList = ({ productId, interestedUsersLength }) => {
   useEffect(() => {
     if (productId) {
       dispatch(getAllInterestedUsersForProductAction(productId));
+      return () => {
+        const abortController = new AbortController();
+        abortController.abort();
+      };
     }
     const abortController = new AbortController();
     return () => abortController.abort();
@@ -35,7 +39,7 @@ export const InterestedList = ({ productId, interestedUsersLength }) => {
       ) : (
         <>
           {allInterestedUsers?.map((user) => (
-            <InterestedCard {...user} />
+            <InterestedCard {...user} productTitle={productTitle} />
           ))}
         </>
       )}

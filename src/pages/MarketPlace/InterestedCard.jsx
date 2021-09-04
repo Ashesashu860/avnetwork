@@ -25,6 +25,7 @@ export const InterestedCard = ({
   displayName,
   photoURL,
   phoneNumber,
+  productTitle,
   style,
 }) => {
   return (
@@ -53,26 +54,15 @@ export const InterestedCard = ({
               style={{ textDecoration: "none", marginRight: "1rem" }}
             >
               <StyledFab
-                variant="extended"
                 bold
                 primary
-                style={{ height: "3rem" }}
+                style={{ height: "3rem", maxWidth: "3rem" }}
               >
-                <PhoneIcon
-                  style={{
-                    maxWidth: "1.4rem",
-                    marginRight: "0.5rem",
-                    backgroundColor: "var(--secondary)",
-                    padding: "4px",
-                    borderRadius: "50%",
-                    color: "#000",
-                  }}
-                />
-                Call me
+                <PhoneIcon />
               </StyledFab>
             </a>
             <a
-              href={`https://api.whatsapp.com/send?phone=+91${phoneNumber}&text=I am interested`}
+              href={`https://api.whatsapp.com/send?phone=+91${phoneNumber}&text=Hi, I saw your interest in ${productTitle} from avnetwork.in. Let's discuss more about it.`}
               style={{ textDecoration: "none" }}
             >
               <StyledFab

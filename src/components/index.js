@@ -16,3 +16,4 @@ export * from "./Alert";
 export * from "./Spinner";
 export * from "./ShadowContainer";
 export * from "./FormElements";
+export * from "./ResponsiveBody";

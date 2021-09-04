@@ -10,6 +10,7 @@ import {
 import styled from "styled-components";
 import { InterestedList } from "..";
 import { Checkbox } from "@material-ui/core";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
@@ -35,16 +36,6 @@ const Item = ({ item }) => {
       />
     </div>
   );
-
-  // <div
-  //   style={{
-  //     backgroundImage: `url(${item})`,
-  //     maxWidth: "100%",
-  //     maxHeight: "100%",
-  //     backgroundSize: "contain",
-  //     backgroundPosition: "center center",
-  //   }}
-  // ></div>
 };
 
 const StyledContentContainer = styled.div`
@@ -67,6 +58,10 @@ export const ViewProduct = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getCurrentMarketPlaceProductAction(productId));
+    return () => {
+      const abortController = new AbortController();
+      abortController.abort();
+    };
   }, []);
 
   const onInterestedClick = (event) => {
@@ -134,49 +129,57 @@ export const ViewProduct = (props) => {
           <p>Location: {currentProduct?.location}</p>
           <h2>Rs. {currentProduct?.price}/-</h2>
           <div>
-            <h3>Description</h3>
+            <h3 style={{ marginBottom: "1rem" }}>Description</h3>
             <p>{currentProduct?.description}</p>
           </div>
-          <div
-            style={{
-              height: "2.5rem",
-              display: "flex",
-              marginTop: "1rem",
-              marginLeft: "-1rem",
-            }}
-          >
-            {currentUser ? (
-              <Checkbox
-                // disableRipple
-                onClick={onInterestedClick}
-                checked={
-                  !!(
-                    currentProduct?.interestedUsers &&
-                    Object.keys(currentProduct?.interestedUsers).includes(
-                      currentUser?.uid
+          {currentUser ? (
+            currentProduct?.userId !== currentUser?.uid && (
+              <div
+                className="center"
+                style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
+              >
+                <Checkbox
+                  onClick={onInterestedClick}
+                  checked={
+                    !!(
+                      currentProduct?.interestedUsers &&
+                      Object.keys(currentProduct?.interestedUsers).includes(
+                        currentUser?.uid
+                      )
                     )
-                  )
-                }
-                checkedIcon={
-                  <StyledFab variant="extended" bold secondary>
-                    Not Interested
+                  }
+                  checkedIcon={
+                    <StyledFab variant="extended" bold secondary>
+                      Not Interested
+                    </StyledFab>
+                  }
+                  icon={
+                    <StyledFab variant="extended" bold primary>
+                      Interested
+                    </StyledFab>
+                  }
+                  {...props}
+                />
+                <a
+                  href={`https://api.whatsapp.com/send?phone=+91${currentUser?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <StyledFab bold primary round>
+                    <WhatsAppIcon />
                   </StyledFab>
-                }
-                icon={
-                  <StyledFab variant="extended" bold primary>
-                    Interested
-                  </StyledFab>
-                }
-                {...props}
-              />
-            ) : (
-              <h3>Login to show interest to this product</h3>
-            )}
-          </div>
+                </a>
+              </div>
+            )
+          ) : (
+            <h3>Login to show interest to this product</h3>
+          )}
         </StyledContentContainer>
       </MainContainer>
       {currentProduct?.userId === currentUser?.uid && (
-        <InterestedList productId={productId} />
+        <InterestedList
+          productId={productId}
+          productTitle={currentProduct?.title}
+        />
       )}
     </>
   );
