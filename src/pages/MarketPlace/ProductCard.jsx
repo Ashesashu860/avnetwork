@@ -62,7 +62,9 @@ export const ProductCard = ({
   return (
     <ProductCardContainer className="center" onClick={onClick}>
       {/* <Image src={Object.values(images)[0]} alt="sadas" /> */}
-      <ImageContainer image={Object.values(images)[0]}></ImageContainer>
+      <ImageContainer
+        image={images && Object.values(images)[0]}
+      ></ImageContainer>
       <ProductContentContainer>
         <h3
           style={{
