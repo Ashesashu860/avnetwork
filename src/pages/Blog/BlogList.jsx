@@ -13,7 +13,6 @@ const BlogListContainer = styled.div`
   ${(props) =>
     (props.autoHeight || props.direction === "row") &&
     "min-height: auto !important;"}
-  padding: 1rem;
 `;
 
 const mapState = (state) => ({

@@ -15,7 +15,7 @@ export const Homepage = (props) => {
       description:
         "Write blogs about your experiences, your knowledge or about your walkthrough in your journey",
       buttonProps: {
-        link: "/blogs",
+        link: "/blog",
         title: "Visit Blogs",
       },
     },

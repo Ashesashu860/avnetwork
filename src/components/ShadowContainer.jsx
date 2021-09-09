@@ -9,7 +9,7 @@ export const Container = styled.div`
     position: absolute;
     content: "";
     left: -1px;
-    width: 1rem;
+    width: 2rem;
     z-index: 1;
     background-image: linear-gradient(to right, var(--background), transparent);
     //background-color: red;
@@ -20,7 +20,7 @@ export const Container = styled.div`
     position: absolute;
     top: 0;
     content: "";
-    width: 1rem;
+    width: 2rem;
     right: -1px;
     background-image: linear-gradient(to left, var(--background), transparent);
     //background-color: red;
