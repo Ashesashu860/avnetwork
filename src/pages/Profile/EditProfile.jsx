@@ -62,7 +62,7 @@ export const EditProfile = (props) => {
         onImageChange={onImageChange}
         onDeleteImage={onDeleteImage}
       />
-      <div className="center">
+      <div className="center" style={{ marginBottom: "1rem" }}>
         <StyledFab
           variant="extended"
           bold

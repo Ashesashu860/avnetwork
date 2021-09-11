@@ -51,8 +51,16 @@ export function* setUserInDb(action) {
     .database()
     .ref(`users/${action.payload.user.uid}`);
 
-  const { category, displayName, email, phoneNumber, photoURL, uid } =
-    action.payload.user;
+  const {
+    category,
+    displayName,
+    email,
+    phoneNumber,
+    photoURL,
+    address,
+    serviceLocations,
+    uid,
+  } = action.payload.user;
 
   yield userDatabaseRef.set({
     category,
@@ -60,6 +68,8 @@ export function* setUserInDb(action) {
     email,
     phoneNumber,
     photoURL,
+    address,
+    serviceLocations,
     uid,
   });
 
@@ -112,6 +122,8 @@ export function* updateUserSaga(action) {
     userWorkImages,
     newImages,
     deletedImages,
+    address,
+    serviceLocations,
   } = action.payload.user;
 
   yield userDatabaseRef.set({
@@ -122,6 +134,8 @@ export function* updateUserSaga(action) {
     photoURL,
     uid,
     userWorkImages,
+    address,
+    serviceLocations,
   });
 
   const userWorkImagesStorageRef = yield firebase

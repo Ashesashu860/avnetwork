@@ -6,10 +6,6 @@ import {
   makeStyles,
   Checkbox,
   withStyles,
-  FormControl,
-  InputLabel,
-  Select,
-  TextField,
 } from "@material-ui/core";
 import { StyledButton } from "../../components";
 import { TermsOfUse } from "..";
@@ -107,6 +103,8 @@ export const Register = (props) => {
   const [basicDetails, setBasicDetails] = useState({
     category: "",
     phoneNumber: "",
+    address: "",
+    serviceLocations: "",
     newImages: [],
   });
 
@@ -137,18 +135,28 @@ export const Register = (props) => {
     switch (activeStep) {
       case 1:
         return (
-          <BasicDetailsForm
-            basicDetails={basicDetails}
-            onChange={onChange}
-            onImageChange={onImageChange}
-            onDeleteImage={onDeleteImage}
-          />
+          <form>
+            <BasicDetailsForm
+              basicDetails={basicDetails}
+              onChange={onChange}
+              onImageChange={onImageChange}
+              onDeleteImage={onDeleteImage}
+            />
+          </form>
         );
       case 2:
         return <TermsOfUse />;
       default:
     }
   };
+
+  const isNextDisabled = () =>
+    activeStep === steps.length ||
+    !basicDetails.category ||
+    !basicDetails.phoneNumber ||
+    !basicDetails.address ||
+    !basicDetails.serviceLocations ||
+    (activeStep === 2 && !checked);
 
   return (
     <>
@@ -210,17 +218,9 @@ export const Register = (props) => {
                 </StyledButton>
                 <StyledButton
                   onClick={handleNext}
-                  disabled={
-                    activeStep === steps.length ||
-                    !basicDetails.category ||
-                    !basicDetails.phoneNumber ||
-                    (activeStep === 2 && !checked)
-                  }
+                  disabled={isNextDisabled()}
                   className={classes.button}
-                  {...(activeStep === steps.length ||
-                  !basicDetails.category ||
-                  !basicDetails.phoneNumber ||
-                  (activeStep === 2 && !checked)
+                  {...(isNextDisabled()
                     ? { secondary: true }
                     : { primary: true })}
                 >

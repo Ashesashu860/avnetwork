@@ -21,8 +21,13 @@ const Item = ({ item }) => {
   const [loading, setLoading] = useState(true);
   const onLoaded = () => setLoading(false);
   return (
-    <div style={{ minHeight: "100%", minWidth: "100%" }}>
-      {loading && <LoaderIcon />}
+    <div className="center" style={{ maxHeight: "100%", maxWidth: "100%" }}>
+      {loading && (
+        <div
+          className="center"
+          style={{ minHeight: "4rem", minWidth: "4rem" }}
+        ></div>
+      )}
       <img
         className="fix_wrapper"
         src={item}

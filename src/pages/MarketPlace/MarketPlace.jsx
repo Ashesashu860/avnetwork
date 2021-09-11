@@ -23,7 +23,7 @@ export const MarketPlace = () => {
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getAllMarketPlaceProducts());
+    !allProducts && dispatch(getAllMarketPlaceProducts());
   }, []);
 
   return (

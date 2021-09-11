@@ -1,0 +1,14 @@
+.basic_details_form_container {
+  flex-direction: row !important;
+  margin-top: 1rem !important;
+}
+
+.basic_details_photos_container {
+  margin: 1rem 1rem 0 1rem !important;
+}
+
+@media screen and (max-width: 768px) {
+  .basic_details_form_container {
+    flex-direction: column !important;
+  }
+}

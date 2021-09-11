@@ -7,7 +7,6 @@ import {
   StyledTextArea,
   StyledSelect,
   ErrorText,
-  StyledLegend,
   StyledImageContainer,
   AddImageCard,
   ProductImageCard,
@@ -148,6 +147,7 @@ export const CreateProduct = () => {
           onBlur={onBlur}
           error={!!errors.title}
           helperText={errors.title}
+          value={product?.title}
         />
         <StyledTextBox
           label="Location *"
@@ -157,6 +157,7 @@ export const CreateProduct = () => {
           onBlur={onBlur}
           error={!!errors.location}
           helperText={errors.location}
+          value={product?.location}
         />
         <StyledTextBox
           label="Brand *"
@@ -166,6 +167,7 @@ export const CreateProduct = () => {
           onBlur={onBlur}
           error={!!errors.brand}
           helperText={errors.brand}
+          value={product?.brand}
         />
         <FormControl
           variant="outlined"
@@ -179,6 +181,7 @@ export const CreateProduct = () => {
             name="category"
             label="Category"
             error={!!errors.category}
+            value={product?.category}
           >
             <option value={""}></option>
             {categories.map((category) => (
@@ -189,15 +192,15 @@ export const CreateProduct = () => {
           </StyledSelect>
           {errors.category && <ErrorText>{errors.category}</ErrorText>}
         </FormControl>
-        <div>
-          <StyledTextArea error={!!errors.description}>
-            <StyledLegend error={!!errors.description}>
-              Description *
-            </StyledLegend>
-            <textarea name="description" onChange={onChange} onBlur={onBlur} />
-          </StyledTextArea>
-          {errors.description && <ErrorText>{errors.description}</ErrorText>}
-        </div>
+        <StyledTextArea
+          onBlur={onBlur}
+          title="Description *"
+          onChange={onChange}
+          name="description"
+          error={errors.description}
+          color="primary"
+          value={product?.description}
+        />
         <StyledTextBox
           InputProps={{
             startAdornment: <InputAdornment position="start">₹</InputAdornment>,
@@ -210,6 +213,7 @@ export const CreateProduct = () => {
           name="price"
           error={!!errors.price}
           helperText={errors.price}
+          value={product?.price}
         />
         <StyledTextBox
           InputProps={{
@@ -222,6 +226,7 @@ export const CreateProduct = () => {
           name="stock"
           error={!!errors.stock}
           helperText={errors.stock}
+          value={product?.stock}
         />
         <h4>Upload upto 4 photos of the product</h4>
         <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>

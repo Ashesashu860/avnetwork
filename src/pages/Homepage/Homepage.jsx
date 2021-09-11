@@ -78,7 +78,7 @@ const Item = ({ item }) => {
   return (
     <div
       image={image}
-      className="wrapper fix_wrapper slide"
+      className="wrapper slide"
       style={{ position: "relative", backgroundImage: `url(${image})` }}
     >
       <div className="center slide_content">
