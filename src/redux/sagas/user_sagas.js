@@ -8,6 +8,7 @@ import {
   setAlertAction,
 } from "../actions";
 import { v4 as uuidv4 } from "uuid";
+import { getDatafromDbwhere } from "./saga_utilities";
 
 const constructUserDataFromUserAuth = (user) =>
   user
@@ -126,6 +127,7 @@ export function* updateUserSaga(action) {
     serviceLocations,
   } = action.payload.user;
 
+  console.log("userWorkImages", userWorkImages);
   yield userDatabaseRef.set({
     category,
     displayName,
@@ -133,7 +135,7 @@ export function* updateUserSaga(action) {
     phoneNumber,
     photoURL,
     uid,
-    userWorkImages,
+    ...(userWorkImages && { userWorkImages: userWorkImages }),
     address,
     serviceLocations,
   });
@@ -261,4 +263,71 @@ export function* toggleBlogWritePermissionSaga(action) {
   } catch (error) {
     setAlertAction(error);
   }
+}
+
+//this will delete profile and market place products
+export function* deleteUserSaga(action) {
+  yield put(setDialogBoxPropsAction("Deleting your profile..."));
+  //deleting user profile from db
+  yield firebase.database().ref(`users`).child(action.payload.userId).remove();
+
+  //deleting userWorkImages from storage
+  const userWorkImages = yield firebase
+    .storage()
+    .ref("userWorkImages")
+    .child(action.payload.userId)
+    .listAll();
+  for (const userWorkImage of userWorkImages.items) {
+    yield firebase
+      .storage()
+      .ref("userWorkImages")
+      .child(action.payload.userId)
+      .child(userWorkImage.name)
+      .delete();
+  }
+  //deleting marketPlaceProducts from storage
+  const products = yield getDatafromDbwhere(
+    "marketPlaceProducts",
+    "userId",
+    action.payload.userId
+  );
+  const marketPlaceProductsDatabaseRef = yield firebase
+    .database()
+    .ref("marketPlaceProducts");
+  const marketPlaceProductsStorageRef = yield firebase
+    .storage()
+    .ref("marketPlaceProducts");
+  const productKeys = yield products && Object.keys(products);
+  if (productKeys) {
+    for (const productKey of productKeys) {
+      //deleting product from db
+      yield marketPlaceProductsDatabaseRef.child(productKey).remove();
+      //listing all images of product
+      const productImages = yield marketPlaceProductsStorageRef
+        .child(productKey)
+        .listAll();
+      //filter product image names
+      const productNames = yield productImages.items.map((image) => image.name);
+      //iterate over all product images and delete them
+      for (const productName of productNames) {
+        yield yield marketPlaceProductsStorageRef
+          .child(productKey)
+          .child(productName)
+          .delete();
+      }
+    }
+  }
+  yield put(
+    setDialogBoxPropsAction(
+      "User deleted successfully",
+      {
+        title: "OK",
+        onButtonClick: (event) => {
+          action.payload.history.push("/");
+        },
+      },
+      true
+    )
+  );
+  yield signOutUser();
 }

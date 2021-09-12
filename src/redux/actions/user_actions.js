@@ -59,3 +59,11 @@ export const toggleBlogWritePermissionAction = (userId) => ({
     userId,
   },
 });
+
+export const deleteUserAction = (userId, history) => ({
+  type: "DELETE_USER",
+  payload: {
+    userId,
+    history,
+  },
+});

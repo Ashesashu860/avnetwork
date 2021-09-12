@@ -90,7 +90,7 @@ export const ViewUserTemplate = ({ user }) => {
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    !allProducts && dispatch(getAllMarketPlaceProducts());
+    dispatch(getAllMarketPlaceProducts());
   }, []);
 
   return (
