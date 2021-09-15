@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { MainContainer, LoaderIcon, StyledFab } from "../../../components";
+import {
+  MainContainer,
+  UserDialogAvatar,
+  StyledFab,
+} from "../../../components";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-material-ui-carousel";
 import { useParams } from "react-router-dom";
 import {
   getCurrentMarketPlaceProductAction,
+  getCurrentProductOwnerAction,
   setInterestForProductInDbAction,
+  setCurrentMarketPlaceProductAction,
 } from "../../../redux/actions";
 import styled from "styled-components";
 import { InterestedList } from "..";
@@ -15,6 +21,7 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
   currentUser: state.users.currentUser,
+  currentProductOwner: state.marketPlace.currentProductOwner,
 });
 
 const Item = ({ item }) => {
@@ -23,10 +30,9 @@ const Item = ({ item }) => {
   return (
     <div className="center" style={{ maxHeight: "100%", maxWidth: "100%" }}>
       {loading && (
-        <div
-          className="center"
-          style={{ minHeight: "4rem", minWidth: "4rem" }}
-        ></div>
+        <div className="center" style={{ minHeight: "4rem", minWidth: "4rem" }}>
+          LOADING...
+        </div>
       )}
       <img
         className="fix_wrapper"
@@ -57,17 +63,24 @@ export const ViewProduct = (props) => {
   const params = useParams();
   const productId = props?.location?.state?.id || params.id;
 
-  const { currentProduct, currentUser } = useSelector(mapState);
+  const { currentProduct, currentUser, currentProductOwner } =
+    useSelector(mapState);
   const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getCurrentMarketPlaceProductAction(productId));
     return () => {
+      dispatch(setCurrentMarketPlaceProductAction(null));
       const abortController = new AbortController();
       abortController.abort();
     };
   }, []);
+
+  useEffect(() => {
+    currentProduct &&
+      dispatch(getCurrentProductOwnerAction(currentProduct?.userId));
+  }, [currentProduct]);
 
   const onInterestedClick = (event) => {
     dispatch(
@@ -78,7 +91,6 @@ export const ViewProduct = (props) => {
       )
     );
   };
-
   return (
     <>
       <MainContainer className="wrapper">
@@ -130,7 +142,21 @@ export const ViewProduct = (props) => {
               In Stock: {currentProduct?.stock}
             </div>
           </div>
-          <p>Sold by: {currentProduct?.sellarName}</p>
+          <div
+            className="center"
+            style={{ justifyContent: "flex-start", minWidth: "100%" }}
+          >
+            <p>Sold by:</p>
+            {currentProductOwner && (
+              <div>
+                <UserDialogAvatar
+                  height="2rem"
+                  user={currentProductOwner}
+                  name={currentProductOwner?.displayName}
+                />
+              </div>
+            )}
+          </div>
           <p>Location: {currentProduct?.location}</p>
           <h2>Rs. {currentProduct?.price}/-</h2>
           <div>

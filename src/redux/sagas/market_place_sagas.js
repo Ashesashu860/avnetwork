@@ -3,6 +3,7 @@ import {
   setAllMarketPlaceProducts,
   setDialogBoxPropsAction,
   setCurrentMarketPlaceProductAction,
+  setCurrentProductOwnerAction,
   //INTERESTED ACTIONS
   interestedUsersForProductLoadingAction,
   setAllInterestedUsersForProductInStateAction,
@@ -113,4 +114,11 @@ export function* getAllInterestedUsersForProductSaga(action) {
   }
   yield put(setAllInterestedUsersForProductInStateAction(interestedUsers));
   yield put(interestedUsersForProductLoadingAction(false));
+}
+
+export function* getCurrentProductOwnerSaga(action) {
+  const currentProductOwner = yield getDatafromDb(
+    `users/${action.payload.userId}`
+  );
+  yield put(setCurrentProductOwnerAction(currentProductOwner));
 }

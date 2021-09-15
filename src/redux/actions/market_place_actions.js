@@ -46,21 +46,6 @@ export const setInterestForProductInDbAction = (
   },
 });
 
-// export const getCurrentProductInterestFromDbAction = (productId, userId) => ({
-//   type: "GET_CURRENT_PRODUCT_INTEREST_FROM_DB",
-//   payload: {
-//     productId,
-//     userId,
-//   },
-// });
-
-// export const setCurrentProductInterestInStateAction = (interested) => ({
-//   type: "SET_CURRENT_PRODUCT_INTEREST_IN_STATE",
-//   payload: {
-//     interested,
-//   },
-// });
-
 export const getAllInterestedUsersForProductAction = (productId) => ({
   type: "GET_ALL_INTERESTED_USERS_FOR_PRODUCT",
   payload: {
@@ -81,5 +66,19 @@ export const setAllInterestedUsersForProductInStateAction = (
   type: "SET_ALL_INTERESTED_USERS_FOR_PRODUCT_IN_STATE",
   payload: {
     allInterestedUsers,
+  },
+});
+
+export const getCurrentProductOwnerAction = (userId) => ({
+  type: "GET_CURRENT_PRODUCT_OWNER",
+  payload: {
+    userId,
+  },
+});
+
+export const setCurrentProductOwnerAction = (currentProductOwner) => ({
+  type: "SET_CURRENT_PRODUCT_OWNER",
+  payload: {
+    currentProductOwner,
   },
 });

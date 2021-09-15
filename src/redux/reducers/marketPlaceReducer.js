@@ -3,6 +3,7 @@ const initialState = {
   allProducts: null,
   allInterestedUsers: null,
   allInterestedUsersLoading: false,
+  currentProductOwner: null,
 };
 
 export const marketPlaceReducer = (marketPlaceState = initialState, action) => {
@@ -17,14 +18,6 @@ export const marketPlaceReducer = (marketPlaceState = initialState, action) => {
         ...marketPlaceState,
         currentProduct: action.payload.currentProduct,
       };
-    // case "SET_CURRENT_PRODUCT_INTEREST_IN_STATE":
-    //   return {
-    //     ...marketPlaceState,
-    //     currentProduct: {
-    //       ...marketPlaceState.currentProduct,
-    //       interested: action.payload.interested,
-    //     },
-    //   };
     case "INTERESTED_USERS_FOR_PRODUCT_LOADING":
       return {
         ...marketPlaceState,
@@ -34,6 +27,15 @@ export const marketPlaceReducer = (marketPlaceState = initialState, action) => {
       return {
         ...marketPlaceState,
         allInterestedUsers: action.payload.allInterestedUsers,
+      };
+    case "SET_CURRENT_PRODUCT_OWNER":
+      console.log(
+        "SET_CURRENT_PRODUCT_OWNER",
+        action.payload.currentProductOwner
+      );
+      return {
+        ...marketPlaceState,
+        currentProductOwner: action.payload.currentProductOwner,
       };
     default:
       return marketPlaceState;

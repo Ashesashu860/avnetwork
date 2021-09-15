@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Avatar, IconButton } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
 import BusinessIcon from "@material-ui/icons/Business";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import Carousel from "react-material-ui-carousel";
 import "./view_user_template.css";
-import { ContentContainer } from "../../../components";
+import { ContentContainer, ListItemWithPhoto } from "../../../components";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ProductCard } from "../../MarketPlace/ProductCard";
@@ -15,26 +15,6 @@ import { getAllMarketPlaceProducts } from "../../../redux/actions";
 const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,
 });
-
-const DetailItem = ({ icon, title, value }) => (
-  <div className="center" style={{ justifyContent: "flex-start" }}>
-    <IconButton
-      disableRipple
-      style={{ backgroundColor: "#ccc", marginRight: "1rem" }}
-    >
-      {icon}
-    </IconButton>
-    <div
-      className="center"
-      style={{ flexDirection: "column", alignItems: "flex-start" }}
-    >
-      <span style={{ fontWeight: "bold", marginBottom: "0.2rem" }}>
-        {title}
-      </span>
-      <span>{value || `${title} not found`}</span>
-    </div>
-  </div>
-);
 
 const Item = ({ item, height, width }) => {
   const [loading, setLoading] = useState(true);
@@ -51,6 +31,7 @@ const Item = ({ item, height, width }) => {
           objectFit: "contain",
           height,
           width,
+          borderRadius: "1rem",
         }}
       />
     </div>
@@ -112,8 +93,9 @@ export const ViewUserTemplate = ({ user }) => {
       </div>
       <div className="center profile_content">
         <div className="profile_list_contianer">
-          {details.map((detail) => (
-            <DetailItem
+          {details.map((detail, index) => (
+            <ListItemWithPhoto
+              key={index}
               icon={detail?.icon}
               value={detail?.value}
               title={detail?.title}
@@ -140,7 +122,6 @@ export const ViewUserTemplate = ({ user }) => {
                   opacity: 0.4,
                 },
               }}
-              autoPlay={false}
             >
               {user?.userWorkImages &&
                 Object.values(user?.userWorkImages)?.map((item, i) => (
@@ -173,7 +154,7 @@ export const ViewUserTemplate = ({ user }) => {
             />
           ))
         ) : (
-          <h2 style={{ padding: "1rem" }}>No Products</h2>
+          <h3 style={{ padding: "1rem" }}>No Products</h3>
         )}
       </div>
     </>

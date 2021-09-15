@@ -25,6 +25,7 @@ import {
   getCurrentMarketPlaceProductSaga,
   setInterestForProductInDbSaga,
   getAllInterestedUsersForProductSaga,
+  getCurrentProductOwnerSaga,
 } from "./market_place_sagas";
 
 export function* rootSaga() {
@@ -67,4 +68,5 @@ export function* rootSaga() {
     "GET_ALL_INTERESTED_USERS_FOR_PRODUCT",
     getAllInterestedUsersForProductSaga
   );
+  yield takeLatest("GET_CURRENT_PRODUCT_OWNER", getCurrentProductOwnerSaga);
 }

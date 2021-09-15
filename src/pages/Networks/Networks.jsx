@@ -40,13 +40,22 @@ export const Networks = () => {
   }, []);
   const [selectedCategory, setSelectedCategory] = React.useState("");
 
-  const onCategoryClick = (index) => {
-    setSelectedCategory(userCategories[index]);
-  };
+  const filteredUsers = allUsers?.filter(
+    (user) => user?.category !== "Guest" && user?.category !== "Manufacturer"
+  );
 
-  const filteredUsers = !selectedCategory
-    ? allUsers
-    : allUsers?.filter((user) => user?.category === selectedCategory);
+  const filteredUsersWithCategory =
+    !selectedCategory || selectedCategory === "All"
+      ? filteredUsers
+      : filteredUsers?.filter((user) => user?.category === selectedCategory);
+
+  const filteredUserCategories = ["All", ...userCategories]?.filter(
+    (category) => category !== "Guest" && category !== "Manufacturer"
+  );
+
+  const onCategoryClick = (index) => {
+    setSelectedCategory(filteredUserCategories[index]);
+  };
 
   return (
     <>
@@ -61,7 +70,7 @@ export const Networks = () => {
               style={{ padding: "1rem" }}
             />
             <ShadowContainer>
-              {userCategories.map((category, index) => (
+              {filteredUserCategories.map((category, index) => (
                 <Chip
                   key={category}
                   style={
@@ -78,8 +87,8 @@ export const Networks = () => {
               ))}
             </ShadowContainer>
             <div className="center" style={{ flexWrap: "wrap" }}>
-              {filteredUsers?.length > 0 ? (
-                filteredUsers?.map((user) => (
+              {filteredUsersWithCategory?.length > 0 ? (
+                filteredUsersWithCategory?.map((user) => (
                   <UserCard
                     user={user}
                     onClick={() => {
