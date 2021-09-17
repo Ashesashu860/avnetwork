@@ -19,3 +19,4 @@ export * from "./FormElements";
 export * from "./ResponsiveBody";
 export * from "./UserDialogAvatar";
 export * from "./ListItemWithPhoto";
+export * from "./FilterChips";

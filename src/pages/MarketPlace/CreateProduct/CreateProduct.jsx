@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory, Redirect } from "react-router-dom";
+import { marketPlaceProductCategories } from "../../masterData";
 
 const mapState = (state) => ({
   currentUser: state.users.currentUser,
@@ -36,16 +37,6 @@ const initialErrors = {
   description: "",
   stock: "",
 };
-
-const categories = [
-  "Cables and connectors",
-  "Display panels and systems",
-  "Speakers And amplifier",
-  "Lighting equipment",
-  "Accessories",
-  "Trussing systems",
-  "Automation systems",
-];
 
 const toSentenceCase = (str) => {
   const res = str.replace(/([A-Z])/g, " $1");
@@ -184,7 +175,7 @@ export const CreateProduct = () => {
             value={product?.category}
           >
             <option value={""}></option>
-            {categories.map((category) => (
+            {marketPlaceProductCategories.map((category) => (
               <option key={category} value={category}>
                 {category}
               </option>

@@ -5,6 +5,7 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   &::before {
     position: absolute;
     content: "";
@@ -31,6 +32,7 @@ export const Container = styled.div`
 const SubContainer = styled(Grid)`
   width: 100%;
   height: 100%;
+  max-width: 100%;
   padding: 0 0.8rem;
   overflow: auto;
   &::-webkit-scrollbar {
@@ -41,9 +43,9 @@ const SubContainer = styled(Grid)`
   }
 `;
 
-export const ShadowContainer = ({ children }) => {
+export const ShadowContainer = ({ children, style }) => {
   return (
-    <Container>
+    <Container style={style}>
       <SubContainer container wrap="nowrap">
         {children}
       </SubContainer>

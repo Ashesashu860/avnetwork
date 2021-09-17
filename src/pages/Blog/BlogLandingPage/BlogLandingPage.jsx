@@ -124,36 +124,6 @@ export const BlogLandingPage = withRouter(({ history }) => {
           </Grid>
         </SubContent>
       </ResponsiveBody>
-      {/* <MainContainer className="fix_wrapper">
-        <div className="blog-containers">
-          <img src={BlogSvg} alt="Blog" />
-        </div>
-        <ContentContainer
-          heading={"Join millions of others"}
-          content={
-            "Whether sharing your expertise, knowledge, or whatever’s on your mind, you’re in good company on AVnetwork. Sign up to discover the knowledge spread by thousands of people."
-          }
-          spacing="2.5rem"
-          className="blog_landing_content"
-        >
-          <div
-            style={{ height: "2.5rem", display: "flex", marginBottom: "2rem" }}
-          >
-            <StyledNavLink to="/blogs" style={{ marginRight: "0.5rem" }}>
-              <StyledFab variant="extended" bold secondary>
-                View Blogs
-              </StyledFab>
-            </StyledNavLink>
-            {currentUser?.canWriteBlogs && (
-              <StyledNavLink to="/blog-create">
-                <StyledFab variant="extended" bold primary>
-                  New Blog
-                </StyledFab>
-              </StyledNavLink>
-            )}
-          </div>
-        </ContentContainer>
-      </MainContainer> */}
       <ContentContainer
         subHeading={"Latest Blogs"}
         content={"View our latest blogs"}

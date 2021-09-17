@@ -9,7 +9,7 @@ import "./view_user_template.css";
 import { ContentContainer, ListItemWithPhoto } from "../../../components";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { ProductCard } from "../../MarketPlace/ProductCard";
+import { ProductsList } from "../../MarketPlace";
 import { getAllMarketPlaceProducts } from "../../../redux/actions";
 
 const mapState = (state) => ({
@@ -134,29 +134,7 @@ export const ViewUserTemplate = ({ user }) => {
         </div>
       </div>
       <ContentContainer subHeading={"Our Products"} />
-      <div
-        className="center"
-        style={{ flexWrap: "wrap", backgroundColor: "#eee" }}
-      >
-        {filteredProducts?.length !== 0 ? (
-          filteredProducts?.map((product, index) => (
-            <ProductCard
-              key={index}
-              {...product}
-              onClick={() =>
-                history.push({
-                  pathname: `/products/${product.id}`,
-                  state: {
-                    id: product.id,
-                  },
-                })
-              }
-            />
-          ))
-        ) : (
-          <h3 style={{ padding: "1rem" }}>No Products</h3>
-        )}
-      </div>
+      <ProductsList products={filteredProducts} />
     </>
   );
 };

@@ -2,16 +2,15 @@ import React from "react";
 import {
   ContentContainer,
   StyledFab,
-  MainContainer,
   StyledNavLink,
   ResponsiveBody,
 } from "../../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMarketPlaceProducts } from "../../../redux/actions";
-import { ProductCard } from "../ProductCard";
 import { useHistory } from "react-router-dom";
 import MarketPlaceHomeImg from "../../../assets/market_place/market_place_home.png";
 import "./market_place_home.css";
+import { ProductsList } from "../ProductsList";
 
 const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,
@@ -61,25 +60,7 @@ export const MarketPlaceHome = () => {
         subHeading={"All Products"}
         content={"View our variety of different products"}
       />
-      <div
-        className="center"
-        style={{ flexWrap: "wrap", backgroundColor: "#eee" }}
-      >
-        {allProducts?.map((product, index) => (
-          <ProductCard
-            key={index}
-            {...product}
-            onClick={() =>
-              history.push({
-                pathname: `/products/${product.id}`,
-                state: {
-                  id: product.id,
-                },
-              })
-            }
-          />
-        ))}
-      </div>
+      <ProductsList products={allProducts} />
     </>
   );
 };

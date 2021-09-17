@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { StyledFab } from ".";
 import { StyledInput } from "./StyledInput";
+import { marketPlaceProductCategories } from "../pages/masterData";
 
 export const StyledSearchFab = styled(StyledFab)`
   width: 3.5rem !important;
@@ -34,14 +35,6 @@ const StyledMenu = styled(Menu)`
 `;
 
 export const SearchBar = ({ className, style, width }) => {
-  const categories = [
-    "Category",
-    "Integrators",
-    "Rentals",
-    "Dealers",
-    "Freelancers",
-  ];
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedCateoryIndex, setSelectedCateoryIndex] = React.useState(0);
 
@@ -86,7 +79,7 @@ export const SearchBar = ({ className, style, width }) => {
             padding: "0 0.8rem",
           }}
         >
-          {categories[selectedCateoryIndex]}
+          {marketPlaceProductCategories[selectedCateoryIndex]}
           <ExpandMoreIcon />
         </Button>
         <StyledMenu
@@ -95,7 +88,7 @@ export const SearchBar = ({ className, style, width }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          {categories.map((category, index) => (
+          {marketPlaceProductCategories.map((category, index) => (
             <MenuItem
               key={category}
               disabled={index === 0}

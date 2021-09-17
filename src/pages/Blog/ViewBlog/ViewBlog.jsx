@@ -137,16 +137,13 @@ export const ViewBlog = (props) => {
       const allHeadings = document
         .getElementsByClassName("blog-content")[0]
         .querySelectorAll("h1, h2, h3, h4, h5, h6");
-      console.log("ALL HEADING", allHeadings);
       const noOfheadings = allHeadings.length;
       const oneThirdHeading = Math.floor(noOfheadings / 3);
-      console.log("oneThirdHeading", oneThirdHeading);
       if (allHeadings[oneThirdHeading])
         if (!document.getElementById("blog_ad_2"))
           document
             .getElementsByClassName("blog-content")[0]
             .insertBefore(ad2, allHeadings[oneThirdHeading]);
-      console.log("twpThirdHeading", oneThirdHeading * 2);
       if (allHeadings[oneThirdHeading * 2])
         if (!document.getElementById("blog_ad_3"))
           document

@@ -6,11 +6,12 @@ import { StyledFab, StyledInput } from "../../components";
 import { Grid, Select, FormControl, InputLabel } from "@material-ui/core";
 import BlogCreateModel from "../../models/BlogCreate";
 import { withRouter } from "react-router-dom";
-import { modules, formats, categories } from "./BlogCreateModules";
+import { modules, formats } from "./BlogCreateModules";
 import { useDispatch, useSelector } from "react-redux";
 import { addBlogInDbAction, setAlertAction } from "../../redux/actions";
 import "react-quill/dist/quill.snow.css";
 import { Redirect } from "react-router-dom";
+import { blogCategories } from "../masterData";
 
 const mapState = (state) => ({
   currentUser: state?.users?.currentUser,
@@ -107,7 +108,7 @@ export const BlogCreate = withRouter(({ history }) => {
             label="Category"
           >
             <option value={""}></option>
-            {categories.map((category) => (
+            {blogCategories.map((category) => (
               <option value={category}>{category}</option>
             ))}
           </Select>

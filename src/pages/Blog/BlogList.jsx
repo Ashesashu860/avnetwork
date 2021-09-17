@@ -1,13 +1,18 @@
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { BlogCard } from ".";
-import { StyledFab, StyledNavLink, ShadowContainer } from "../../components";
+import {
+  StyledFab,
+  StyledNavLink,
+  ShadowContainer,
+  FilterChips,
+} from "../../components";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getBlogsAction } from "../../redux/actions";
-import { Chip } from "@material-ui/core";
-import { categories, getFormattedDate } from "./BlogCreateModules";
+import { getFormattedDate } from "./BlogCreateModules";
+import { blogCategories } from "../masterData";
 
 const BlogListContainer = styled.div`
   ${(props) =>
@@ -32,15 +37,19 @@ export const BlogList = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = React.useState("");
-  const filteredBlogs = !selectedCategory
-    ? allBlogs
-    : allBlogs?.filter((blog) => blog?.category === selectedCategory);
+  const filteredBlogs =
+    !selectedCategory || selectedCategory === "All"
+      ? allBlogs
+      : allBlogs?.filter((blog) => blog?.category === selectedCategory);
   const sortedBlogs = filteredBlogs?.sort(
     (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
   );
 
+  const filteredCategories = [...blogCategories];
+  filteredCategories.unshift("All");
+
   const onCategoryClick = (index) => {
-    setSelectedCategory(categories[index]);
+    setSelectedCategory(filteredCategories[index]);
   };
 
   React.useEffect(() => {
@@ -60,23 +69,11 @@ export const BlogList = ({
       style={style}
     >
       <div style={{ paddingTop: "1rem" }}>
-        <ShadowContainer>
-          {categories.map((category, index) => (
-            <Chip
-              key={category}
-              style={
-                category === selectedCategory
-                  ? { backgroundColor: "var(--primary)", color: "#fff" }
-                  : {
-                      backgroundColor: "var(--primaryLight)",
-                    }
-              }
-              clickable
-              onClick={() => onCategoryClick(index)}
-              label={category}
-            />
-          ))}
-        </ShadowContainer>
+        <FilterChips
+          options={filteredCategories}
+          selectedOption={selectedCategory}
+          onOptionChange={onCategoryClick}
+        />
         <ShadowContainer>
           <div
             className="center"

@@ -5,8 +5,7 @@ import {
   getAllUsersAction,
   setDialogBoxPropsAction,
 } from "../../redux/actions";
-import { ShadowContainer, ContentContainer } from "../../components";
-import { Chip } from "@material-ui/core";
+import { ContentContainer, FilterChips } from "../../components";
 import { userCategories } from "../masterData";
 import { UserCard } from "./UserCard";
 import { useHistory } from "react-router-dom";
@@ -69,23 +68,11 @@ export const Networks = () => {
               heading={"Connect with people"}
               style={{ padding: "1rem" }}
             />
-            <ShadowContainer>
-              {filteredUserCategories.map((category, index) => (
-                <Chip
-                  key={category}
-                  style={
-                    category === selectedCategory
-                      ? { backgroundColor: "var(--primary)", color: "#fff" }
-                      : {
-                          backgroundColor: "var(--primaryLight)",
-                        }
-                  }
-                  clickable
-                  onClick={() => onCategoryClick(index)}
-                  label={category}
-                />
-              ))}
-            </ShadowContainer>
+            <FilterChips
+              options={filteredUserCategories}
+              selectedOption={selectedCategory}
+              onOptionChange={onCategoryClick}
+            />
             <div className="center" style={{ flexWrap: "wrap" }}>
               {filteredUsersWithCategory?.length > 0 ? (
                 filteredUsersWithCategory?.map((user) => (
