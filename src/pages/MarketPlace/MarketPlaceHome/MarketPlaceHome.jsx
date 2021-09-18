@@ -60,7 +60,7 @@ export const MarketPlaceHome = () => {
         subHeading={"All Products"}
         content={"View our variety of different products"}
       />
-      <ProductsList direction="row" />
+      <ProductsList />
     </>
   );
 };
