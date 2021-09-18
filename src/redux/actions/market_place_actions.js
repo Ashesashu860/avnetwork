@@ -18,6 +18,14 @@ export const setAllMarketPlaceProducts = (allProducts) => ({
   },
 });
 
+export const deleteMarketPlaceProductAction = (productId, history) => ({
+  type: "DELETE_MARKET_PLACE_PRODUCT",
+  payload: {
+    productId,
+    history,
+  },
+});
+
 export const getCurrentMarketPlaceProductAction = (productId) => ({
   type: "GET_CURRENT_MARKET_PLACE_PRODUCT",
   payload: {

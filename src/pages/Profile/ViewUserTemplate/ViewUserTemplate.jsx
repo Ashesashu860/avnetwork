@@ -12,9 +12,9 @@ import { useHistory } from "react-router-dom";
 import { ProductsList } from "../../MarketPlace";
 import { getAllMarketPlaceProducts } from "../../../redux/actions";
 
-const mapState = (state) => ({
-  allProducts: state.marketPlace.allProducts,
-});
+// const mapState = (state) => ({
+//   allProducts: state.marketPlace.allProducts,
+// });
 
 const Item = ({ item, height, width }) => {
   const [loading, setLoading] = useState(true);
@@ -62,16 +62,16 @@ export const ViewUserTemplate = ({ user }) => {
     },
   ];
 
-  const history = useHistory();
-  const { allProducts } = useSelector(mapState);
-  const filteredProducts = allProducts?.filter(
-    (product) => product.userId === user.uid
-  );
-  const dispatch = useDispatch();
+  // const history = useHistory();
+  // const { allProducts } = useSelector(mapState);
+  // const filteredProducts = allProducts?.filter(
+  //   (product) => product.userId === user.uid
+  // );
+  // const dispatch = useDispatch();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getAllMarketPlaceProducts());
+    // dispatch(getAllMarketPlaceProducts());
   }, []);
 
   return (
@@ -134,7 +134,7 @@ export const ViewUserTemplate = ({ user }) => {
         </div>
       </div>
       <ContentContainer subHeading={"Our Products"} />
-      <ProductsList products={filteredProducts} />
+      <ProductsList userId={user?.uid} />
     </>
   );
 };

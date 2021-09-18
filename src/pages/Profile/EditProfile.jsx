@@ -43,7 +43,7 @@ export const EditProfile = (props) => {
       setUserDetails({
         ...userDetails,
         newImages: userDetails?.newImages?.filter(
-          (image) => image.name !== imageId.name
+          (image) => image?.name !== imageId?.name
         ),
       });
     }
@@ -54,6 +54,7 @@ export const EditProfile = (props) => {
     setUserDetails(basicDetails);
   }, []);
 
+  console.log("Edit profile", userDetails);
   return (
     <div className="wrapper">
       <BasicDetailsForm

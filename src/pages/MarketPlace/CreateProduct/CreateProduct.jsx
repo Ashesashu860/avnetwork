@@ -43,20 +43,24 @@ const toSentenceCase = (str) => {
   return res.charAt(0).toUpperCase() + res.slice(1);
 };
 
-export const CreateProduct = () => {
+export const CreateProduct = (props) => {
   const { currentUser } = useSelector(mapState);
-  const [product, setProduct] = useState({
-    id: uuidv4(),
-    title: "",
-    location: "",
-    sellarName: currentUser?.displayName,
-    category: "",
-    brand: "",
-    description: "",
-    stock: "",
-    user: currentUser?.uid,
-    images: [],
-  });
+  const [product, setProduct] = useState(
+    props?.history?.location?.state?.currentProduct || {
+      id: uuidv4(),
+      title: "",
+      location: "",
+      sellarName: currentUser?.displayName,
+      category: "",
+      brand: "",
+      description: "",
+      stock: "",
+      user: currentUser?.uid,
+      images: [],
+      newImages: [],
+      deletedImages: [],
+    }
+  );
 
   const [errors, setErrors] = useState(initialErrors);
 
@@ -90,15 +94,27 @@ export const CreateProduct = () => {
   const onImageChange = (event) => {
     setProduct({
       ...product,
-      images: [...product?.images, event.target.files[0]],
+      newImages: [...(product?.newImages || []), event.target.files[0]],
     });
   };
 
-  const onDeleteImage = (imageIndex) => {
-    setProduct({
-      ...product,
-      images: product?.images.filter((image, index) => imageIndex !== index),
-    });
+  const onDeleteImage = (imageId) => {
+    if (typeof imageId === "string") {
+      const newImages = { ...product?.images };
+      delete newImages[imageId];
+      setProduct({
+        ...product,
+        images: newImages,
+        deletedImages: [...product?.deletedImages, imageId],
+      });
+    } else {
+      setProduct({
+        ...product,
+        newImages: product?.newImages.filter(
+          (image) => imageId.name !== image.name
+        ),
+      });
+    }
   };
 
   const isAllFieldsValid = () => {
@@ -191,6 +207,7 @@ export const CreateProduct = () => {
           error={errors.description}
           color="primary"
           value={product?.description}
+          style={{ minWidth: "100%" }}
         />
         <StyledTextBox
           InputProps={{
@@ -221,15 +238,26 @@ export const CreateProduct = () => {
         />
         <h4>Upload upto 4 photos of the product</h4>
         <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
-          {product?.images?.map((image, index) => (
-            <ProductImageCard
-              selectedImage={URL.createObjectURL(image)}
-              onDeleteImage={() => onDeleteImage(index)}
-            />
-          ))}
-          {product?.images?.length < 4 && (
-            <AddImageCard onImageChange={onImageChange} />
-          )}
+          {[
+            ...(product?.images ? Object.keys(product?.images) : []),
+            ...(product?.newImages || []),
+          ].map((key, index) => {
+            const image =
+              typeof key === "string"
+                ? product?.images[key]
+                : key && URL.createObjectURL(key);
+            return (
+              <ProductImageCard
+                key={index}
+                selectedImage={image}
+                onDeleteImage={() => onDeleteImage(key)}
+              />
+            );
+          })}
+          {[
+            ...(product?.images ? Object.keys(product?.images) : []),
+            ...(product?.newImages || []),
+          ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
         </StyledImageContainer>
       </StyledForm>
       <Grid container wrap="nowrap" alignItems="center" justify="center">
@@ -242,7 +270,9 @@ export const CreateProduct = () => {
           Cancel
         </StyledFab>
         <StyledFab variant="extended" bold primary onClick={onCreateProduct}>
-          Create
+          {props?.history?.location?.state?.currentProduct
+            ? "Update"
+            : "Create"}
         </StyledFab>
       </Grid>
     </div>

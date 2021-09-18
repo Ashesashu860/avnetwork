@@ -6,17 +6,20 @@ import {
 } from "../../../components";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-material-ui-carousel";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   getCurrentMarketPlaceProductAction,
   getCurrentProductOwnerAction,
   setInterestForProductInDbAction,
   setCurrentMarketPlaceProductAction,
+  deleteMarketPlaceProductAction,
 } from "../../../redux/actions";
 import styled from "styled-components";
 import { InterestedList } from "..";
 import { Checkbox } from "@material-ui/core";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
@@ -62,6 +65,7 @@ const StyledContentContainer = styled.div`
 export const ViewProduct = (props) => {
   const params = useParams();
   const productId = props?.location?.state?.id || params.id;
+  const history = useHistory();
 
   const { currentProduct, currentUser, currentProductOwner } =
     useSelector(mapState);
@@ -109,7 +113,6 @@ export const ViewProduct = (props) => {
                 opacity: 0.4,
               },
             }}
-            autoPlay={false}
           >
             {currentProduct?.images &&
               Object.values(currentProduct?.images)?.map((item, i) => (
@@ -163,12 +166,14 @@ export const ViewProduct = (props) => {
             <h3 style={{ marginBottom: "1rem" }}>Description</h3>
             <p>{currentProduct?.description}</p>
           </div>
+          {/* Product operations */}
           {currentUser ? (
-            currentProduct?.userId !== currentUser?.uid && (
+            currentProduct?.userId !== currentUser?.uid ? (
               <div
                 className="center"
                 style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
               >
+                {/* Interested Button */}
                 <Checkbox
                   onClick={onInterestedClick}
                   checked={
@@ -191,6 +196,7 @@ export const ViewProduct = (props) => {
                   }
                   {...props}
                 />
+                {/* Whatsapp link */}
                 <a
                   href={`https://api.whatsapp.com/send?phone=+91${currentUser?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
                   style={{ textDecoration: "none" }}
@@ -200,6 +206,46 @@ export const ViewProduct = (props) => {
                   </StyledFab>
                 </a>
               </div>
+            ) : (
+              currentProduct?.userId === currentUser?.uid && (
+                <div
+                  className="center"
+                  style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
+                >
+                  <StyledFab
+                    bold
+                    primary
+                    round
+                    style={{ marginRight: "1rem" }}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/post_product",
+                        state: {
+                          currentProduct,
+                        },
+                      })
+                    }
+                  >
+                    <EditIcon />
+                  </StyledFab>
+
+                  <StyledFab
+                    bold
+                    primary
+                    round
+                    onClick={() =>
+                      dispatch(
+                        deleteMarketPlaceProductAction(
+                          currentProduct?.id,
+                          history
+                        )
+                      )
+                    }
+                  >
+                    <DeleteIcon />
+                  </StyledFab>
+                </div>
+              )
             )
           ) : (
             <h3>Login to show interest to this product</h3>

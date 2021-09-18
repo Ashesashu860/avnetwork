@@ -26,6 +26,7 @@ import {
   setInterestForProductInDbSaga,
   getAllInterestedUsersForProductSaga,
   getCurrentProductOwnerSaga,
+  deleteMarketPlaceProductSaga,
 } from "./market_place_sagas";
 
 export function* rootSaga() {
@@ -69,4 +70,5 @@ export function* rootSaga() {
     getAllInterestedUsersForProductSaga
   );
   yield takeLatest("GET_CURRENT_PRODUCT_OWNER", getCurrentProductOwnerSaga);
+  yield takeLatest("DELETE_MARKET_PLACE_PRODUCT", deleteMarketPlaceProductSaga);
 }

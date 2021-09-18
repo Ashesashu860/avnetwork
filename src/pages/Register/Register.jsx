@@ -122,11 +122,11 @@ export const Register = (props) => {
     });
   };
 
-  const onDeleteImage = (imageIndex) => {
+  const onDeleteImage = (image) => {
     setBasicDetails({
       ...basicDetails,
       newImages: basicDetails?.newImages.filter(
-        (image, index) => imageIndex !== index
+        (newImage) => image?.name !== newImage?.name
       ),
     });
   };

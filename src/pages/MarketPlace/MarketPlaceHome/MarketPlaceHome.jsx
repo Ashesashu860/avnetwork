@@ -13,18 +13,18 @@ import "./market_place_home.css";
 import { ProductsList } from "../ProductsList";
 
 const mapState = (state) => ({
-  allProducts: state.marketPlace.allProducts,
+  // allProducts: state.marketPlace.allProducts,
   currentUser: state.users.currentUser,
 });
 
 export const MarketPlaceHome = () => {
-  const { allProducts, currentUser } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
   const dispatch = useDispatch();
   const history = useHistory();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getAllMarketPlaceProducts());
+    // dispatch(getAllMarketPlaceProducts());
   }, []);
 
   return (
@@ -60,7 +60,7 @@ export const MarketPlaceHome = () => {
         subHeading={"All Products"}
         content={"View our variety of different products"}
       />
-      <ProductsList products={allProducts} />
+      <ProductsList direction="row" />
     </>
   );
 };

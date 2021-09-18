@@ -129,18 +129,17 @@ export const BlogLandingPage = withRouter(({ history }) => {
         content={"View our latest blogs"}
       />
       <BlogList
-        blogs={mockBlogs}
         fabRef={addBlogRef}
         noFab
         direction="row"
         className="remove_top_padding"
+        latest
       />
       <ContentContainer
         subHeading={"All Blogs"}
         content={"View our all blogs of different categories"}
       />
       <BlogList
-        blogs={mockBlogs}
         fabRef={addBlogRef}
         noFab
         className="remove_top_padding"

@@ -29,10 +29,6 @@ export const marketPlaceReducer = (marketPlaceState = initialState, action) => {
         allInterestedUsers: action.payload.allInterestedUsers,
       };
     case "SET_CURRENT_PRODUCT_OWNER":
-      console.log(
-        "SET_CURRENT_PRODUCT_OWNER",
-        action.payload.currentProductOwner
-      );
       return {
         ...marketPlaceState,
         currentProductOwner: action.payload.currentProductOwner,

@@ -28,7 +28,9 @@ export const DialogBox = (props) => {
         </DialogTitle>
         {!hideLoader && <LoaderIcon />}
         {buttonProps && (
-          <StyledFab onClick={onClose}>{buttonProps?.title}</StyledFab>
+          <StyledFab onClick={onClose} style={{ minWidth: "2rem" }}>
+            {buttonProps?.title}
+          </StyledFab>
         )}
       </div>
     </Dialog>

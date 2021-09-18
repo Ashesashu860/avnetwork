@@ -95,9 +95,7 @@ export const BasicDetailsForm = ({
                 <ProductImageCard
                   key={index}
                   selectedImage={image}
-                  onDeleteImage={() =>
-                    onDeleteImage(typeof key === "string" ? key : index)
-                  }
+                  onDeleteImage={() => onDeleteImage(key)}
                 />
               )
             );

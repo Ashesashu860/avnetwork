@@ -23,6 +23,7 @@ export function* addProductInDbSaga(action) {
     category,
     stock,
     brand,
+    images,
     description,
     price,
   } = yield action.payload.product;
@@ -42,15 +43,19 @@ export function* addProductInDbSaga(action) {
     sellarName,
     category,
     stock,
+    images,
     price,
     userId: action.payload.userId,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
   });
 
-  for (const image of action.payload.product.images) {
-    const imageStorageRef = yield productStorageRef.child(image.name);
-    yield imageStorageRef.put(image);
-    const imageDownloadURL = yield imageStorageRef.getDownloadURL();
-    yield productDatabaseRef.child("images").push(imageDownloadURL);
+  if (action?.payload?.product?.newImages) {
+    for (const image of action.payload.product.newImages) {
+      const imageStorageRef = yield productStorageRef.child(image.name);
+      yield imageStorageRef.put(image);
+      const imageDownloadURL = yield imageStorageRef.getDownloadURL();
+      yield productDatabaseRef.child("images").push(imageDownloadURL);
+    }
   }
 
   yield put(
@@ -121,4 +126,39 @@ export function* getCurrentProductOwnerSaga(action) {
     `users/${action.payload.userId}`
   );
   yield put(setCurrentProductOwnerAction(currentProductOwner));
+}
+
+export function* deleteMarketPlaceProductSaga(action) {
+  yield put(setDialogBoxPropsAction("Deleting Product..."));
+  //delete product images
+  const productImages = yield firebase
+    .storage()
+    .ref("marketPlaceProducts")
+    .child(action.payload.productId)
+    .listAll();
+  for (const userWorkImage of productImages.items) {
+    yield firebase
+      .storage()
+      .ref("marketPlaceProducts")
+      .child(action.payload.productId)
+      .child(userWorkImage.name)
+      .delete();
+  }
+  //delete product from db
+  yield firebase
+    .database()
+    .ref(`/marketPlaceProducts/${action.payload.productId}`)
+    .remove();
+  yield put(
+    setDialogBoxPropsAction(
+      "Product deleted successfully.",
+      {
+        title: "OK",
+        onButtonClick: (event) => {
+          action.payload.history.push("/market_place");
+        },
+      },
+      true
+    )
+  );
 }

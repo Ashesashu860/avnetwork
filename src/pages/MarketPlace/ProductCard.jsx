@@ -82,7 +82,7 @@ export const ProductCard = ({
         <div className="center" style={{ justifyContent: "space-between" }}>
           <span
             style={{
-              width: "fit-content",
+              width: "9rem",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",

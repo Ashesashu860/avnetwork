@@ -5,20 +5,12 @@ import Audio2 from "../../assets/homepage/audio2.jpg";
 import Audio3 from "../../assets/homepage/audio3.jpg";
 import Audio4 from "../../assets/homepage/audio4.jpg";
 import "./homepage.css";
-import { StyledNavLink, StyledFab } from "../../components";
+import { StyledNavLink, StyledFab, ContentContainer } from "../../components";
+import { ProductsList } from "../MarketPlace";
+import { BlogList } from "../Blog";
 
 export const Homepage = (props) => {
   const sliderData = [
-    {
-      image: Audio1,
-      title: "Express Yourself",
-      description:
-        "Write blogs about your experiences, your knowledge or about your walkthrough in your journey",
-      buttonProps: {
-        link: "/blog",
-        title: "Visit Blogs",
-      },
-    },
     {
       image: Audio2,
       title: "One-Stop Shop",
@@ -30,46 +22,75 @@ export const Homepage = (props) => {
       },
     },
     {
-      image: Audio3,
-      title: "Find A Career",
-      description: "Find suitable career options for you in our job portal.",
-      buttonProps: {
-        link: "/job_portal",
-        title: "Visit Job Portal",
-      },
-    },
-    {
-      image: Audio4,
-      title: "Upgrade Yourself",
+      image: Audio1,
+      title: "Express Yourself",
       description:
-        "Learn continuously and gather knowledge with our learning platform where experienced people can guide through various technical details.",
+        "Write blogs about your experiences, your knowledge or about your walkthrough in your journey",
       buttonProps: {
-        link: "/tutorials",
-        title: "Visit Tutorials",
+        link: "/blog",
+        title: "Visit Blogs",
       },
     },
+
+    // {
+    //   image: Audio3,
+    //   title: "Find A Career",
+    //   description: "Find suitable career options for you in our job portal.",
+    //   buttonProps: {
+    //     link: "/job_portal",
+    //     title: "Visit Job Portal",
+    //   },
+    // },
+    // {
+    //   image: Audio4,
+    //   title: "Upgrade Yourself",
+    //   description:
+    //     "Learn continuously and gather knowledge with our learning platform where experienced people can guide through various technical details.",
+    //   buttonProps: {
+    //     link: "/tutorials",
+    //     title: "Visit Tutorials",
+    //   },
+    // },
   ];
 
   return (
-    <Carousel
-      fullHeightHover
-      indicatorContainerProps={{
-        style: {
-          height: "3rem",
-          marginTop: "-3.27rem", // 5
-        },
-      }}
-      navButtonsAlwaysVisible
-      navButtonsProps={{
-        style: {
-          opacity: 0.4,
-        },
-      }}
-    >
-      {sliderData.map((item, i) => (
-        <Item key={i} item={item} />
-      ))}
-    </Carousel>
+    <>
+      <Carousel
+        fullHeightHover
+        indicatorContainerProps={{
+          style: {
+            height: "3rem",
+            marginTop: "-3.27rem", // 5
+          },
+        }}
+        navButtonsAlwaysVisible
+        navButtonsProps={{
+          style: {
+            opacity: 0.4,
+          },
+        }}
+      >
+        {sliderData.map((item, i) => (
+          <Item key={i} item={item} />
+        ))}
+      </Carousel>
+      <ContentContainer
+        subHeading={"Latest Products"}
+        content={"View our latest products"}
+      />
+      <ProductsList direction="row" latest />
+      <ContentContainer
+        subHeading={"Latest Blogs"}
+        content={"View our latest blogs"}
+      />
+      <BlogList
+        direction="row"
+        noFab
+        latest
+        className="remove_top_padding"
+        autoHeight
+      />
+    </>
   );
 };
 

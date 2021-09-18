@@ -32,6 +32,7 @@ export const BlogList = ({
   className,
   direction,
   autoHeight,
+  latest,
 }) => {
   const { allBlogs, currentUser } = useSelector(mapState);
   const history = useHistory();
@@ -44,6 +45,8 @@ export const BlogList = ({
   const sortedBlogs = filteredBlogs?.sort(
     (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
   );
+
+  const latestBlogs = latest ? sortedBlogs?.slice(-3) : sortedBlogs;
 
   const filteredCategories = [...blogCategories];
   filteredCategories.unshift("All");
@@ -82,10 +85,10 @@ export const BlogList = ({
               flexWrap: direction === "row" ? "nowrap" : "wrap",
             }}
           >
-            {!sortedBlogs?.length ? (
+            {!latestBlogs?.length ? (
               <h4 style={{ padding: "1rem" }}>No Blogs</h4>
             ) : (
-              sortedBlogs?.map((blog, index) => {
+              latestBlogs?.map((blog, index) => {
                 return (
                   <BlogCard
                     key={index}
