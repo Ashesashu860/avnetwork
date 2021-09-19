@@ -46,6 +46,12 @@ const ProductContentContainer = styled.div`
   }
 `;
 
+const PorductSubContainer = styled.div`
+  & > *:not(:last-child) {
+    margin-bottom: 0.2rem;
+  }
+`;
+
 const Button = styled.div`
   background-color: var(--primary);
   color: #fff;
@@ -73,55 +79,57 @@ export const ProductCard = ({
       ></ImageContainer>
       <ProductContentContainer>
         <ProductHeading>{title}</ProductHeading>
-        <h5
-          style={{
-            width: "100%",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            fontSize: "0.8rem",
-            color: "var(--text-medium)",
-            fontWeight: "normal",
-          }}
+        <PorductSubContainer>
+          <p
+            style={{
+              width: "100%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize: "0.8rem",
+              color: "var(--text-medium)",
+            }}
+          >
+            {category || "Category not specified"}
+          </p>
+          <p
+            style={{
+              width: "100%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize: "0.8rem",
+              color: "var(--text-medium)",
+            }}
+          >
+            Brand: {brand || "Brand not specified"}
+          </p>
+          <p
+            style={{
+              width: "100%",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize: "0.8rem",
+              color: "var(--text-medium)",
+            }}
+          >
+            Sold By: {sellarName || "Seller not specified"}
+          </p>
+        </PorductSubContainer>
+        <div
+          className="center"
+          style={{ justifyContent: "space-between", padding: "0.5rem 0" }}
         >
-          {category || "Category not specified"}
-        </h5>
-        <h5
-          style={{
-            width: "100%",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            fontSize: "0.8rem",
-            color: "var(--text-medium)",
-            fontWeight: "normal",
-          }}
-        >
-          Brand: {brand || "Brand not specified"}
-        </h5>
-        <h5
-          style={{
-            width: "100%",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            fontSize: "0.8rem",
-            color: "var(--text-medium)",
-            fontWeight: "normal",
-          }}
-        >
-          Sold By: {sellarName || "Seller not specified"}
-        </h5>
-        <div className="center" style={{ justifyContent: "space-between" }}>
           <h3 style={{ fontSize: "1rem" }}>Rs.{price}/-</h3>
           <div
             style={{
               backgroundColor: "#C8E6C9",
               color: "#4CAF50",
               borderRadius: "0.5rem",
-              padding: "0.5rem",
+              padding: "0.5rem 1rem",
               maxWidth: "fit-content",
-              fontSize: "0.6rem",
+              fontSize: "0.65rem",
             }}
           >
             In Stock: {stock || 0}

@@ -20,8 +20,8 @@ const Item = ({ item, height, width }) => {
   const [loading, setLoading] = useState(true);
   const onLoaded = () => setLoading(false);
   return (
-    <div className="center">
-      {loading && <div style={{ height: "100%" }}>Loading...</div>}
+    <div className="center" style={{ minWidth: "100%", minHeight: height }}>
+      {loading && <div style={{ height: height }}>Loading...</div>}
       <img
         className="fix_wrapper"
         src={item}
