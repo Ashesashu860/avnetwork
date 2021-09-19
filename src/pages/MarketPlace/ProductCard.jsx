@@ -3,15 +3,23 @@ import styled from "styled-components";
 import { Card } from "@material-ui/core";
 
 const ProductCardContainer = styled(Card)`
-  width: 16rem;
+  width: 14rem;
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;
-  border-radius: 0.8rem !important;
+  // border-radius: 0.8rem !important;
+  border: 1px solid #ddd;
   overflow: hidden;
   &:hover {
     box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 14%) !important;
   }
+  @media screen and (max-width: 450px) {
+    width: 46%;
+  }
+  @media screen and (max-width: 300px) {
+    width: 80%;
+  }
+  box-shadow: 0;
 `;
 
 const ProductHeading = styled.div`
@@ -20,7 +28,7 @@ const ProductHeading = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 1.1rem;
   display: -webkit-box;
   color: #000;
 `;
@@ -30,8 +38,8 @@ const ImageContainer = styled.div`
   background-repeat: no-repeat !important;
   background: ${(props) => `url(${props.image})`};
   width: 100%;
-  border-radius: 0.8rem !important;
-  height: 16rem;
+  // border-radius: 0.8rem !important;
+  height: 14rem;
   background-color: rgb(247, 247, 247);
   background-position: center center;
   border-bottom: 1px solid #ddd;
@@ -56,10 +64,19 @@ const Button = styled.div`
   background-color: var(--primary);
   color: #fff;
   width: 100%;
-  border-bottom-left-radius: 0.8rem;
-  border-bottom-right-radius: 0.8rem;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   padding: 0.6rem;
   text-align: center;
+`;
+
+const StyledText = styled.p`
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  color: #00000099;
 `;
 
 export const ProductCard = ({
@@ -80,48 +97,17 @@ export const ProductCard = ({
       <ProductContentContainer>
         <ProductHeading>{title}</ProductHeading>
         <PorductSubContainer>
-          <p
-            style={{
-              width: "100%",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "0.8rem",
-              color: "var(--text-medium)",
-            }}
-          >
-            {category || "Category not specified"}
-          </p>
-          <p
-            style={{
-              width: "100%",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "0.8rem",
-              color: "var(--text-medium)",
-            }}
-          >
-            Brand: {brand || "Brand not specified"}
-          </p>
-          <p
-            style={{
-              width: "100%",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "0.8rem",
-              color: "var(--text-medium)",
-            }}
-          >
+          <StyledText>{category || "Category not specified"}</StyledText>
+          <StyledText>Brand: {brand || "Brand not specified"}</StyledText>
+          <StyledText>
             Sold By: {sellarName || "Seller not specified"}
-          </p>
+          </StyledText>
         </PorductSubContainer>
-        <div
+        {/* <div
           className="center"
           style={{ justifyContent: "space-between", padding: "0.5rem 0" }}
         >
-          <h3 style={{ fontSize: "1rem" }}>Rs.{price}/-</h3>
+          <h3 style={{ fontSize: "1rem" }}>₹{price}/-</h3>
           <div
             style={{
               backgroundColor: "#C8E6C9",
@@ -134,7 +120,20 @@ export const ProductCard = ({
           >
             In Stock: {stock || 0}
           </div>
+        </div> */}
+        <div
+          style={{
+            backgroundColor: "#C8E6C9",
+            color: "#4CAF50",
+            borderRadius: "0.5rem",
+            padding: "0.5rem 1rem",
+            maxWidth: "fit-content",
+            fontSize: "0.7rem",
+          }}
+        >
+          In Stock: {stock || 0}
         </div>
+        <h3 style={{ fontSize: "1rem" }}>₹{price}/-</h3>
       </ProductContentContainer>
       <Button>CHECKOUT</Button>
     </ProductCardContainer>
