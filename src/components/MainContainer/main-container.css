@@ -20,11 +20,11 @@
     flex-direction: column;
   }
 
-  .main div:not(:first-child) {
+  .main > div:not(:first-child) {
     flex: initial;
   }
 
-  .main div:first-child {
+  .main > div:first-child {
     flex: 2;
   }
 }

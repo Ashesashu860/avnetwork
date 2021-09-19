@@ -3,22 +3,27 @@ import styled from "styled-components";
 import { Card } from "@material-ui/core";
 
 const ProductCardContainer = styled(Card)`
-  width: 18rem;
+  width: 16rem;
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;
   border-radius: 0.8rem !important;
-  // border: 1px solid #ddd;
   overflow: hidden;
   &:hover {
     box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 14%) !important;
   }
 `;
 
-// const Image = styled.img`
-//   max-width: 100%;
-//   box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 4%) !important;
-// `;
+const ProductHeading = styled.div`
+  color: #999;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+  display: -webkit-box;
+  color: #000;
+`;
 
 const ImageContainer = styled.div`
   background-size: contain !important;
@@ -33,10 +38,11 @@ const ImageContainer = styled.div`
 `;
 
 const ProductContentContainer = styled.div`
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   width: 100%;
+  font-size: 0.8rem;
   & > *:not(:last-child) {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -46,7 +52,7 @@ const Button = styled.div`
   width: 100%;
   border-bottom-left-radius: 0.8rem;
   border-bottom-right-radius: 0.8rem;
-  padding: 1rem;
+  padding: 0.6rem;
   text-align: center;
 `;
 
@@ -57,71 +63,70 @@ export const ProductCard = ({
   brand,
   onClick,
   sellarName,
+  category,
   stock,
 }) => {
   return (
     <ProductCardContainer className="center" onClick={onClick}>
-      {/* <Image src={Object.values(images)[0]} alt="sadas" /> */}
       <ImageContainer
         image={images && Object.values(images)[0]}
       ></ImageContainer>
       <ProductContentContainer>
-        <h3
-          style={{
-            width: "100%",
-            fontSize: "1.2rem",
-            fontWeight: "500",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {title}
-        </h3>
-
-        <div className="center" style={{ justifyContent: "space-between" }}>
-          <span
-            style={{
-              width: "9rem",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              fontSize: "0.9rem",
-              color: "var(--text-medium)",
-              fontWeight: "normal",
-            }}
-          >
-            Brand: {brand}
-          </span>
-          <div
-            style={{
-              // border: "1px solid #2e7d32",
-              backgroundColor: "#C8E6C9",
-              color: "#4CAF50",
-              // fontWeight: "bold",
-              borderRadius: "0.5rem",
-              padding: "0.5rem 1rem",
-              maxWidth: "fit-content",
-              fontSize: "0.8rem",
-            }}
-          >
-            In Stock: {stock}
-          </div>
-        </div>
+        <ProductHeading>{title}</ProductHeading>
         <h5
           style={{
             width: "100%",
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            fontSize: "0.9rem",
+            fontSize: "0.8rem",
             color: "var(--text-medium)",
             fontWeight: "normal",
           }}
         >
-          Sold By: {sellarName}
+          {category || "Category not specified"}
         </h5>
-        <h3>Rs.{price}/-</h3>
+        <h5
+          style={{
+            width: "100%",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fontSize: "0.8rem",
+            color: "var(--text-medium)",
+            fontWeight: "normal",
+          }}
+        >
+          Brand: {brand || "Brand not specified"}
+        </h5>
+        <h5
+          style={{
+            width: "100%",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fontSize: "0.8rem",
+            color: "var(--text-medium)",
+            fontWeight: "normal",
+          }}
+        >
+          Sold By: {sellarName || "Seller not specified"}
+        </h5>
+        <div className="center" style={{ justifyContent: "space-between" }}>
+          <h3 style={{ fontSize: "1rem" }}>Rs.{price}/-</h3>
+          <div
+            style={{
+              backgroundColor: "#C8E6C9",
+              color: "#4CAF50",
+              borderRadius: "0.5rem",
+              padding: "0.5rem",
+              maxWidth: "fit-content",
+              fontSize: "0.6rem",
+            }}
+          >
+            In Stock: {stock || 0}
+          </div>
+        </div>
       </ProductContentContainer>
       <Button>CHECKOUT</Button>
     </ProductCardContainer>

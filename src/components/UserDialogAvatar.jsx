@@ -7,11 +7,12 @@ import { useHistory } from "react-router-dom";
 
 const StyledContainer = styled.div`
   height: 100%;
-  justify-content: flex-start;
+  justify-content: space-between;
   border: ${(props) => props?.name && "1px solid #ccc"};
   border-radius: ${(props) => props?.name && "2rem"};
   padding: ${(props) => props?.name && "0.5rem"};
   margin-left: ${(props) => props?.name && "0.5rem"};
+  flex-wrap: nowrap;
 `;
 
 const DialogContainer = styled.div`
@@ -46,21 +47,34 @@ export const UserDialogAvatar = ({ user, name, height }) => {
   return (
     <>
       <StyledContainer className="center" name={name} onClick={onClick}>
-        <Avatar
-          style={{
-            height: height,
-            width: height,
-            marginRight: "0.5rem",
-            ...(!name && { marginLeft: "0.5rem" }),
-          }}
-        >
-          <img
-            src={user?.photoURL}
-            alt={user?.displayName?.charAt(0)}
-            style={{ maxHeight: "100%" }}
-          />
-        </Avatar>
-        {name && <p>{name}</p>}
+        <div className="center">
+          <Avatar
+            style={{
+              height: height,
+              width: height,
+              marginRight: "0.5rem",
+              ...(!name && { marginLeft: "0.5rem" }),
+            }}
+          >
+            <img
+              src={user?.photoURL}
+              alt={user?.displayName?.charAt(0)}
+              style={{ maxHeight: "100%" }}
+            />
+          </Avatar>
+          <p>{name}</p>
+        </div>
+        <div>
+          <StyledFab
+            bold
+            variant="extended"
+            primary
+            onClick={onClick}
+            style={{ height: "2rem" }}
+          >
+            Visit
+          </StyledFab>
+        </div>
       </StyledContainer>
       <Dialog
         onClose={() => null}
@@ -105,7 +119,7 @@ export const UserDialogAvatar = ({ user, name, height }) => {
               primary
               onClick={onClickVisitProfile}
             >
-              Visit Profile
+              Visit Full Profile
             </StyledFab>
           </div>
         </DialogContainer>

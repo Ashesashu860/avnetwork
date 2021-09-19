@@ -151,7 +151,7 @@ export const ViewProduct = (props) => {
           >
             <p>Sold by:</p>
             {currentProductOwner && (
-              <div>
+              <div style={{ flex: 1 }}>
                 <UserDialogAvatar
                   height="2rem"
                   user={currentProductOwner}
