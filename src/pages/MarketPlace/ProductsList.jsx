@@ -5,6 +5,17 @@ import { FilterChips, ShadowContainer } from "../../components";
 import { marketPlaceProductCategories } from "../masterData";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMarketPlaceProducts } from "../../redux/actions";
+import styled from "styled-components";
+import BackgroundImage from "../../assets/bg.svg";
+
+const StyledContainer = styled.div`
+  flex-wrap: wrap;
+  max-width: 100%;
+  background-color: var(--background);
+  background-image: url(${BackgroundImage});
+  background-repeat: no-repeat;
+  background-position: top right;
+`;
 
 const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,
@@ -44,14 +55,7 @@ export const ProductsList = ({ direction, userId, latest }) => {
   }, []);
 
   return (
-    <div
-      className="center"
-      style={{
-        flexWrap: "wrap",
-        backgroundColor: "#eee",
-        maxWidth: "100%",
-      }}
-    >
+    <StyledContainer className="center">
       <FilterChips
         options={filteredCategories}
         selectedOption={selectedCategory}
@@ -86,6 +90,6 @@ export const ProductsList = ({ direction, userId, latest }) => {
           )}
         </div>
       </ShadowContainer>
-    </div>
+    </StyledContainer>
   );
 };
