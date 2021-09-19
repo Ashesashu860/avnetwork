@@ -198,7 +198,7 @@ export const ViewProduct = (props) => {
                 />
                 {/* Whatsapp link */}
                 <a
-                  href={`https://api.whatsapp.com/send?phone=+91${currentUser?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
+                  href={`https://api.whatsapp.com/send?phone=+91${currentProductOwner?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
                   style={{ textDecoration: "none" }}
                 >
                   <StyledFab bold primary round>
