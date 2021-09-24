@@ -16,6 +16,7 @@ export const marketPlaceProductCategories = [
   "Accessories",
   "Trussing systems",
   "Automation systems",
+  "Second Hand",
 ];
 
 export const blogCategories = [

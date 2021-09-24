@@ -20,7 +20,7 @@ import Image4 from "../../../assets/blogs/image4.png";
 import Image5 from "../../../assets/blogs/image5.png";
 import { Grid } from "@material-ui/core";
 
-const SubHeading = styled.div`
+const SubHeading = styled.span`
   border: 1px solid var(--background);
   border-radius: 2.5rem;
   background-color: var(--primaryMedium);

@@ -1,34 +1,9 @@
-/* .market_place_home_container {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-}
-
-.market_place_home_heading {
-  padding: 0.5rem;
-  color: #fff;
-  text-shadow: 2px 0 0 var(--primary), -2px 0 0 var(--primary),
-    0 2px 0 var(--primary), 0 -2px 0 var(--primary), 1px 1px var(--primary),
-    -1px -1px 0 var(--primary), 1px -1px 0 var(--primary),
-    -1px 1px 0 var(--primary);
-  text-align: center;
-  min-width: 100%;
-  margin-top: 1rem;
-  flex: 20%;
-}
-
-.market_place_home_content {
-  flex: 80%;
-  min-width: 100%;
-  flex-direction: row;
-} */
-
 .market_place_home_left {
-  flex: 50%;
+  /* flex: 50%; */
 }
 
 .market_place_home_right {
-  flex: 50%;
+  /* flex: 50%; */
   flex-direction: column;
   width: 100%;
 }

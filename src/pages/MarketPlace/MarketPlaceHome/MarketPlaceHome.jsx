@@ -32,7 +32,7 @@ export const MarketPlaceHome = () => {
       <ResponsiveBody className="wrapper fix_wrapper">
         <h1>WELCOME TO AVNETWORK MARKETPLACE</h1>
         <div>
-          <div className="market_place_home_left">
+          <div className="center market_place_home_left">
             <img
               className="market_place_home_logo"
               src={MarketPlaceHomeImg}

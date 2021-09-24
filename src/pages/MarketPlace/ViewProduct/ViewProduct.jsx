@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  MainContainer,
+  ResponsiveBody,
   UserDialogAvatar,
   StyledFab,
 } from "../../../components";
@@ -20,6 +20,7 @@ import { Checkbox } from "@material-ui/core";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ShareIcon from "@material-ui/icons/Share";
 
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
@@ -46,6 +47,9 @@ const Item = ({ item }) => {
         onLoad={onLoaded}
         style={{
           objectFit: "contain",
+          border: "1px solid #ddd",
+          borderRadius: "0.5rem",
+          margin: "1rem 0",
         }}
       />
     </div>
@@ -60,6 +64,8 @@ const StyledContentContainer = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 1rem !important;
   }
+  @media screen and (max-width: 768px) {
+    padding: 1rem !important;
 `;
 
 export const ViewProduct = (props) => {
@@ -97,161 +103,181 @@ export const ViewProduct = (props) => {
   };
   return (
     <>
-      <MainContainer className="wrapper">
-        <div style={{ maxWidth: "100%", width: "100%" }}>
-          <Carousel
-            fullHeightHover
-            indicatorContainerProps={{
-              style: {
-                height: "3rem",
-                marginTop: "-3.27rem", // 5
-              },
-            }}
-            navButtonsAlwaysVisible
-            navButtonsProps={{
-              style: {
-                opacity: 0.4,
-              },
-            }}
-          >
-            {currentProduct?.images &&
-              Object.values(currentProduct?.images)?.map((item, i) => (
-                <Item key={i} item={item} />
-              ))}
-          </Carousel>
-        </div>
-        <StyledContentContainer>
-          <h3>{currentProduct?.title}</h3>
-          <div
-            className="center"
-            style={{
-              justifyContent: "space-between",
-              minWidth: "100%",
-              maxWidth: "100%",
-            }}
-          >
-            <p>{currentProduct?.brand}</p>
-            <div
-              style={{
-                maxHeight: "100%",
-                // border: "1px solid #2e7d32",
-                backgroundColor: "#C8E6C9",
-                color: "#4CAF50",
-                // fontWeight: "bold",
-                borderRadius: "12px",
-                padding: "0.5rem 1.5rem",
+      <ResponsiveBody className="wrapper">
+        <div>
+          <div>
+            <Carousel
+              fullHeightHover
+              indicatorContainerProps={{
+                style: {
+                  height: "3rem",
+                  marginTop: "-3.27rem", // 5
+                },
+              }}
+              navButtonsAlwaysVisible
+              navButtonsProps={{
+                style: {
+                  opacity: 0.4,
+                },
               }}
             >
-              In Stock: {currentProduct?.stock}
-            </div>
+              {currentProduct?.images &&
+                Object.values(currentProduct?.images)?.map((item, i) => (
+                  <Item key={i} item={item} />
+                ))}
+            </Carousel>
           </div>
-          <div
-            className="center"
-            style={{ justifyContent: "flex-start", minWidth: "100%" }}
-          >
-            <p>Sold by:</p>
-            {currentProductOwner && (
-              <div style={{ flex: 1 }}>
-                <UserDialogAvatar
-                  height="2rem"
-                  user={currentProductOwner}
-                  name={currentProductOwner?.displayName}
-                />
-              </div>
-            )}
-          </div>
-          <p>Location: {currentProduct?.location}</p>
-          <h2>Rs. {currentProduct?.price}/-</h2>
           <div>
-            <h3 style={{ marginBottom: "1rem" }}>Description</h3>
-            <p>{currentProduct?.description}</p>
-          </div>
-          {/* Product operations */}
-          {currentUser ? (
-            currentProduct?.userId !== currentUser?.uid ? (
+            <StyledContentContainer>
+              <h1 style={{ fontWeight: "500" }}>{currentProduct?.title}</h1>
               <div
                 className="center"
-                style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
+                style={{
+                  justifyContent: "space-between",
+                  minWidth: "100%",
+                  maxWidth: "100%",
+                }}
               >
-                {/* Interested Button */}
-                <Checkbox
-                  onClick={onInterestedClick}
-                  checked={
-                    !!(
-                      currentProduct?.interestedUsers &&
-                      Object.keys(currentProduct?.interestedUsers).includes(
-                        currentUser?.uid
-                      )
-                    )
-                  }
-                  checkedIcon={
-                    <StyledFab variant="extended" bold secondary>
-                      Not Interested
-                    </StyledFab>
-                  }
-                  icon={
-                    <StyledFab variant="extended" bold primary>
-                      Interested
-                    </StyledFab>
-                  }
-                  {...props}
-                />
-                {/* Whatsapp link */}
-                <a
-                  href={`https://api.whatsapp.com/send?phone=+91${currentProductOwner?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <StyledFab bold primary round>
-                    <WhatsAppIcon />
-                  </StyledFab>
-                </a>
-              </div>
-            ) : (
-              currentProduct?.userId === currentUser?.uid && (
+                <p>Brand: {currentProduct?.brand}</p>
                 <div
-                  className="center"
-                  style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
+                  style={{
+                    maxHeight: "100%",
+                    // border: "1px solid #2e7d32",
+                    backgroundColor: "#C8E6C9",
+                    color: "#4CAF50",
+                    // fontWeight: "bold",
+                    borderRadius: "12px",
+                    padding: "0.5rem 1.5rem",
+                  }}
                 >
-                  <StyledFab
-                    bold
-                    primary
-                    round
-                    style={{ marginRight: "1rem" }}
-                    onClick={() =>
-                      history.push({
-                        pathname: "/post_product",
-                        state: {
-                          currentProduct,
-                        },
-                      })
-                    }
-                  >
-                    <EditIcon />
-                  </StyledFab>
-
-                  <StyledFab
-                    bold
-                    primary
-                    round
-                    onClick={() =>
-                      dispatch(
-                        deleteMarketPlaceProductAction(
-                          currentProduct?.id,
-                          history
-                        )
-                      )
-                    }
-                  >
-                    <DeleteIcon />
-                  </StyledFab>
+                  In Stock: {currentProduct?.stock}
                 </div>
-              )
-            )
-          ) : (
-            <h3>Login to show interest to this product</h3>
-          )}
-        </StyledContentContainer>
-      </MainContainer>
+              </div>
+              <div
+                className="center"
+                style={{ justifyContent: "flex-start", minWidth: "100%" }}
+              >
+                <p>Sold by:</p>
+                {currentProductOwner && (
+                  <div style={{ flex: 1 }}>
+                    <UserDialogAvatar
+                      height="2rem"
+                      user={currentProductOwner}
+                      name={currentProductOwner?.displayName}
+                    />
+                  </div>
+                )}
+              </div>
+              <p>Location: {currentProduct?.location}</p>
+              <p>Category: {currentProduct?.category}</p>
+              <h2>₹ {currentProduct?.price}/-</h2>
+              <div>
+                <h3 style={{ marginBottom: "1rem" }}>Description</h3>
+                <p>{currentProduct?.description}</p>
+              </div>
+              {/* Product operations */}
+              {currentUser ? (
+                currentProduct?.userId !== currentUser?.uid ? (
+                  <div
+                    className="center"
+                    style={{ justifyContent: "flex-start", flexWrap: "nowrap" }}
+                  >
+                    {/* Interested Button */}
+                    <Checkbox
+                      onClick={onInterestedClick}
+                      checked={
+                        !!(
+                          currentProduct?.interestedUsers &&
+                          Object.keys(currentProduct?.interestedUsers).includes(
+                            currentUser?.uid
+                          )
+                        )
+                      }
+                      checkedIcon={
+                        <StyledFab variant="extended" bold secondary>
+                          Not Interested
+                        </StyledFab>
+                      }
+                      icon={
+                        <StyledFab variant="extended" bold primary>
+                          Interested
+                        </StyledFab>
+                      }
+                      {...props}
+                    />
+                    {/* Whatsapp link */}
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=+91${currentProductOwner?.phoneNumber}&text=Hi, I got your number from avnetwork.in. I am interested in your product "${currentProduct?.title}".`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <StyledFab bold primary round>
+                        <WhatsAppIcon />
+                      </StyledFab>
+                    </a>
+                    <StyledFab
+                      primary
+                      round
+                      style={{ marginLeft: "1rem" }}
+                      onClick={() =>
+                        navigator.share({
+                          url: window.location.href,
+                        })
+                      }
+                    >
+                      <ShareIcon />
+                    </StyledFab>
+                  </div>
+                ) : (
+                  currentProduct?.userId === currentUser?.uid && (
+                    <div
+                      className="center"
+                      style={{
+                        justifyContent: "flex-start",
+                        flexWrap: "nowrap",
+                      }}
+                    >
+                      <StyledFab
+                        bold
+                        primary
+                        round
+                        style={{ marginRight: "1rem" }}
+                        onClick={() =>
+                          history.push({
+                            pathname: "/post_product",
+                            state: {
+                              currentProduct,
+                            },
+                          })
+                        }
+                      >
+                        <EditIcon />
+                      </StyledFab>
+
+                      <StyledFab
+                        bold
+                        primary
+                        round
+                        onClick={() =>
+                          dispatch(
+                            deleteMarketPlaceProductAction(
+                              currentProduct?.id,
+                              history
+                            )
+                          )
+                        }
+                      >
+                        <DeleteIcon />
+                      </StyledFab>
+                    </div>
+                  )
+                )
+              ) : (
+                <h3>Login to show interest to this product</h3>
+              )}
+            </StyledContentContainer>
+          </div>
+        </div>
+      </ResponsiveBody>
       {currentProduct?.userId === currentUser?.uid && (
         <InterestedList
           productId={productId}

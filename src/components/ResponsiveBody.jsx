@@ -26,6 +26,9 @@ export const ResponsiveBody = styled.div`
     justify-content: center;
     flex-direction: ${(props) => (props?.column ? "column" : "row")};
     flex: 80% !important;
+    & > div {
+      flex: 50%;
+    }
   }
 
   @media screen and (max-width: 768px) {
@@ -34,6 +37,9 @@ export const ResponsiveBody = styled.div`
     }
     & > div {
       flex-direction: column;
+      & > div {
+        flex: 100%;
+      }
     }
   }
 `;
