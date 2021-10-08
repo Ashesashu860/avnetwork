@@ -5,26 +5,20 @@ import {
   StyledNavLink,
   ResponsiveBody,
 } from "../../../components";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllMarketPlaceProducts } from "../../../redux/actions";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import MarketPlaceHomeImg from "../../../assets/market_place/market_place_home.png";
 import "./market_place_home.css";
 import { ProductsList } from "../ProductsList";
 
 const mapState = (state) => ({
-  // allProducts: state.marketPlace.allProducts,
   currentUser: state.users.currentUser,
 });
 
 export const MarketPlaceHome = () => {
   const { currentUser } = useSelector(mapState);
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    // dispatch(getAllMarketPlaceProducts());
   }, []);
 
   return (
@@ -60,7 +54,7 @@ export const MarketPlaceHome = () => {
         subHeading={"All Products"}
         content={"View our variety of different products"}
       />
-      <ProductsList />
+      <ProductsList showAds />
     </>
   );
 };
