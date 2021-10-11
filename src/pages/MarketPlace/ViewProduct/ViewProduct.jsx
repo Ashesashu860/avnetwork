@@ -127,7 +127,7 @@ export const ViewProduct = (props) => {
                 ))}
             </Carousel>
           </div>
-          <div>
+          <div style={{ width: "100%" }}>
             <StyledContentContainer>
               <h1 style={{ fontWeight: "500" }}>{currentProduct?.title}</h1>
               <div
@@ -170,7 +170,11 @@ export const ViewProduct = (props) => {
               </div>
               <p>Location: {currentProduct?.location}</p>
               <p>Category: {currentProduct?.category}</p>
-              <h2>₹ {currentProduct?.price}/-</h2>
+              {currentProduct?.price ? (
+                <h2>₹ {currentProduct?.price}/-</h2>
+              ) : (
+                <h2>Contact to get a quote.</h2>
+              )}
               <div>
                 <h3 style={{ marginBottom: "1rem" }}>Description</h3>
                 <p>{currentProduct?.description}</p>

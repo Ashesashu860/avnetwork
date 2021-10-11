@@ -44,7 +44,7 @@ export function* addProductInDbSaga(action) {
     category,
     stock,
     images,
-    price,
+    ...(price || 0),
     userId: action.payload.userId,
     timestamp: firebase.database.ServerValue.TIMESTAMP,
   });

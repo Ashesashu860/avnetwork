@@ -14,6 +14,7 @@ import {
 import {
   InputAdornment,
   Grid,
+  Checkbox,
   FormControl,
   InputLabel,
 } from "@material-ui/core";
@@ -23,6 +24,11 @@ import { addProductInDbAction } from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory, Redirect } from "react-router-dom";
 import { marketPlaceProductCategories } from "../../masterData";
+import styled from "styled-components";
+
+const CreateProductSubContainer = styled(StyledForm)`
+  flex-direction: column;
+`;
 
 const mapState = (state) => ({
   currentUser: state.users.currentUser,
@@ -133,6 +139,22 @@ export const CreateProduct = (props) => {
       dispatch(addProductInDbAction(product, currentUser?.uid, history));
   };
 
+  //Quote logic
+  const [askForQuote, setAskForQuote] = useState(false);
+  const onGetQuoteClick = () => {
+    setAskForQuote(!askForQuote);
+    product?.price &&
+      setProduct({
+        ...product,
+        price: "",
+      });
+    errors?.price &&
+      setErrors({
+        ...errors,
+        price: "",
+      });
+  };
+
   return !currentUser ? (
     <Redirect to="/" />
   ) : (
@@ -145,121 +167,143 @@ export const CreateProduct = (props) => {
         subHeading={"Post your product"}
         content={"Fill the required details to post your product"}
       />
-      <StyledForm className="center" style={{ flexDirection: "column" }}>
-        <StyledTextBox
-          label="Title *"
-          variant="outlined"
-          name="title"
-          onChange={onChange}
-          onBlur={onBlur}
-          error={!!errors.title}
-          helperText={errors.title}
-          value={product?.title}
-        />
-        <StyledTextBox
-          label="Location *"
-          variant="outlined"
-          name="location"
-          onChange={onChange}
-          onBlur={onBlur}
-          error={!!errors.location}
-          helperText={errors.location}
-          value={product?.location}
-        />
-        <StyledTextBox
-          label="Brand *"
-          variant="outlined"
-          name="brand"
-          onChange={onChange}
-          onBlur={onBlur}
-          error={!!errors.brand}
-          helperText={errors.brand}
-          value={product?.brand}
-        />
-        <FormControl
-          variant="outlined"
-          style={{ minWidth: "100%", maxWidth: "100%" }}
-        >
-          <InputLabel>Category *</InputLabel>
-          <StyledSelect
-            native
+      <Grid item sm={6} xs={9} style={{ width: "100%" }}>
+        <CreateProductSubContainer className="center">
+          <StyledTextBox
+            label="Title *"
+            variant="outlined"
+            name="title"
             onChange={onChange}
             onBlur={onBlur}
-            name="category"
-            label="Category"
-            error={!!errors.category}
-            value={product?.category}
+            error={!!errors.title}
+            helperText={errors.title}
+            value={product?.title}
+          />
+          <StyledTextBox
+            label="Location *"
+            variant="outlined"
+            name="location"
+            onChange={onChange}
+            onBlur={onBlur}
+            error={!!errors.location}
+            helperText={errors.location}
+            value={product?.location}
+          />
+          <StyledTextBox
+            label="Brand *"
+            variant="outlined"
+            name="brand"
+            onChange={onChange}
+            onBlur={onBlur}
+            error={!!errors.brand}
+            helperText={errors.brand}
+            value={product?.brand}
+          />
+          <FormControl
+            variant="outlined"
+            style={{ minWidth: "100%", maxWidth: "100%" }}
           >
-            <option value={""}></option>
-            {marketPlaceProductCategories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </StyledSelect>
-          {errors.category && <ErrorText>{errors.category}</ErrorText>}
-        </FormControl>
-        <StyledTextArea
-          onBlur={onBlur}
-          title="Description *"
-          onChange={onChange}
-          name="description"
-          error={errors.description}
-          color="primary"
-          value={product?.description}
-          style={{ minWidth: "100%" }}
-        />
-        <StyledTextBox
-          InputProps={{
-            startAdornment: <InputAdornment position="start">₹</InputAdornment>,
-            type: "number",
-          }}
-          onChange={onChange}
-          onBlur={onBlur}
-          label="Price *"
-          variant="outlined"
-          name="price"
-          error={!!errors.price}
-          helperText={errors.price}
-          value={product?.price}
-        />
-        <StyledTextBox
-          InputProps={{
-            type: "number",
-          }}
-          onChange={onChange}
-          onBlur={onBlur}
-          label="Stock *"
-          variant="outlined"
-          name="stock"
-          error={!!errors.stock}
-          helperText={errors.stock}
-          value={product?.stock}
-        />
-        <h4>Upload upto 4 photos of the product</h4>
-        <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
-          {[
-            ...(product?.images ? Object.keys(product?.images) : []),
-            ...(product?.newImages || []),
-          ].map((key, index) => {
-            const image =
-              typeof key === "string"
-                ? product?.images[key]
-                : key && URL.createObjectURL(key);
-            return (
-              <ProductImageCard
-                key={index}
-                selectedImage={image}
-                onDeleteImage={() => onDeleteImage(key)}
-              />
-            );
-          })}
-          {[
-            ...(product?.images ? Object.keys(product?.images) : []),
-            ...(product?.newImages || []),
-          ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
-        </StyledImageContainer>
-      </StyledForm>
+            <InputLabel>Category *</InputLabel>
+            <StyledSelect
+              native
+              onChange={onChange}
+              onBlur={onBlur}
+              name="category"
+              label="Category"
+              error={!!errors.category}
+              value={product?.category}
+            >
+              <option value={""}></option>
+              {marketPlaceProductCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </StyledSelect>
+            {errors.category && <ErrorText>{errors.category}</ErrorText>}
+          </FormControl>
+          <StyledTextArea
+            onBlur={onBlur}
+            title="Description *"
+            onChange={onChange}
+            name="description"
+            error={errors.description}
+            color="primary"
+            value={product?.description}
+            style={{ minWidth: "100%" }}
+          />
+          <Grid container wrap="nowrap" alignItems="center" justify="center">
+            <StyledTextBox
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">₹</InputAdornment>
+                ),
+                type: "number",
+              }}
+              onChange={onChange}
+              onBlur={onBlur}
+              label="Price *"
+              variant="outlined"
+              name="price"
+              disabled={askForQuote}
+              value={product?.price}
+              error={!!errors.price}
+              helperText={errors.price}
+            />
+            <Checkbox
+              onClick={onGetQuoteClick}
+              checked={askForQuote}
+              checkedIcon={
+                <StyledFab variant="extended" bold primary>
+                  Write Quote
+                </StyledFab>
+              }
+              icon={
+                <StyledFab variant="extended" bold primary>
+                  Get Quote
+                </StyledFab>
+              }
+              {...props}
+            />
+          </Grid>
+          <StyledTextBox
+            InputProps={{
+              type: "number",
+            }}
+            onChange={onChange}
+            onBlur={onBlur}
+            label="Stock *"
+            variant="outlined"
+            name="stock"
+            error={!!errors.stock}
+            helperText={errors.stock}
+            value={product?.stock}
+          />
+          <h4>Upload upto 4 photos of the product</h4>
+          <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
+            {[
+              ...(product?.images ? Object.keys(product?.images) : []),
+              ...(product?.newImages || []),
+            ].map((key, index) => {
+              const image =
+                typeof key === "string"
+                  ? product?.images[key]
+                  : key && URL.createObjectURL(key);
+              return (
+                <ProductImageCard
+                  key={index}
+                  selectedImage={image}
+                  onDeleteImage={() => onDeleteImage(key)}
+                />
+              );
+            })}
+            {[
+              ...(product?.images ? Object.keys(product?.images) : []),
+              ...(product?.newImages || []),
+            ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
+          </StyledImageContainer>
+        </CreateProductSubContainer>
+      </Grid>
       <Grid container wrap="nowrap" alignItems="center" justify="center">
         <StyledFab
           variant="extended"

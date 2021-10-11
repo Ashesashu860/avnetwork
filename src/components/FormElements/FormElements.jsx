@@ -2,14 +2,7 @@ import styled from "styled-components";
 import { TextField, Select } from "@material-ui/core";
 
 export const StyledTextBox = styled(TextField)`
-  width: 40rem;
-  @media screen and (max-width: 768px) {
-    width: 30rem;
-  }
-
-  @media screen and (max-width: 570px) {
-    width: 20rem;
-  }
+  width: 100%;
 
   & label.Mui-focused {
     color: var(--primary);
