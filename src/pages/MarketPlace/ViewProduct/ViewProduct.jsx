@@ -150,7 +150,7 @@ export const ViewProduct = (props) => {
                     padding: "0.5rem 1.5rem",
                   }}
                 >
-                  In Stock: {currentProduct?.stock}
+                  In Stock: {currentProduct?.stock || "Unknown"}
                 </div>
               </div>
               <div

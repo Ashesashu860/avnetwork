@@ -41,7 +41,6 @@ const initialErrors = {
   category: "",
   brand: "",
   description: "",
-  stock: "",
 };
 
 const toSentenceCase = (str) => {
@@ -89,12 +88,13 @@ export const CreateProduct = (props) => {
   };
 
   const onBlur = (event) => {
-    setErrors({
-      ...errors,
-      [event.target.name]:
-        !event.target.value &&
-        `${toSentenceCase(event.target.name)} is required`,
-    });
+    event.target.name !== "stock" &&
+      setErrors({
+        ...errors,
+        [event.target.name]:
+          !event.target.value &&
+          `${toSentenceCase(event.target.name)} is required`,
+      });
   };
 
   const onImageChange = (event) => {
@@ -272,7 +272,7 @@ export const CreateProduct = (props) => {
             }}
             onChange={onChange}
             onBlur={onBlur}
-            label="Stock *"
+            label="Stock (Optional)"
             variant="outlined"
             name="stock"
             error={!!errors.stock}

@@ -40,7 +40,11 @@ export const Networks = () => {
   const [selectedCategory, setSelectedCategory] = React.useState("");
 
   const filteredUsers = allUsers?.filter(
-    (user) => user?.category !== "Guest" && user?.category !== "Manufacturer"
+    (user) =>
+      user?.category !== "Guest" &&
+      user?.category !== "Manufacturer" &&
+      user?.category !== "Admin" &&
+      user?.email !== "ashutoshforjobs@gmail.com"
   );
 
   const filteredUsersWithCategory =

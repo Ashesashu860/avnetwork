@@ -130,7 +130,7 @@ export const ProductCard = ({
             fontSize: "0.7rem",
           }}
         >
-          In Stock: {stock || 0}
+          In Stock: {stock || "Unknown"}
         </div>
         <h3 style={{ fontSize: "1rem" }}>
           {price ? `₹${price}/-` : "Get a quote"}
