@@ -25,6 +25,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useHistory, Redirect } from "react-router-dom";
 import { marketPlaceProductCategories } from "../../masterData";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 const CreateProductSubContainer = styled(StyledForm)`
   flex-direction: column;
@@ -155,170 +156,198 @@ export const CreateProduct = (props) => {
       });
   };
 
-  return !currentUser ? (
-    <Redirect to="/" />
-  ) : (
-    <div
-      className="wrapper center"
-      style={{ flexDirection: "column", paddingBottom: "2rem" }}
-    >
-      <ContentContainer
-        style={{ alignItems: "center" }}
-        subHeading={"Post your product"}
-        content={"Fill the required details to post your product"}
-      />
-      <Grid item sm={6} xs={9} style={{ width: "100%" }}>
-        <CreateProductSubContainer className="center">
-          <StyledTextBox
-            label="Title *"
-            variant="outlined"
-            name="title"
-            onChange={onChange}
-            onBlur={onBlur}
-            error={!!errors.title}
-            helperText={errors.title}
-            value={product?.title}
-          />
-          <StyledTextBox
-            label="Location *"
-            variant="outlined"
-            name="location"
-            onChange={onChange}
-            onBlur={onBlur}
-            error={!!errors.location}
-            helperText={errors.location}
-            value={product?.location}
-          />
-          <StyledTextBox
-            label="Brand *"
-            variant="outlined"
-            name="brand"
-            onChange={onChange}
-            onBlur={onBlur}
-            error={!!errors.brand}
-            helperText={errors.brand}
-            value={product?.brand}
-          />
-          <FormControl
-            variant="outlined"
-            style={{ minWidth: "100%", maxWidth: "100%" }}
-          >
-            <InputLabel>Category *</InputLabel>
-            <StyledSelect
-              native
-              onChange={onChange}
-              onBlur={onBlur}
-              name="category"
-              label="Category"
-              error={!!errors.category}
-              value={product?.category}
-            >
-              <option value={""}></option>
-              {marketPlaceProductCategories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </StyledSelect>
-            {errors.category && <ErrorText>{errors.category}</ErrorText>}
-          </FormControl>
-          <StyledTextArea
-            onBlur={onBlur}
-            title="Description *"
-            onChange={onChange}
-            name="description"
-            error={errors.description}
-            color="primary"
-            value={product?.description}
-            style={{ minWidth: "100%" }}
-          />
-          <Grid container wrap="nowrap" alignItems="center" justify="center">
-            <StyledTextBox
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">₹</InputAdornment>
-                ),
-                type: "number",
-              }}
-              onChange={onChange}
-              onBlur={onBlur}
-              label="Price *"
-              variant="outlined"
-              name="price"
-              disabled={askForQuote}
-              value={product?.price}
-              error={!!errors.price}
-              helperText={errors.price}
-            />
-            <Checkbox
-              onClick={onGetQuoteClick}
-              checked={askForQuote}
-              checkedIcon={
-                <StyledFab variant="extended" bold primary>
-                  Write Quote
-                </StyledFab>
-              }
-              icon={
-                <StyledFab variant="extended" bold primary>
-                  Get Quote
-                </StyledFab>
-              }
-              {...props}
-            />
-          </Grid>
-          <StyledTextBox
-            InputProps={{
-              type: "number",
-            }}
-            onChange={onChange}
-            onBlur={onBlur}
-            label="Stock (Optional)"
-            variant="outlined"
-            name="stock"
-            error={!!errors.stock}
-            helperText={errors.stock}
-            value={product?.stock}
-          />
-          <h4>Upload upto 4 photos of the product</h4>
-          <StyledImageContainer className="center" style={{ flexWrap: "wrap" }}>
-            {[
-              ...(product?.images ? Object.keys(product?.images) : []),
-              ...(product?.newImages || []),
-            ].map((key, index) => {
-              const image =
-                typeof key === "string"
-                  ? product?.images[key]
-                  : key && URL.createObjectURL(key);
-              return (
-                <ProductImageCard
-                  key={index}
-                  selectedImage={image}
-                  onDeleteImage={() => onDeleteImage(key)}
-                />
-              );
-            })}
-            {[
-              ...(product?.images ? Object.keys(product?.images) : []),
-              ...(product?.newImages || []),
-            ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
-          </StyledImageContainer>
-        </CreateProductSubContainer>
-      </Grid>
-      <Grid container wrap="nowrap" alignItems="center" justify="center">
-        <StyledFab
-          variant="extended"
-          bold
-          secondary
-          style={{ marginRight: "1rem" }}
+  return (
+    <>
+      <Helmet>
+        <title>Create a product</title>
+        <meta
+          name="description"
+          content="Buy/Sell audio products like Speakers, Wires, Audio Cables, Microphones(Mic) etc. by creating and posting an eligible product on our portal."
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
+      {!currentUser ? (
+        <Redirect to="/" />
+      ) : (
+        <div
+          className="wrapper center"
+          style={{ flexDirection: "column", paddingBottom: "2rem" }}
         >
-          Cancel
-        </StyledFab>
-        <StyledFab variant="extended" bold primary onClick={onCreateProduct}>
-          {props?.history?.location?.state?.currentProduct
-            ? "Update"
-            : "Create"}
-        </StyledFab>
-      </Grid>
-    </div>
+          <ContentContainer
+            style={{ alignItems: "center" }}
+            subHeading={"Post your product"}
+            content={"Fill the required details to post your product"}
+          />
+          <Grid item sm={6} xs={9} style={{ width: "100%" }}>
+            <CreateProductSubContainer className="center">
+              <StyledTextBox
+                label="Title *"
+                variant="outlined"
+                name="title"
+                onChange={onChange}
+                onBlur={onBlur}
+                error={!!errors.title}
+                helperText={errors.title}
+                value={product?.title}
+              />
+              <StyledTextBox
+                label="Location *"
+                variant="outlined"
+                name="location"
+                onChange={onChange}
+                onBlur={onBlur}
+                error={!!errors.location}
+                helperText={errors.location}
+                value={product?.location}
+              />
+              <StyledTextBox
+                label="Brand *"
+                variant="outlined"
+                name="brand"
+                onChange={onChange}
+                onBlur={onBlur}
+                error={!!errors.brand}
+                helperText={errors.brand}
+                value={product?.brand}
+              />
+              <FormControl
+                variant="outlined"
+                style={{ minWidth: "100%", maxWidth: "100%" }}
+              >
+                <InputLabel>Category *</InputLabel>
+                <StyledSelect
+                  native
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  name="category"
+                  label="Category"
+                  error={!!errors.category}
+                  value={product?.category}
+                >
+                  <option value={""}></option>
+                  {marketPlaceProductCategories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </StyledSelect>
+                {errors.category && <ErrorText>{errors.category}</ErrorText>}
+              </FormControl>
+              <StyledTextArea
+                onBlur={onBlur}
+                title="Description *"
+                onChange={onChange}
+                name="description"
+                error={errors.description}
+                color="primary"
+                value={product?.description}
+                style={{ minWidth: "100%" }}
+              />
+              <Grid
+                container
+                wrap="nowrap"
+                alignItems="center"
+                justify="center"
+              >
+                <StyledTextBox
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">₹</InputAdornment>
+                    ),
+                    type: "number",
+                  }}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label="Price *"
+                  variant="outlined"
+                  name="price"
+                  disabled={askForQuote}
+                  value={product?.price}
+                  error={!!errors.price}
+                  helperText={errors.price}
+                />
+                <Checkbox
+                  onClick={onGetQuoteClick}
+                  checked={askForQuote}
+                  checkedIcon={
+                    <StyledFab variant="extended" bold primary>
+                      Write Quote
+                    </StyledFab>
+                  }
+                  icon={
+                    <StyledFab variant="extended" bold primary>
+                      Get Quote
+                    </StyledFab>
+                  }
+                  {...props}
+                />
+              </Grid>
+              <StyledTextBox
+                InputProps={{
+                  type: "number",
+                }}
+                onChange={onChange}
+                onBlur={onBlur}
+                label="Stock (Optional)"
+                variant="outlined"
+                name="stock"
+                error={!!errors.stock}
+                helperText={errors.stock}
+                value={product?.stock}
+              />
+              <h4>Upload upto 4 photos of the product</h4>
+              <StyledImageContainer
+                className="center"
+                style={{ flexWrap: "wrap" }}
+              >
+                {[
+                  ...(product?.images ? Object.keys(product?.images) : []),
+                  ...(product?.newImages || []),
+                ].map((key, index) => {
+                  const image =
+                    typeof key === "string"
+                      ? product?.images[key]
+                      : key && URL.createObjectURL(key);
+                  return (
+                    <ProductImageCard
+                      key={index}
+                      selectedImage={image}
+                      onDeleteImage={() => onDeleteImage(key)}
+                    />
+                  );
+                })}
+                {[
+                  ...(product?.images ? Object.keys(product?.images) : []),
+                  ...(product?.newImages || []),
+                ].length < 4 && <AddImageCard onImageChange={onImageChange} />}
+              </StyledImageContainer>
+            </CreateProductSubContainer>
+          </Grid>
+          <Grid container wrap="nowrap" alignItems="center" justify="center">
+            <StyledFab
+              variant="extended"
+              bold
+              secondary
+              style={{ marginRight: "1rem" }}
+            >
+              Cancel
+            </StyledFab>
+            <StyledFab
+              variant="extended"
+              bold
+              primary
+              onClick={onCreateProduct}
+            >
+              {props?.history?.location?.state?.currentProduct
+                ? "Update"
+                : "Create"}
+            </StyledFab>
+          </Grid>
+        </div>
+      )}
+    </>
   );
 };

@@ -1,16 +1,7 @@
 import { useRef, useEffect } from "react";
-import BlogSvg from "../../../assets/blog_create.svg";
-import {
-  MainContainer,
-  ContentContainer,
-  StyledNavLink,
-  StyledFab,
-  ResponsiveBody,
-} from "../../../components";
+import { ContentContainer, ResponsiveBody } from "../../../components";
 import "./blog-landing-page.css";
 import { BlogList } from "..";
-import { mockBlogs } from "../../../mocks";
-import { useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Image1 from "../../../assets/blogs/image1.png";
@@ -19,6 +10,7 @@ import Image3 from "../../../assets/blogs/image3.png";
 import Image4 from "../../../assets/blogs/image4.png";
 import Image5 from "../../../assets/blogs/image5.png";
 import { Grid } from "@material-ui/core";
+import { Helmet } from "react-helmet";
 
 const SubHeading = styled.span`
   border: 1px solid var(--background);
@@ -50,14 +42,8 @@ const SubContent = styled.div`
   }
 `;
 
-const mapState = (state) => ({
-  currentUser: state.users.currentUser,
-});
-
 export const BlogLandingPage = withRouter(({ history }) => {
   const addBlogRef = useRef(null);
-
-  const { currentUser } = useSelector(mapState);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,6 +70,17 @@ export const BlogLandingPage = withRouter(({ history }) => {
 
   return (
     <>
+      <Helmet>
+        <title>Audio Blogs/Video Blogs</title>
+        <meta
+          name="description"
+          content="Get to know about latest technologies in audio products"
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Audio Blogs, Video Blogs, Sound Blogs, Speaker Blogs, Headphone blogs"
+        />
+      </Helmet>
       <ResponsiveBody className="wrapper fix_wrapper" column>
         <h1>WELCOME TO AVNETWORK BLOGS</h1>
         <SubContent>

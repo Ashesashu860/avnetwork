@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import MarketPlaceHomeImg from "../../../assets/market_place/market_place_home.png";
 import "./market_place_home.css";
 import { ProductsList } from "../ProductsList";
+import { Helmet } from "react-helmet";
 
 const mapState = (state) => ({
   currentUser: state.users.currentUser,
@@ -23,6 +24,17 @@ export const MarketPlaceHome = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Market place</title>
+        <meta
+          name="description"
+          content="Explore, Buy or Sell audio/video products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <ResponsiveBody className="wrapper fix_wrapper">
         <h1>WELCOME TO AVNETWORK MARKETPLACE</h1>
         <div>

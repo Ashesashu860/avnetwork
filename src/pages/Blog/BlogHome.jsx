@@ -7,6 +7,7 @@ import Image3 from "../../assets/blogs/image3.png";
 import Image4 from "../../assets/blogs/image4.png";
 import Image5 from "../../assets/blogs/image5.png";
 import { Grid } from "@material-ui/core";
+import { Helmet } from "react-helmet";
 
 const SubHeading = styled.div`
   border: 1px solid var(--background);
@@ -49,6 +50,17 @@ export const BlogHome = () => {
 
   return (
     <ResponsiveBody className="wrapper fix_wrapper" column>
+      <Helmet>
+        <title>Audio Blogs/Video Blogs</title>
+        <meta
+          name="description"
+          content="Get to know about latest technologies in audio products"
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <h1>WELCOME TO AVNETWORK BLOGS</h1>
       <SubContent>
         <p

@@ -12,6 +12,7 @@ import { addBlogInDbAction, setAlertAction } from "../../redux/actions";
 import "react-quill/dist/quill.snow.css";
 import { Redirect } from "react-router-dom";
 import { blogCategories } from "../masterData";
+import { Helmet } from "react-helmet";
 
 const mapState = (state) => ({
   currentUser: state?.users?.currentUser,
@@ -73,6 +74,17 @@ export const BlogCreate = withRouter(({ history }) => {
   };
   return currentUser?.canWriteBlogs ? (
     <div className="wrapper" style={{ padding: "1.5rem" }}>
+      <Helmet>
+        <title>Create a blog</title>
+        <meta
+          name="description"
+          content="Create a blog about latest technologies in audio products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <StyledInput
         type="text"
         value={blog.title}

@@ -8,6 +8,7 @@ import "./homepage.css";
 import { StyledNavLink, StyledFab, ContentContainer } from "../../components";
 import { ProductsList } from "../MarketPlace";
 import { BlogList } from "../Blog";
+import { Helmet } from "react-helmet";
 
 export const Homepage = (props) => {
   const sliderData = [
@@ -55,6 +56,17 @@ export const Homepage = (props) => {
 
   return (
     <>
+      <Helmet>
+        <title>AVnetwork Home</title>
+        <meta
+          name="description"
+          content="Get to know about latest technologies in audio products. Buy/Sell audio products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <Carousel
         fullHeightHover
         indicatorContainerProps={{

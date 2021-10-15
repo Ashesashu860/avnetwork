@@ -30,6 +30,7 @@ import { getFormattedDate } from "../BlogCreateModules";
 import NarrowAd from "../../../assets/ads/narrow_ad.jpg";
 import SquareAd1 from "../../../assets/ads/square_ad_1.jpg";
 import SquareAd2 from "../../../assets/ads/square_ad_2.jpg";
+import { Helmet } from "react-helmet";
 
 const ViewBlogContainer = styled.div`
   flex-direction: column;
@@ -159,6 +160,14 @@ export const ViewBlog = (props) => {
 
   return (
     <ViewBlogContainer className="wrapper center">
+      <Helmet>
+        <title>{currentBlog?.title}</title>
+        <meta name="description" content={currentBlog?.content} />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <h1>{currentBlog?.title}</h1>
       <div
         id="blog_ad_1"

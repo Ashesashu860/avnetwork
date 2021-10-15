@@ -21,6 +21,7 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
+import { Helmet } from "react-helmet";
 
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
@@ -103,6 +104,20 @@ export const ViewProduct = (props) => {
   };
   return (
     <>
+      <Helmet>
+        <title>{currentProduct?.title}</title>
+        <meta
+          name="description"
+          content={
+            currentProduct?.description ||
+            "Explore, Buy or Sell audio/video products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
+          }
+        />
+        <meta
+          name="keywords"
+          content="Audio, Video, Sound, Speaker, Microphone, Wires, Cables, Mic, Digital, Armoured Cables, AWG, Analog, Blog, Displays, Lightning, Truss, Trussing Systems, Connectors, Amplifiers, Panels, Market Place, Audiophile, Wire guage"
+        />
+      </Helmet>
       <ResponsiveBody className="wrapper">
         <div>
           <div>
