@@ -30,6 +30,7 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
   const { allProducts } = useSelector(mapState);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categorisedProducts, setcategorisedProducts] = useState([]);
 
   const filteredCategories = [...marketPlaceProductCategories];
   filteredCategories?.shift();
@@ -37,10 +38,10 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
 
   const onCategoryClick = (index) => {
     setSelectedCategory(filteredCategories[index]);
-    setFilteredProducts(
+    setcategorisedProducts(
       filteredCategories[index] === "All"
-        ? allProducts
-        : allProducts?.filter(
+        ? filteredProducts
+        : filteredProducts?.filter(
             (product) => product.category === filteredCategories[index]
           )
     );
@@ -50,9 +51,12 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
     const userFilteredProducts = userId
       ? allProducts?.filter((product) => product.userId === userId)
       : allProducts;
+    const sortedFilteredProducts = userFilteredProducts?.sort(
+      (one, next) => new Date(next?.timestamp) - new Date(one?.timestamp)
+    );
     const latestFilteredProducts = latest
-      ? userFilteredProducts?.slice(-3)
-      : userFilteredProducts;
+      ? sortedFilteredProducts?.slice(0, 5)
+      : sortedFilteredProducts;
     if (showAds) {
       const count = latestFilteredProducts?.length;
       const firstPosition = Math.floor(
@@ -67,12 +71,12 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
       }
     }
     setFilteredProducts(latestFilteredProducts);
+    setcategorisedProducts(latestFilteredProducts);
   }, [allProducts]);
 
   useEffect(() => {
     dispatch(getAllMarketPlaceProducts());
   }, []);
-
   return (
     <StyledContainer className="center">
       <FilterChips
@@ -89,8 +93,8 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
             flexWrap: direction === "row" ? "nowrap" : "wrap",
           }}
         >
-          {filteredProducts && filteredProducts?.length !== 0 ? (
-            filteredProducts?.map((product, index) =>
+          {categorisedProducts && categorisedProducts?.length !== 0 ? (
+            categorisedProducts?.map((product, index) =>
               typeof product === "string" ? (
                 <div style={{ height: "16rem", width: "16rem" }}>
                   <img
