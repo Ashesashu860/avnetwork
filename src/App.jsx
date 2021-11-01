@@ -20,7 +20,7 @@ const App = () => {
           <title>AVnetwork Home</title>
           <meta
             name="description"
-            content="Get to know about latest technologies in audio products. Buy/Sell audio products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
+            content="Get to know about latest technologies in audio/video products. Buy/Sell audio/video products like Speakers, Wires, Audio Cables, Microphones(Mic) etc."
           />
           <meta
             name="keywords"
