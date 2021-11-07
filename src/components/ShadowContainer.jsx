@@ -12,7 +12,11 @@ export const Container = styled.div`
     left: -1px;
     width: 2rem;
     z-index: 1;
-    background-image: linear-gradient(to right, var(--background), transparent);
+    background-image: linear-gradient(
+      to right,
+      rgba(247, 247, 247),
+      rgba(0, 0, 0, 0)
+    );
     //background-color: red;
     height: 100%;
     top: 0;
@@ -23,7 +27,11 @@ export const Container = styled.div`
     content: "";
     width: 2rem;
     right: -1px;
-    background-image: linear-gradient(to left, var(--background), transparent);
+    background-image: linear-gradient(
+      to left,
+      rgba(247, 247, 247),
+      rgba(0, 0, 0, 0)
+    );
     //background-color: red;
     height: 100%;
   }
