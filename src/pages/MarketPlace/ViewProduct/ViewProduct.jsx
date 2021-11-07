@@ -30,22 +30,15 @@ const mapState = (state) => ({
 });
 
 const Item = ({ item }) => {
-  const [loading, setLoading] = useState(true);
-  const onLoaded = () => setLoading(false);
   return (
     <div className="center" style={{ maxHeight: "100%", maxWidth: "100%" }}>
-      {loading && (
-        <div className="center" style={{ minHeight: "4rem", minWidth: "4rem" }}>
-          LOADING...
-        </div>
-      )}
       <img
         className="fix_wrapper"
         src={item}
         alt="product_image"
         height="100%"
         width="100%"
-        onLoad={onLoaded}
+        loading="lazy"
         style={{
           objectFit: "contain",
           border: "1px solid #ddd",

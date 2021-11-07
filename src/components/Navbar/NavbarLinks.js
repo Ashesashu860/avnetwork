@@ -26,8 +26,8 @@ export const navLinks = [
   //   name: "Job Portal",
   //   link: "/job_portal",
   // },
-  // {
-  //   name: "Tutorials",
-  //   link: "/tutorials",
-  // },
+  {
+    name: "Tutorials",
+    link: "/tutorials",
+  },
 ];

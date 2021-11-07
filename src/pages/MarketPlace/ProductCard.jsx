@@ -33,11 +33,10 @@ const ProductHeading = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  background-size: contain !important;
+  background-size: cover !important;
   background-repeat: no-repeat !important;
   background: ${(props) => `url(${props.image})`};
   width: 100%;
-  // border-radius: 0.8rem !important;
   height: 14rem;
   background-color: rgb(247, 247, 247);
   background-position: center center;
