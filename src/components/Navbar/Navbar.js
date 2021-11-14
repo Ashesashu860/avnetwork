@@ -1,7 +1,22 @@
 import React, { useRef } from "react";
 import "./navbar.css";
-import { StyledNavLink, StyledFab, SearchBar, Logo } from "../../components";
-import { Avatar, Drawer, IconButton, Tooltip } from "@material-ui/core";
+import {
+  StyledNavLink,
+  StyledFab,
+  SearchBar,
+  Logo,
+  StyledButton,
+} from "../../components";
+import {
+  Avatar,
+  Drawer,
+  IconButton,
+  Tooltip,
+  Menu,
+  Divider,
+  MenuItem,
+  Grid,
+} from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import styled from "styled-components";
 import { DrawerLayout } from "../DrawerLayout";
@@ -65,6 +80,16 @@ export const Navbar = withRouter(({ history }) => {
       : loggedInLinks.concat(navLinks).filter((link) => link.name !== "Admin")
     : navLinks;
 
+  //PROFILE MENU LOGIC
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <div style={{ position: "fixed", zIndex: "1000" }} ref={navRef}>
@@ -109,13 +134,15 @@ export const Navbar = withRouter(({ history }) => {
                   }}
                   className="center"
                 >
-                  <Tooltip title={`Hi`}>
+                  <Tooltip
+                    title={`Hi ${currentUser?.displayName.split(" ")[0]}`}
+                  >
                     <Avatar
                       style={{
                         maxHeight: "3rem",
                         maxWidth: "3rem",
-                        marginRight: "1rem",
                       }}
+                      onClick={handleClick}
                     >
                       <img
                         src={currentUser?.photoURL}
@@ -124,15 +151,57 @@ export const Navbar = withRouter(({ history }) => {
                       />
                     </Avatar>
                   </Tooltip>
-                  <StyledFab
-                    variant="extended"
-                    bold
-                    secondary
-                    style={{ height: "3rem" }}
-                    onClick={handleLogout}
+                  <Menu
+                    id="customized-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    transformOrigin={{ vertical: "top", horizontal: "center" }}
+                    onClose={handleClose}
                   >
-                    Logout
-                  </StyledFab>
+                    <Grid
+                      container
+                      direction="column"
+                      style={{ padding: "0 1rem" }}
+                      alignItems="flex-start"
+                    >
+                      <MenuItem>
+                        <h3 style={{ marginBottom: "0.5rem" }}>{`Hi ${
+                          currentUser?.displayName.split(" ")[0]
+                        }`}</h3>
+                      </MenuItem>
+                      <Divider width="100%" />
+                      <MenuItem onClick={handleClose}>
+                        <StyledNavLink
+                          to="/profile"
+                          bold
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          My Profile
+                        </StyledNavLink>
+                      </MenuItem>
+                      <Divider width="100%" />
+
+                      <MenuItem onClick={handleClose}>
+                        <StyledButton
+                          style={{
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            padding: "0.5rem 0",
+                          }}
+                          bold
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </StyledButton>
+                      </MenuItem>
+                    </Grid>
+                  </Menu>
                 </div>
               ) : (
                 <>

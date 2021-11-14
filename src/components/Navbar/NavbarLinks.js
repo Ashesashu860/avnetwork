@@ -1,8 +1,8 @@
 export const loggedInLinks = [
-  {
-    name: "My Profile",
-    link: "/profile",
-  },
+  // {
+  //   name: "My Profile",
+  //   link: "/profile",
+  // },
   {
     name: "Admin",
     link: "/admin",

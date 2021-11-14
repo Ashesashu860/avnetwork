@@ -72,7 +72,7 @@ export const Homepage = (props) => {
         indicatorContainerProps={{
           style: {
             height: "3rem",
-            marginTop: "-3.27rem", // 5
+            marginTop: "-3rem", // 5
           },
         }}
         navButtonsAlwaysVisible

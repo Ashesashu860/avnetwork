@@ -47,13 +47,13 @@ export const BlogLandingPage = withRouter(({ history }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    window.addEventListener("scroll", () => {
-      if (!!addBlogRef.current) {
-        window.pageYOffset > window.innerHeight - 200
-          ? (addBlogRef.current.style.display = "inline-flex")
-          : (addBlogRef.current.style.display = "none");
-      }
-    });
+    // window.addEventListener("scroll", () => {
+    //   if (!!addBlogRef.current) {
+    //     window.pageYOffset > window.innerHeight - 200
+    //       ? (addBlogRef.current.style.display = "inline-flex")
+    //       : (addBlogRef.current.style.display = "none");
+    //   }
+    // });
     const abortController = new AbortController();
     return () => {
       abortController.abort();
@@ -136,12 +136,7 @@ export const BlogLandingPage = withRouter(({ history }) => {
         subHeading={"All Blogs"}
         content={"View our all blogs of different categories"}
       />
-      <BlogList
-        fabRef={addBlogRef}
-        noFab
-        className="remove_top_padding"
-        autoHeight
-      />
+      <BlogList fabRef={addBlogRef} className="remove_top_padding" autoHeight />
     </>
   );
 });

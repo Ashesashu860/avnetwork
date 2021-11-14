@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Avatar, Dialog, Divider } from "@material-ui/core";
 import styled from "styled-components";
-import { ListItemWithPhoto, StyledFab } from "../components";
+import { ListItemWithPhoto, StyledButton } from "../components";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import { useHistory } from "react-router-dom";
+import StorefrontIcon from "@material-ui/icons/Storefront";
 
 const StyledContainer = styled.div`
   height: 100%;
   justify-content: space-between;
-  border: ${(props) => props?.name && "1px solid #ccc"};
-  border-radius: ${(props) => props?.name && "2rem"};
-  padding: ${(props) => props?.name && "0.5rem"};
-  margin-left: ${(props) => props?.name && "0.5rem"};
+  border-radius: ${(props) => props?.name && "1rem"};
   flex-wrap: nowrap;
+  width: 100%;
 `;
 
 const DialogContainer = styled.div`
@@ -26,6 +25,17 @@ const DialogContainer = styled.div`
 
 const DialogHeader = styled.div`
   & > *:not(:last-child) {
+    margin-right: 1rem;
+  }
+`;
+
+const StyledAvatar = styled(Avatar)`
+  background-color: var(--primaryLight);
+  height: 4rem;
+  width: 4rem;
+  margin-right: 2rem;
+
+  @media screen and (max-width: 768px) {
     margin-right: 1rem;
   }
 `;
@@ -48,32 +58,21 @@ export const UserDialogAvatar = ({ user, name, height }) => {
     <>
       <StyledContainer className="center" name={name} onClick={onClick}>
         <div className="center">
-          <Avatar
-            style={{
-              height: height,
-              width: height,
-              marginRight: "0.5rem",
-              ...(!name && { marginLeft: "0.5rem" }),
-            }}
-          >
-            <img
-              src={user?.photoURL}
-              alt={user?.displayName?.charAt(0)}
-              style={{ maxHeight: "100%" }}
+          <StyledAvatar>
+            <StorefrontIcon
+              style={{
+                height: "1.8rem",
+                width: "1.8rem",
+                color: "var(--primary)",
+              }}
             />
-          </Avatar>
-          <p>{name}</p>
+          </StyledAvatar>
+          <h3>{name?.toUpperCase()}</h3>
         </div>
         <div>
-          <StyledFab
-            bold
-            variant="extended"
-            primary
-            onClick={onClick}
-            style={{ height: "2rem" }}
-          >
-            Visit
-          </StyledFab>
+          <StyledButton bold primary onClick={onClick}>
+            Visit Shop
+          </StyledButton>
         </div>
       </StyledContainer>
       <Dialog
@@ -105,22 +104,17 @@ export const UserDialogAvatar = ({ user, name, height }) => {
           />
           <Divider style={{ width: "100%" }} />
           <div className="center" style={{ width: "100%" }}>
-            <StyledFab
+            <StyledButton
+              style={{ marginRight: "0.5rem" }}
               bold
-              variant="extended"
-              style={{ marginRight: "1rem" }}
+              secondary
               onClick={() => setOpen(false)}
             >
               Cancel
-            </StyledFab>
-            <StyledFab
-              bold
-              variant="extended"
-              primary
-              onClick={onClickVisitProfile}
-            >
+            </StyledButton>
+            <StyledButton bold primary onClick={onClickVisitProfile}>
               Visit Full Profile
-            </StyledFab>
+            </StyledButton>
           </div>
         </DialogContainer>
       </Dialog>

@@ -17,7 +17,7 @@ export const ResponsiveBody = styled.div`
     text-align: center;
     min-width: 100%;
     margin-top: 1rem;
-    flex: 20% !important;
+    flex: 10% !important;
   }
   & > div {
     min-width: 100%;
@@ -25,10 +25,10 @@ export const ResponsiveBody = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: ${(props) => (props?.column ? "column" : "row")};
-    flex: 80% !important;
     & > div {
       flex: 50%;
     }
+    flex: 65% !important;
   }
 
   @media screen and (max-width: 768px) {

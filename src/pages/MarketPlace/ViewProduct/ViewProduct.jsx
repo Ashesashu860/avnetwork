@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   ResponsiveBody,
   UserDialogAvatar,
@@ -16,12 +16,14 @@ import {
 } from "../../../redux/actions";
 import styled from "styled-components";
 import { InterestedList } from "..";
-import { Checkbox } from "@material-ui/core";
+import { Checkbox, Avatar } from "@material-ui/core";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
+import StorefrontIcon from "@material-ui/icons/Storefront";
 import { Helmet } from "react-helmet";
+import "./view-product.css";
 
 const mapState = (state) => ({
   currentProduct: state.marketPlace.currentProduct,
@@ -31,20 +33,12 @@ const mapState = (state) => ({
 
 const Item = ({ item }) => {
   return (
-    <div className="center" style={{ maxHeight: "100%", maxWidth: "100%" }}>
+    <div className="fix_wrapper center slide_image_container">
       <img
-        className="fix_wrapper"
+        className="slide_image"
         src={item}
         alt="product_image"
-        height="100%"
-        width="100%"
         loading="lazy"
-        style={{
-          objectFit: "contain",
-          border: "1px solid #ddd",
-          borderRadius: "0.5rem",
-          margin: "1rem 0",
-        }}
       />
     </div>
   );
@@ -54,12 +48,12 @@ const StyledContentContainer = styled.div`
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
-  padding: 2rem 3rem !important;
+  padding: 0 3rem !important;
   & > *:not(:last-child) {
     margin-bottom: 1rem !important;
   }
   @media screen and (max-width: 768px) {
-    padding: 1rem !important;
+    padding: 2rem 0.5rem !important;
 `;
 
 export const ViewProduct = (props) => {
@@ -112,72 +106,34 @@ export const ViewProduct = (props) => {
         />
       </Helmet>
       <ResponsiveBody className="wrapper">
-        <div>
-          <div>
-            <Carousel
-              fullHeightHover
-              indicatorContainerProps={{
-                style: {
-                  height: "3rem",
-                  marginTop: "-3.27rem", // 5
-                },
-              }}
-              navButtonsAlwaysVisible
-              navButtonsProps={{
-                style: {
-                  opacity: 0.4,
-                },
-              }}
-            >
+        <div className="responsive_container">
+          <div className="responsive_left">
+            <Carousel className="view_prod_carousel">
               {currentProduct?.images &&
                 Object.values(currentProduct?.images)?.map((item, i) => (
                   <Item key={i} item={item} />
                 ))}
             </Carousel>
+            {/* <Slider
+              images={
+                currentProduct?.images && Object.values(currentProduct?.images)
+              }
+              className="slide_image"
+            /> */}
           </div>
           <div style={{ width: "100%" }}>
             <StyledContentContainer>
-              <h1 style={{ fontWeight: "500" }}>{currentProduct?.title}</h1>
-              <div
-                className="center"
+              <h2
                 style={{
-                  justifyContent: "space-between",
-                  minWidth: "100%",
-                  maxWidth: "100%",
+                  fontFamily: "'Bebas Neue', cursive",
+                  fontWeight: "bold",
+                  color: "var(--text-dark)",
+                  fontSize: "2rem",
+                  textAlign: "left",
                 }}
               >
-                <p>Brand: {currentProduct?.brand}</p>
-                <div
-                  style={{
-                    maxHeight: "100%",
-                    // border: "1px solid #2e7d32",
-                    backgroundColor: "#C8E6C9",
-                    color: "#4CAF50",
-                    // fontWeight: "bold",
-                    borderRadius: "12px",
-                    padding: "0.5rem 1.5rem",
-                  }}
-                >
-                  In Stock: {currentProduct?.stock || "Unknown"}
-                </div>
-              </div>
-              <div
-                className="center"
-                style={{ justifyContent: "flex-start", minWidth: "100%" }}
-              >
-                <p>Sold by:</p>
-                {currentProductOwner && (
-                  <div style={{ flex: 1 }}>
-                    <UserDialogAvatar
-                      height="2rem"
-                      user={currentProductOwner}
-                      name={currentProductOwner?.displayName}
-                    />
-                  </div>
-                )}
-              </div>
-              <p>Location: {currentProduct?.location}</p>
-              <p>Category: {currentProduct?.category}</p>
+                {currentProduct?.title.toUpperCase()}
+              </h2>
               {currentProduct?.price ? (
                 <h2>₹ {currentProduct?.price}/-</h2>
               ) : (
@@ -185,8 +141,52 @@ export const ViewProduct = (props) => {
               )}
               <div>
                 <h3 style={{ marginBottom: "1rem" }}>Description</h3>
-                <p>{currentProduct?.description}</p>
+                <p style={{ letterSpacing: "1px" }}>
+                  {currentProduct?.description}
+                </p>
               </div>
+              <div>
+                <h3 style={{ marginBottom: "1rem" }}>Brand</h3>
+                <p style={{ letterSpacing: "1px" }}>{currentProduct?.brand}</p>
+              </div>
+              <div className="seller_container">
+                <h3 style={{ marginBottom: "1rem" }}>Sold By</h3>
+
+                {currentProductOwner && (
+                  <UserDialogAvatar
+                    height="2rem"
+                    user={currentProductOwner}
+                    name={currentProductOwner?.displayName}
+                  />
+                )}
+              </div>
+              <div
+                style={{
+                  maxHeight: "100%",
+                  // border: "1px solid #2e7d32",
+                  backgroundColor: "#C8E6C9",
+                  color: "#4CAF50",
+                  // fontWeight: "bold",
+                  borderRadius: "12px",
+                  padding: "0.5rem 1.5rem",
+                }}
+              >
+                In Stock: {currentProduct?.stock || "Unknown"}
+              </div>
+
+              <div>
+                <h3 style={{ marginBottom: "1rem" }}>Location</h3>
+                <p style={{ letterSpacing: "1px" }}>
+                  {currentProduct?.location}
+                </p>
+              </div>
+              <div>
+                <h3 style={{ marginBottom: "1rem" }}>Category</h3>
+                <p style={{ letterSpacing: "1px" }}>
+                  {currentProduct?.category}
+                </p>
+              </div>
+
               {/* Product operations */}
               {currentUser ? (
                 currentProduct?.userId !== currentUser?.uid ? (

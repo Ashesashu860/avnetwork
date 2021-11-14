@@ -1,9 +1,4 @@
-.market_place_home_left {
-  /* flex: 50%; */
-}
-
 .market_place_home_right {
-  /* flex: 50%; */
   flex-direction: column;
   width: 100%;
 }
