@@ -53,7 +53,7 @@ const StyledContentContainer = styled.div`
     margin-bottom: 1rem !important;
   }
   @media screen and (max-width: 768px) {
-    padding: 2rem 0.5rem !important;
+    padding: 2rem 1rem !important;
 `;
 
 export const ViewProduct = (props) => {

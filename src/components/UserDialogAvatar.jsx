@@ -30,7 +30,7 @@ const DialogHeader = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  background-color: var(--primaryLight);
+  background-color: var(--primaryLight) !important;
   height: 4rem;
   width: 4rem;
   margin-right: 2rem;
