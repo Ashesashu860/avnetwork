@@ -40,6 +40,13 @@ const StyledAvatar = styled(Avatar)`
   }
 `;
 
+const SellerName = styled.h3`
+  margin-right: 1rem;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
 export const UserDialogAvatar = ({ user, name, height }) => {
   const [open, setOpen] = useState(false);
 
@@ -67,10 +74,15 @@ export const UserDialogAvatar = ({ user, name, height }) => {
               }}
             />
           </StyledAvatar>
-          <h3>{name?.toUpperCase()}</h3>
+          <SellerName>{name?.toUpperCase()}</SellerName>
         </div>
         <div>
-          <StyledButton bold primary onClick={onClick}>
+          <StyledButton
+            style={{ whiteSpace: "nowrap" }}
+            bold
+            primary
+            onClick={onClick}
+          >
             Visit Shop
           </StyledButton>
         </div>

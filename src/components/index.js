@@ -21,3 +21,4 @@ export * from "./UserDialogAvatar";
 export * from "./ListItemWithPhoto";
 export * from "./FilterChips";
 export * from "./Slider";
+export * from "./AdsContainer";

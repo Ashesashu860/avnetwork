@@ -83,6 +83,8 @@ export const BlogList = ({
             style={{
               display: "inline-flex",
               flexWrap: direction === "row" ? "nowrap" : "wrap",
+              justifyContent: latest ? "space-evenly" : "initial",
+              width: "100%",
             }}
           >
             {!latestBlogs?.length ? (

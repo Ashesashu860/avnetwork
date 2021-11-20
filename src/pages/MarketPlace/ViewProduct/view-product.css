@@ -36,14 +36,27 @@
   object-position: right;
 }
 
+.view-product-content {
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 2rem 3rem;
+  width: 100%;
+  margin-left: 2rem;
+}
+
 .seller_container {
   width: 100%;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 0.5rem;
   padding: 1rem 1.5rem;
 }
 
 @media screen and (max-width: 768px) {
+  .view-product-content {
+    margin-left: 0;
+    margin-top: 2rem;
+    padding: 2rem;
+  }
   .slide_image_container {
     justify-content: center;
     max-height: 50vmax;

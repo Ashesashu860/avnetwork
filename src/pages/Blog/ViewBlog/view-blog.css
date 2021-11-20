@@ -33,10 +33,32 @@
 }
 
 .ad_square {
-  margin-top: 1rem;
-  min-width: 100%;
-  min-height: 16rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
+}
+
+.blog_title {
+  margin: 2rem 0;
+}
+
+.view_blog_container {
+  flex-direction: column;
+  padding: 2rem 3rem;
+}
+
+@media screen and (max-width: 768px) {
+  .view_blog_container {
+    padding: 2rem;
+  }
+  .blog_title {
+    margin: 1rem 0;
+  }
+  .ad_square {
+    display: initial;
+    margin-top: 1rem;
+    min-width: 100%;
+    min-height: 16rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

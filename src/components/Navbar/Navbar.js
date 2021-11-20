@@ -195,6 +195,7 @@ export const Navbar = withRouter(({ history }) => {
                             padding: "0.5rem 0",
                           }}
                           bold
+                          secondary
                           onClick={handleLogout}
                         >
                           Logout

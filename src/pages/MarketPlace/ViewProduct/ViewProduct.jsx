@@ -48,12 +48,9 @@ const StyledContentContainer = styled.div`
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
-  padding: 0 3rem !important;
   & > *:not(:last-child) {
     margin-bottom: 1rem !important;
   }
-  @media screen and (max-width: 768px) {
-    padding: 2rem 1rem !important;
 `;
 
 export const ViewProduct = (props) => {
@@ -121,7 +118,7 @@ export const ViewProduct = (props) => {
               className="slide_image"
             /> */}
           </div>
-          <div style={{ width: "100%" }}>
+          <div className="view-product-content">
             <StyledContentContainer>
               <h2
                 style={{

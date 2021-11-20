@@ -1,6 +1,8 @@
 .market_place_home_right {
   flex-direction: column;
   width: 100%;
+  animation-name: mp_right_anim;
+  animation-duration: 1s;
 }
 
 @media screen and (max-width: 768px) {
@@ -9,11 +11,31 @@
   }
 }
 
+@keyframes mp_logo_anim {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: rotate(1);
+  }
+}
+
+@keyframes mp_right_anim {
+  from {
+    transform: translateX(2vw);
+  }
+  to {
+    transform: rotate(0vw);
+  }
+}
+
 .market_place_home_logo {
   max-width: 100%;
   display: block;
   max-height: 100%;
   width: 50vmax;
+  animation-name: mp_logo_anim;
+  animation-duration: 1s;
 }
 
 .market_place_home_right > *:not(:last-child) {

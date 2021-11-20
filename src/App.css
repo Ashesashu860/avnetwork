@@ -43,15 +43,35 @@ h1 {
   font-weight: 500;
 }
 
+@keyframes wrapper_image_anim {
+  from {
+    transform: rotate(-10deg) translateX(10vw);
+  }
+  to {
+    transform: rotate(0deg) translateX(0vw);
+  }
+}
+
 .wrapper {
   min-height: var(--height);
   padding-top: 77px !important;
-  background-color: var(--background);
   overflow: hidden;
   max-width: 100vw;
+  position: relative;
+}
+.wrapper::after {
+  position: absolute;
+  top: 0;
+  left: 0;
   background-image: url(./assets/bg.svg);
   background-repeat: no-repeat;
   background-position: top right;
+  animation-name: wrapper_image_anim;
+  animation-duration: 4s;
+  content: "";
+  min-width: 100vw;
+  min-height: var(--height);
+  z-index: -1;
 }
 
 .fix_wrapper {

@@ -135,7 +135,7 @@ export const ProductCard = ({
           {price ? `₹${price}/-` : "Get a quote"}
         </h3>
       </ProductContentContainer>
-      <Button>CHECKOUT</Button>
+      {/* <Button>CHECKOUT</Button> */}
     </ProductCardContainer>
   );
 };
