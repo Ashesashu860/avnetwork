@@ -45,10 +45,19 @@ export const DrawerLayout = (props) => {
     dispatch(loginUserAction(history));
   };
 
+  const drawerLoggedInLinks = [
+    ...loggedInLinks,
+    {
+      name: "My Profile",
+      link: "/profile",
+    },
+  ];
   const filteredLinks = currentUser
     ? currentUser?.category === "Admin"
-      ? loggedInLinks.concat(navLinks)
-      : loggedInLinks.concat(navLinks).filter((link) => link.name !== "Admin")
+      ? drawerLoggedInLinks.concat(navLinks)
+      : drawerLoggedInLinks
+          .concat(navLinks)
+          .filter((link) => link.name !== "Admin")
     : navLinks;
 
   return (

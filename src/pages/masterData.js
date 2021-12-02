@@ -30,6 +30,14 @@ export const blogCategories = [
   "Trussing Systems",
 ];
 
+export const tutorialsCategories = [
+  "AV Cables",
+  "Speakers",
+  "Displays",
+  "Lighting",
+  "Trussing Systems",
+];
+
 export const marketPlaceProductAds = [SquareAd1, SquareAd2];
 
 // export const IndianStates = [
