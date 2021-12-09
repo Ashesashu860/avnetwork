@@ -20,7 +20,10 @@ import {
 } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addProductInDbAction } from "../../../redux/actions";
+import {
+  addProductInDbAction,
+  getAllUsersAction,
+} from "../../../redux/actions";
 import { v4 as uuidv4 } from "uuid";
 import { useHistory, Redirect } from "react-router-dom";
 import { marketPlaceProductCategories } from "../../masterData";
@@ -31,9 +34,7 @@ const CreateProductSubContainer = styled(StyledForm)`
   flex-direction: column;
 `;
 
-const mapState = (state) => ({
-  currentUser: state.users.currentUser,
-});
+const mapState = (state) => state?.users;
 
 const initialErrors = {
   title: "",
@@ -50,7 +51,8 @@ const toSentenceCase = (str) => {
 };
 
 export const CreateProduct = (props) => {
-  const { currentUser } = useSelector(mapState);
+  const { currentUser, allUsers } = useSelector(mapState);
+  const [selectedUser, setSelectedUser] = useState();
   const [product, setProduct] = useState(
     props?.history?.location?.state?.currentProduct || {
       id: uuidv4(),
@@ -73,10 +75,6 @@ export const CreateProduct = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const onChange = (event) => {
     setProduct({
       ...product,
@@ -86,6 +84,20 @@ export const CreateProduct = (props) => {
       ...errors,
       [event.target.name]: "",
     });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    currentUser?.category === "Admin" && dispatch(getAllUsersAction());
+    const abortController = new AbortController();
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  const onChangeUser = (event) => {
+    console.log("USSER", event.target.value);
+    setSelectedUser(event.target.value);
   };
 
   const onBlur = (event) => {
@@ -136,8 +148,11 @@ export const CreateProduct = (props) => {
   };
 
   const onCreateProduct = (event) => {
-    isAllFieldsValid() &&
-      dispatch(addProductInDbAction(product, currentUser?.uid, history));
+    if (isAllFieldsValid()) {
+      currentUser?.category === "Admin"
+        ? dispatch(addProductInDbAction(product, selectedUser, history))
+        : dispatch(addProductInDbAction(product, currentUser?.uid, history));
+    }
   };
 
   //Quote logic
@@ -236,6 +251,28 @@ export const CreateProduct = (props) => {
                 </StyledSelect>
                 {errors.category && <ErrorText>{errors.category}</ErrorText>}
               </FormControl>
+              {currentUser?.category === "Admin" && (
+                <FormControl
+                  variant="outlined"
+                  style={{ minWidth: "100%", maxWidth: "100%" }}
+                >
+                  <InputLabel>Users *</InputLabel>
+                  <StyledSelect
+                    native
+                    onChange={onChangeUser}
+                    name="users"
+                    label="Users"
+                    value={selectedUser}
+                  >
+                    <option value={""}></option>
+                    {allUsers?.map((user) => (
+                      <option key={user?.uid} value={user?.uid}>
+                        {user?.displayName}
+                      </option>
+                    ))}
+                  </StyledSelect>
+                </FormControl>
+              )}
               <StyledTextArea
                 onBlur={onBlur}
                 title="Description *"
