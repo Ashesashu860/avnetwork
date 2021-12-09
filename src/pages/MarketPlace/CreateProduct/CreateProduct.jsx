@@ -96,7 +96,6 @@ export const CreateProduct = (props) => {
   }, []);
 
   const onChangeUser = (event) => {
-    console.log("USSER", event.target.value);
     setSelectedUser(event.target.value);
   };
 
