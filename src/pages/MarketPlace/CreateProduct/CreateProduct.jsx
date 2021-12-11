@@ -29,6 +29,7 @@ import { useHistory, Redirect } from "react-router-dom";
 import { marketPlaceProductCategories } from "../../masterData";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
+import { toSentenceCase } from "../../../utilities";
 
 const CreateProductSubContainer = styled(StyledForm)`
   flex-direction: column;
@@ -46,11 +47,6 @@ const initialErrors = {
   category: "",
   brand: "",
   description: "",
-};
-
-const toSentenceCase = (str) => {
-  const res = str.replace(/([A-Z])/g, " $1");
-  return res.charAt(0).toUpperCase() + res.slice(1);
 };
 
 export const CreateProduct = (props) => {

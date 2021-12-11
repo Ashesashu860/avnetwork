@@ -74,7 +74,7 @@ export const WatchVideo = () => {
         src={`https://www.youtube.com/embed/${params.id}?rel=0&autoplay=1`}
         frameborder="0"
         allow="autoplay; encrypted-media"
-        allowfullscreen
+        allowFullScreen
         title="video"
       />
       <PlayerSubContainer>

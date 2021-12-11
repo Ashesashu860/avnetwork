@@ -8,7 +8,7 @@ import {
   setAlertAction,
 } from "../actions";
 import { v4 as uuidv4 } from "uuid";
-import { getDatafromDbwhere } from "./saga_utilities";
+import { getDatafromDbwhere, getDatafromDb } from "./saga_utilities";
 
 const constructUserDataFromUserAuth = (user) =>
   user
@@ -19,17 +19,6 @@ const constructUserDataFromUserAuth = (user) =>
         photoURL: user?.photoURL,
       }
     : null;
-
-const getDatafromDb = (path) => {
-  return new Promise((resolve, reject) => {
-    firebase
-      .database()
-      .ref(path)
-      .on("value", (snap) => {
-        resolve(snap?.val());
-      });
-  });
-};
 
 export function* getUserFromDb(user) {
   const result = yield getDatafromDb(`users/${user?.uid}`);

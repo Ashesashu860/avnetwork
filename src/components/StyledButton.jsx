@@ -13,7 +13,10 @@ export const StyledButton = styled(Button)`
       props.secondary ? "var(--text-medium)" : "var(--primary)"} !important;
     font-weight: bold;
   }
-
+  ${(props) => props.filled && "background-color: var(--primary) !important;"}
+  & span {
+    ${(props) => props.filled && "color: #fff !important"};
+  }
   @media screen and (max-width: 768px) {
     padding: 0.5rem 1rem !important;
   }

@@ -5,6 +5,7 @@ import {
   usersReducer,
   rootReducer,
   marketPlaceReducer,
+  tutorialsReducer,
 } from "./reducers";
 import { rootSaga } from "./sagas/root_saga";
 
@@ -16,6 +17,7 @@ const store = createStore(
     users: usersReducer,
     root: rootReducer,
     marketPlace: marketPlaceReducer,
+    tutorials: tutorialsReducer,
   }),
   applyMiddleware(sagaMiddleware)
 );
