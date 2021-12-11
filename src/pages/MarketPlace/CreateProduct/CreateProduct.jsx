@@ -34,7 +34,10 @@ const CreateProductSubContainer = styled(StyledForm)`
   flex-direction: column;
 `;
 
-const mapState = (state) => state?.users;
+const mapState = (state) => ({
+  currentUser: state?.users?.currentUser,
+  allUsers: state?.users?.allUsers?.sort(),
+});
 
 const initialErrors = {
   title: "",
@@ -63,7 +66,6 @@ export const CreateProduct = (props) => {
       brand: "",
       description: "",
       stock: "",
-      user: currentUser?.uid,
       images: [],
       newImages: [],
       deletedImages: [],
@@ -148,9 +150,21 @@ export const CreateProduct = (props) => {
 
   const onCreateProduct = (event) => {
     if (isAllFieldsValid()) {
-      currentUser?.category === "Admin"
-        ? dispatch(addProductInDbAction(product, selectedUser, history))
-        : dispatch(addProductInDbAction(product, currentUser?.uid, history));
+      if (currentUser?.category === "Admin") {
+        const sellarName = allUsers?.find(
+          (user) => user?.uid === selectedUser
+        )?.displayName;
+        dispatch(
+          addProductInDbAction(
+            {
+              ...product,
+              sellarName,
+            },
+            selectedUser,
+            history
+          )
+        );
+      } else dispatch(addProductInDbAction(product, currentUser?.uid, history));
     }
   };
 
