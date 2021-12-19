@@ -79,11 +79,10 @@ export const BlogList = ({
         />
         <ShadowContainer>
           <div
-            className="center"
             style={{
               display: "inline-flex",
               flexWrap: direction === "row" ? "nowrap" : "wrap",
-              justifyContent: latest ? "space-evenly" : "initial",
+              // justifyContent: latest ? "space-evenly" : "initial",
               width: "100%",
             }}
           >

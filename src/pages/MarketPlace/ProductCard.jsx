@@ -4,6 +4,7 @@ import { Card } from "@material-ui/core";
 
 const ProductCardContainer = styled(Card)`
   width: 14rem;
+  min-width: 14rem;
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;

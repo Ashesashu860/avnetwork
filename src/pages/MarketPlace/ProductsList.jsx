@@ -99,12 +99,12 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
           />
           <ShadowContainer>
             <div
-              className="center"
               style={{
                 display: "inline-flex",
                 flexWrap: direction === "row" ? "nowrap" : "wrap",
-                justifyContent: latest ? "space-evenly" : "initial",
+                // justifyContent: latest ? "space-evenly" : "initial",
                 width: "100%",
+                minWidth: "100%",
               }}
             >
               {categorisedProducts && categorisedProducts?.length !== 0 ? (

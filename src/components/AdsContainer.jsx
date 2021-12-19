@@ -17,8 +17,5 @@ export const AdsContainer = styled.div`
     & > div:first-child {
       width: 100vw;
     }
-    & > div:last-child {
-      display: none;
-    }
   }
 `;
