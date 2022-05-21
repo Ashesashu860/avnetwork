@@ -69,6 +69,7 @@ export const Register = (props) => {
           {
             ...user,
             ...basicDetails,
+            coupons: ["NEW200"],
           },
           props.history
         )
@@ -182,6 +183,7 @@ export const Register = (props) => {
               flex: 1,
               overflow: "auto",
               width: "90%",
+              border: "1px solid #ddd",
             }}
           >
             {getRenderItem(activeStep)}

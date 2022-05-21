@@ -28,7 +28,12 @@ import {
   getCurrentProductOwnerSaga,
   deleteMarketPlaceProductSaga,
 } from "./market_place_sagas";
-import { uploadTutorialSaga, getAllTutorialsSaga } from "./tutorials_sagas";
+import {
+  uploadTutorialSaga,
+  getAllTutorialsSaga,
+  likeTutorialSaga,
+  commentOnTutorialSaga,
+} from "./tutorials_sagas";
 
 export function* rootSaga() {
   //USER
@@ -75,4 +80,6 @@ export function* rootSaga() {
   //TUTORIALS
   yield takeLatest("UPLOAD_TUTORIAL", uploadTutorialSaga);
   yield takeLatest("GET_ALL_TUTORIALS", getAllTutorialsSaga);
+  yield takeLatest("LIKE_TUTORIAL", likeTutorialSaga);
+  yield takeLatest("COMMENT_ON_TUTORIAL", commentOnTutorialSaga);
 }

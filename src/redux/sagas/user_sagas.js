@@ -50,6 +50,7 @@ export function* setUserInDb(action) {
     address,
     serviceLocations,
     uid,
+    coupons,
   } = action.payload.user;
 
   yield userDatabaseRef.set({
@@ -61,6 +62,7 @@ export function* setUserInDb(action) {
     address,
     serviceLocations,
     uid,
+    coupons,
   });
 
   if (newImages.length > 0) {
@@ -84,6 +86,18 @@ export function* setUserInDb(action) {
       "You are successfully registered",
       {
         title: "OK",
+      },
+      true
+    )
+  );
+  const updatedUser = yield getUserFromDb(action.payload.user);
+  yield put(setUserAction(updatedUser));
+
+  yield put(
+    setDialogBoxPropsAction(
+      `Congrats! You got a coupon: ${coupons[0]}`,
+      {
+        title: "OK",
         onButtonClick: (event) => {
           action.payload.history.push("/");
         },
@@ -91,8 +105,6 @@ export function* setUserInDb(action) {
       true
     )
   );
-  const updatedUser = yield getUserFromDb(action.payload.user);
-  yield put(setUserAction(updatedUser));
 }
 
 export function* updateUserSaga(action) {

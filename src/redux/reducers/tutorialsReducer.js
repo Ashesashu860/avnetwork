@@ -1,5 +1,6 @@
 const initialState = {
   allTutorials: null,
+  isCurrentTutorialLiked: false,
 };
 
 export const tutorialsReducer = (tutorialsState = initialState, action) => {
@@ -8,6 +9,11 @@ export const tutorialsReducer = (tutorialsState = initialState, action) => {
       return {
         ...tutorialsState,
         allTutorials: action.payload.allTutorials,
+      };
+    case "LIKE_TUTORIAL_SUCCESS":
+      return {
+        ...tutorialsState,
+        isCurrentTutorialLiked: action.payload.isLiked,
       };
     default:
       return tutorialsState;

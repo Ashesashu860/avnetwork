@@ -20,7 +20,7 @@ export function* getBlogWithIdFromDb(action) {
     yield put(setCurrentBlogAction(blog));
     yield put(setDialogBoxPropsAction(""));
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -33,7 +33,7 @@ export function* getBlogsFromDb() {
     yield put(setDialogBoxPropsAction(""));
     yield put(getBlogsSuccessAction(db_data));
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -69,7 +69,7 @@ export function* deleteBlogFromDb(action) {
       )
     );
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -83,7 +83,7 @@ export function* getCurrentBlogCommentsSaga(action) {
     yield put(toggleCommentsLoadingAction(false));
     yield put(setCurrentBlogCommentsAction(comments));
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -109,7 +109,7 @@ export function* addCommentInBlogInDb(action) {
     yield getCurrentBlogCommentsSaga(action);
     yield getBlogWithIdFromDb(action);
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -123,7 +123,7 @@ export function* getCurrentBlogLikeSaga(action) {
     yield put(toggleLikeLoadingAction(false));
     yield put(setCurrentBlogLikeAction(!!result));
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -155,7 +155,7 @@ export function* toggleCurrentBlogLikeInDb(action) {
     yield getCurrentBlogLikeSaga(action);
     yield getBlogWithIdFromDb(action);
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }
 
@@ -183,6 +183,6 @@ export function* addBlogInDb(action) {
       )
     );
   } catch (error) {
-    setAlertAction(error);
+    yield put(setAlertAction(error));
   }
 }

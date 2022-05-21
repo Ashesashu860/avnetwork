@@ -16,7 +16,7 @@ import { tutorialsCategories } from "../masterData";
 import styled from "styled-components";
 import { toSentenceCase } from "../../utilities";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadTutorialAction } from "../../redux/actions";
+import { setAlertAction, uploadTutorialAction } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
 const StyledDialogContent = styled(DialogContent)`
@@ -79,18 +79,31 @@ export const UploadTutorial = ({ open, onClose }) => {
     });
   };
 
+  const extractId = () => {
+    const id = tutorial?.id?.match(
+      /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+    );
+    return id;
+  };
+
   const onUpload = () => {
     if (allFieldsAreValid()) {
-      dispatch(
-        uploadTutorialAction(
-          {
-            ...tutorial,
-            id: tutorial?.id?.split("/")?.pop(),
-          },
-          history
-        )
-      );
+      const id = extractId();
+      if (!!id?.[1]) {
+        dispatch(
+          uploadTutorialAction(
+            {
+              ...tutorial,
+              id: id[1],
+            },
+            history
+          )
+        );
+      } else {
+        dispatch(setAlertAction("Please enter a valid youtube URL"));
+      }
     }
+    onClose();
   };
 
   return (

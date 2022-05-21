@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid } from "@material-ui/core";
+import { Grid, Checkbox } from "@material-ui/core";
 import { StyledFab, InputWithButton } from "../../components";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -12,7 +12,11 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import Rating from "@material-ui/lab/Rating";
 import ShareIcon from "@material-ui/icons/Share";
 import CommentIcon from "@material-ui/icons/Comment";
-import { setAlertAction } from "../../redux/actions";
+import {
+  setAlertAction,
+  commentOnTutorialAction,
+  likeTutorialAction,
+} from "../../redux/actions";
 
 const PlayerSubContainer = styled.div`
   margin: 1rem;
@@ -30,10 +34,11 @@ const Player = styled.iframe`
 
 const mapState = (state) => ({
   currentUser: state.users.currentUser,
+  isCurrentTutorialLiked: state.tutorials.isCurrentTutorialLiked,
 });
 
-export const WatchVideo = () => {
-  const { currentUser } = useSelector(mapState);
+export const WatchVideo = (props) => {
+  const { currentUser, isCurrentTutorialLiked } = useSelector(mapState);
   const dispatch = useDispatch();
 
   const params = useParams();
@@ -50,22 +55,12 @@ export const WatchVideo = () => {
       dispatch(setAlertAction("Unable to post empty comment"));
       return;
     }
-    // dispatch(
-    //   addCommentInBlogAction(
-    //     blogId,
-    //     currentUser,
-    //     {
-    //       id: uuidv4(),
-    //       comment,
-    //     },
-    //     history
-    //   )
-    // );
+    dispatch(commentOnTutorialAction(params?.id, currentUser, comment));
     setComment("");
   };
 
   const onLike = (event) => {
-    // dispatch(toggleCurrentBlogLikeAction(currentBlog.id, currentUser?.uid));
+    dispatch(likeTutorialAction(params?.id, currentUser?.uid));
   };
 
   return (
@@ -91,16 +86,21 @@ export const WatchVideo = () => {
               justify="flex-end"
               className="blog_operations"
             >
-              <StyledFab onClick={onLike} round>
-                {/* {isCurrentBlogLikeLoading ? (
-                    <Spinner color="#fff" />
-                  ) : isCurrentBlogLiked ? (
+              <Checkbox
+                onClick={onLike}
+                checked={isCurrentTutorialLiked}
+                checkedIcon={
+                  <StyledFab round bold primary>
                     <FavoriteIcon />
-                  ) : (
+                  </StyledFab>
+                }
+                icon={
+                  <StyledFab round bold secondary>
                     <FavoriteBorderIcon />
-                  )} */}
-                <FavoriteBorderIcon />
-              </StyledFab>
+                  </StyledFab>
+                }
+                {...props}
+              />
               <InputWithButton
                 inputValue={comment}
                 onChange={onCommentChange}

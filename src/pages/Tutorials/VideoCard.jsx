@@ -7,7 +7,7 @@ const VideoCardContainer = styled(Card)`
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;
-  // border-radius: 0.8rem !important;
+  cursor: pointer;
   overflow: hidden;
   &:hover {
     box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 14%) !important;

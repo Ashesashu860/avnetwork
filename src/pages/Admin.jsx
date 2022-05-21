@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid, Checkbox } from "@material-ui/core";
+import {
+  Grid,
+  Checkbox,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import {
   getAllUsersAction,
   toggleBlogWritePermissionAction,
 } from "../redux/actions";
 import { ContentContainer } from "../components";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const mapState = (state) => state.users;
 
@@ -29,29 +36,36 @@ export const Admin = () => {
 
   return currentUser?.category === "Admin" ? (
     <div className="wrapper">
-      <ContentContainer subHeading={"Can Write Blogs"} content={""} />
-      <Grid
-        container
-        spacing={1}
-        direction="column"
-        style={{ padding: "0 2rem" }}
-      >
-        {allUsers?.map((user) => (
-          <Grid item style={{ borderBottom: "1px solid #ddd" }}>
-            <span>
-              <Checkbox
-                style={{
-                  color: "var(--primary)",
-                }}
-                value={user?.uid}
-                checked={user.canWriteBlogs}
-                onChange={onCheckboxChange}
-              />
-            </span>
-            {user?.email}
+      <ContentContainer subHeading="Admin Controls" />
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          Choose who can write blogs
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid
+            container
+            spacing={1}
+            direction="column"
+            style={{ padding: "0 2rem" }}
+          >
+            {allUsers?.map((user) => (
+              <Grid item style={{ borderBottom: "1px solid #ddd" }}>
+                <span>
+                  <Checkbox
+                    style={{
+                      color: "var(--primary)",
+                    }}
+                    value={user?.uid}
+                    checked={user.canWriteBlogs}
+                    onChange={onCheckboxChange}
+                  />
+                </span>
+                {user?.email}
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </AccordionDetails>
+      </Accordion>
     </div>
   ) : (
     <Redirect to="/" />

@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogTitle } from "@material-ui/core";
 import Logo from "../assets/logo.svg";
-import { LoaderIcon, StyledFab } from "../components";
+import { LoaderIcon, StyledFab } from ".";
 import { useDispatch } from "react-redux";
 import { setDialogBoxPropsAction } from "../redux/actions";
 

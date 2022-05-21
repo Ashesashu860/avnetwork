@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ContentContainer, FilterChips, StyledFab } from "../../components";
-import { tutorialsCategories } from "../masterData";
+import { tutorialsCategories as categories } from "../masterData";
 import { useHistory } from "react-router-dom";
 import { VideoCard } from "./VideoCard";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,8 +21,8 @@ export const Tutorials = ({ direction, latest }) => {
     window.scrollTo(0, 0);
     dispatch(getAllTutorialsAction());
   }, []);
-  console.log("allTutorials", allTutorials);
-  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
 
   const onOpenUploadDialog = () => setOpenUploadDialog(true);
@@ -35,7 +35,14 @@ export const Tutorials = ({ direction, latest }) => {
   const history = useHistory();
 
   const onVideoClick = (id) => history.push(`/tutorials/${id}`);
+  const filteredTutorials =
+    selectedCategory === "All"
+      ? allTutorials
+      : allTutorials.filter(
+          (tutorial) => tutorial?.category === selectedCategory
+        );
 
+  const tutorialsCategories = ["All", ...categories];
   return (
     <div className="wrapper">
       <ContentContainer
@@ -58,13 +65,14 @@ export const Tutorials = ({ direction, latest }) => {
           padding: "0 2rem",
         }}
       >
-        {allTutorials?.map((tutorial) => (
+        {filteredTutorials?.map((tutorial) => (
           <VideoCard
             title={tutorial?.title}
             image={`//img.youtube.com/vi/${tutorial?.id}/0.jpg`}
             onClick={() => onVideoClick(tutorial?.id)}
           />
         ))}
+        {filteredTutorials?.length === 0 && <h4>No Tutorials</h4>}
       </div>
       {currentUser?.canWriteBlogs && (
         <StyledFab
