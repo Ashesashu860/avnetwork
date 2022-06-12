@@ -6,14 +6,36 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CommentIcon from "@material-ui/icons/Comment";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-const StyledCard = styled(Card)`
+// const StyledCard = styled(Card)`
+//   position: relative;
+//   padding: 2.5rem 3rem;
+//   margin: 1rem 0.5rem;
+//   height: 17rem;
+//   min-width: 25rem;
+//   max-width: 25rem;
+//   border-radius: 16px !important;
+//   & > * {
+//     margin-bottom: 1rem;
+//   }
+//   & hr {
+//     margin-bottom: 1rem;
+//   }
+//   & h5 {
+//     color: var(--text-medium);
+//     font-weight: bold;
+//   }
+// `;
+
+const StyledCard = styled.div`
   position: relative;
   padding: 2.5rem 3rem;
   margin: 1rem 0.5rem;
-  height: 17rem;
+  height: 15rem;
   min-width: 25rem;
   max-width: 25rem;
-  border-radius: 16px !important;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px !important;
   & > * {
     margin-bottom: 1rem;
   }
@@ -81,9 +103,10 @@ export const BlogCard = ({
   onClick,
   blogDate,
   category,
+  style,
 }) => {
   return (
-    <StyledCard onClick={onClick}>
+    <StyledCard onClick={onClick} style={style}>
       <h3
         style={{
           whiteSpace: "nowrap",
@@ -98,9 +121,9 @@ export const BlogCard = ({
       <FooterContainer>
         <Grid container justify="space-between" alignItems="center">
           <h5>{`${author}`}</h5>
+          <h5>{`${category}`}</h5>
         </Grid>
         <Grid container justify="space-between" alignItems="center">
-          <h5>{`${category}`}</h5>
           <span
             style={{
               fontSize: "0.9rem",
@@ -110,8 +133,14 @@ export const BlogCard = ({
           >
             {blogDate}
           </span>
+          <StyledFooter container direction="row">
+            <FavoriteIcon />
+            <span>{likes}</span>
+            <CommentIcon />
+            <span>{comments || "0"}</span>
+          </StyledFooter>
         </Grid>
-        <Grid container justify="space-between" alignItems="center">
+        {/* <Grid container justify="space-between" alignItems="center">
           <Rating
             name="customized-empty"
             defaultValue={ratings}
@@ -127,7 +156,7 @@ export const BlogCard = ({
             <CommentIcon />
             <span>{comments || "0"}</span>
           </StyledFooter>
-        </Grid>
+        </Grid> */}
       </FooterContainer>
     </StyledCard>
   );

@@ -1,11 +1,11 @@
 .content-container {
   flex-direction: column;
   padding: 2rem 3rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .content-container > p {
-  text-align: left;
+  text-align: center;
 }
 
 .content-container > h1,
@@ -14,13 +14,6 @@ h2 {
 }
 
 @media screen and (max-width: 1000px) {
-  .content-container {
-    align-items: center !important;
-  }
-  .content-container > p {
-    text-align: center;
-  }
-
   .content-container > h1,
   h2 {
     text-align: center;

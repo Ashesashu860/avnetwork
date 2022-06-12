@@ -134,7 +134,7 @@ export const ViewUserTemplate = ({ user }) => {
         </div>
       </div>
       <ContentContainer subHeading={"Our Products"} />
-      <ProductsList userId={user?.uid} />
+      <ProductsList userId={user?.uid} className="remove_top_padding" />
     </>
   );
 };

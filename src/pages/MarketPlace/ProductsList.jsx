@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
 import { useHistory } from "react-router-dom";
-import { AdsContainer, FilterChips, ShadowContainer } from "../../components";
+import { AdsContainer, FilterChips } from "../../components";
 import {
   marketPlaceProductCategories,
   marketPlaceProductAds,
@@ -9,17 +9,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMarketPlaceProducts } from "../../redux/actions";
 import styled from "styled-components";
-import BackgroundImage from "../../assets/bg.svg";
+// import BackgroundImage from "../../assets/bg.svg";
 import { Grid } from "@material-ui/core";
 
-const StyledContainer = styled.div`
-  flex-wrap: wrap;
-  max-width: 100%;
-  background-color: var(--background);
-  background-image: url(${BackgroundImage});
-  background-repeat: no-repeat;
-  background-position: top right;
-`;
+// const StyledContainer = styled.div`
+//   flex-wrap: wrap;
+//   max-width: 100%;
+//   background-color: var(--background);
+//   background-image: url(${BackgroundImage});
+//   background-repeat: no-repeat;
+//   background-position: top right;
+// `;
 
 const Ad = styled.div`
   height: 16rem;
@@ -34,7 +34,14 @@ const mapState = (state) => ({
   allProducts: state.marketPlace.allProducts,
 });
 
-export const ProductsList = ({ direction, userId, latest, showAds }) => {
+export const ProductsList = ({
+  direction,
+  userId,
+  latest,
+  showAds,
+  className,
+  style,
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { allProducts } = useSelector(mapState);
@@ -84,11 +91,64 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
     setcategorisedProducts(latestFilteredProducts);
   }, [allProducts]);
 
+  const renderedProducts =
+    categorisedProducts && categorisedProducts?.length !== 0 ? (
+      categorisedProducts?.map((product, index) =>
+        typeof product === "string" ? (
+          <Ad>
+            <img
+              alt="ad"
+              src={product}
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+            />
+          </Ad>
+        ) : (
+          <ProductCard
+            key={index}
+            {...product}
+            onClick={() =>
+              history.push({
+                pathname: `/products/${product.id}`,
+                state: {
+                  id: product.id,
+                },
+              })
+            }
+          />
+        )
+      )
+    ) : (
+      <h3 style={{ padding: "1rem" }}>No Products</h3>
+    );
+
+  const ListContainer = styled.div`
+    min-height: auto;
+  `;
+
+  const RowContainer = styled.div`
+    scroll-snap-type: x mandatory;
+    height: auto;
+    width: auto;
+    overflow: hidden;
+  `;
+
+  const RowSubContainer = styled(Grid)`
+    scroll-snap-align: start;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `;
+
   useEffect(() => {
     dispatch(getAllMarketPlaceProducts());
   }, []);
   return (
-    <StyledContainer className="center">
+    <ListContainer
+      direction={direction}
+      className={`wrapper ${className}`}
+      style={style}
+    >
       <AdsContainer>
         <div style={{ ...(!showAds && { width: "100%" }) }}>
           <FilterChips
@@ -97,46 +157,26 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
             onOptionChange={onCategoryClick}
             style={{ marginTop: "1rem", maxWidth: "100%" }}
           />
-          <ShadowContainer>
-            <div
-              style={{
-                display: "inline-flex",
-                flexWrap: direction === "row" ? "nowrap" : "wrap",
-                // justifyContent: latest ? "space-evenly" : "initial",
-                width: "100%",
-                minWidth: "100%",
-              }}
-            >
-              {categorisedProducts && categorisedProducts?.length !== 0 ? (
-                categorisedProducts?.map((product, index) =>
-                  typeof product === "string" ? (
-                    <Ad>
-                      <img
-                        alt="ad"
-                        src={product}
-                        style={{ maxWidth: "100%", maxHeight: "100%" }}
-                      />
-                    </Ad>
-                  ) : (
-                    <ProductCard
-                      key={index}
-                      {...product}
-                      onClick={() =>
-                        history.push({
-                          pathname: `/products/${product.id}`,
-                          state: {
-                            id: product.id,
-                          },
-                        })
-                      }
-                    />
-                  )
-                )
-              ) : (
-                <h3 style={{ padding: "1rem" }}>No Products</h3>
-              )}
-            </div>
-          </ShadowContainer>
+          <Grid container alignItems="center" justifyContent="center">
+            {direction === "row" ? (
+              <RowContainer>
+                <RowSubContainer container wrap="nowrap">
+                  {renderedProducts}
+                </RowSubContainer>
+              </RowContainer>
+            ) : (
+              renderedProducts
+            )}
+          </Grid>
+          <div
+            style={{
+              display: "inline-flex",
+              flexWrap: direction === "row" ? "nowrap" : "wrap",
+              // justifyContent: latest ? "space-evenly" : "initial",
+              width: "100%",
+              minWidth: "100%",
+            }}
+          ></div>
         </div>
         {showAds && (
           <Grid contianer spacing={3}>
@@ -148,6 +188,6 @@ export const ProductsList = ({ direction, userId, latest, showAds }) => {
           </Grid>
         )}
       </AdsContainer>
-    </StyledContainer>
+    </ListContainer>
   );
 };

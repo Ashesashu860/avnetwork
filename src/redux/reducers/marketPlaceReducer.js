@@ -4,13 +4,20 @@ const initialState = {
   allInterestedUsers: null,
   allInterestedUsersLoading: false,
   currentProductOwner: null,
+  areProductsLoading: false,
 };
 
 export const marketPlaceReducer = (marketPlaceState = initialState, action) => {
   switch (action.type) {
+    case "TOGGLE_PRODUCTS_LOADING":
+      return {
+        ...marketPlaceState,
+        areProductsLoading: action.payload.areProductsLoading,
+      };
     case "SET_ALL_MARKET_PLACE_PRODUCTS":
       return {
         ...marketPlaceState,
+        areProductsLoading: false,
         allProducts: action.payload.allProducts,
       };
     case "SET_CURRENT_MARKET_PLACE_PRODUCT":

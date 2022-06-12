@@ -9,6 +9,7 @@ import {
   setCurrentBlogLikeAction,
   toggleCommentsLoadingAction,
   setCurrentBlogCommentsAction,
+  toggleBlogsLoadingAction,
 } from "../actions";
 import { getDatafromDb } from "./saga_utilities";
 
@@ -27,10 +28,9 @@ export function* getBlogWithIdFromDb(action) {
 //GET ALL BLOGS FROM DB
 export function* getBlogsFromDb() {
   try {
-    yield put(setDialogBoxPropsAction("Fetching Blogs..."));
+    yield put(toggleBlogsLoadingAction(true));
     const result = yield getDatafromDb("blogs");
     const db_data = yield Object.values(result);
-    yield put(setDialogBoxPropsAction(""));
     yield put(getBlogsSuccessAction(db_data));
   } catch (error) {
     yield put(setAlertAction(error));

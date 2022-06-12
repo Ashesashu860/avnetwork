@@ -66,7 +66,7 @@ export const MarketPlaceHome = () => {
         subHeading={"All Products"}
         content={"View our variety of different products"}
       />
-      <ProductsList showAds />
+      <ProductsList showAds className="remove_top_padding" />
     </>
   );
 };

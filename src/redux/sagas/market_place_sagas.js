@@ -7,6 +7,7 @@ import {
   //INTERESTED ACTIONS
   interestedUsersForProductLoadingAction,
   setAllInterestedUsersForProductInStateAction,
+  toggleProductsLoadingAction,
 } from "../actions";
 import { put } from "redux-saga/effects";
 import { getDatafromDb } from "./saga_utilities";
@@ -73,10 +74,9 @@ export function* addProductInDbSaga(action) {
 }
 
 export function* getAllMarketPlaceProductsSaga() {
-  yield put(setDialogBoxPropsAction("Getting all products..."));
+  yield put(toggleProductsLoadingAction(true));
   const allProducts = yield getDatafromDb("/marketPlaceProducts");
   yield put(setAllMarketPlaceProducts(Object.values(allProducts)));
-  yield put(setDialogBoxPropsAction(""));
 }
 
 export function* getCurrentMarketPlaceProductSaga(action) {

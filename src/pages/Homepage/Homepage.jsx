@@ -90,7 +90,7 @@ export const Homepage = (props) => {
         subHeading={"Latest Products"}
         content={"View our latest products"}
       />
-      <ProductsList direction="row" latest />
+      <ProductsList direction="row" latest className="remove_top_padding" />
       <ContentContainer
         subHeading={"Latest Blogs"}
         content={"View our latest blogs"}

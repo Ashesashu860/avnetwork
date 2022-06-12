@@ -292,11 +292,11 @@ export const ViewBlog = (props) => {
               </span>
               <span>{currentBlog?.comments || "0"} Comments</span>
             </Grid>
-            <Rating
+            {/* <Rating
               disabled
               precision={0.5}
               emptyIcon={<StarBorderIcon fontSize="inherit" />}
-            />
+            /> */}
           </Grid>
           <Grid container wrap="nowrap">
             <span style={{ marginRight: "0.3rem" }}>{currentBlog?.author}</span>

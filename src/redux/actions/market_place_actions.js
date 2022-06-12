@@ -90,3 +90,10 @@ export const setCurrentProductOwnerAction = (currentProductOwner) => ({
     currentProductOwner,
   },
 });
+
+export const toggleProductsLoadingAction = (areProductsLoading) => ({
+  type: "TOGGLE_PRODUCTS_LOADING",
+  payload: {
+    areProductsLoading,
+  },
+});

@@ -5,13 +5,20 @@ const initialState = {
   currentBlogComments: null,
   isCurrentBlogLikeLoading: false,
   isCurrentBlogCommentsLoading: false,
+  areBlogsLoading: false,
 };
 
 export const blogsReducer = (blogsState = initialState, action) => {
   switch (action.type) {
+    case "TOGGLE_BLOGS_LOADING":
+      return {
+        ...blogsState,
+        areBlogsLoading: action.payload.areBlogsLoading,
+      };
     case "GET_BLOGS_SUCCESS":
       return {
         ...blogsState,
+        areBlogsLoading: false,
         allBlogs: action.payload.blogs,
       };
     case "SET_CURRENT_BLOG":

@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { Card } from "@material-ui/core";
 
-const VideoCardContainer = styled(Card)`
+const VideoCardContainer = styled.div`
   width: 14rem;
   justify-content: flex-start !important;
   flex-direction: column;
   margin: 1rem 0.5rem;
   cursor: pointer;
   overflow: hidden;
+  border-radius: 4px;
   &:hover {
     box-shadow: 1px 3px 6px 1px rgb(0, 0, 0, 14%) !important;
   }
@@ -27,7 +28,7 @@ const VideoHeading = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: -webkit-box;
   color: #000;
 `;
@@ -47,6 +48,7 @@ const VideoContentContainer = styled.div`
   padding: 0.5rem 1rem;
   width: 100%;
   font-size: 0.8rem;
+  background-color: #eee;
   & > *:not(:last-child) {
     margin-bottom: 0.5rem;
   }

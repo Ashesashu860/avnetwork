@@ -104,3 +104,10 @@ export const deleteBlogAction = (blogId, history) => ({
     history,
   },
 });
+
+export const toggleBlogsLoadingAction = (areBlogsLoading) => ({
+  type: "TOGGLE_BLOGS_LOADING",
+  payload: {
+    areBlogsLoading,
+  },
+});

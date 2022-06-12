@@ -7,7 +7,7 @@ const StyledLoader = styled.div`
   height: 2rem;
   & div {
     position: absolute;
-    top: 50%;
+    top: 30%;
     width: 0.8rem;
     height: 0.8rem;
     border-radius: 50%;

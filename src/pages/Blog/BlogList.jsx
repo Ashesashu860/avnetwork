@@ -4,8 +4,8 @@ import { BlogCard } from ".";
 import {
   StyledFab,
   StyledNavLink,
-  ShadowContainer,
   FilterChips,
+  LoaderIcon,
 } from "../../components";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -13,16 +13,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { getBlogsAction } from "../../redux/actions";
 import { getFormattedDate } from "./BlogCreateModules";
 import { blogCategories } from "../masterData";
+import { Grid } from "@material-ui/core";
 
-const BlogListContainer = styled.div`
-  ${(props) =>
-    (props.autoHeight || props.direction === "row") &&
-    "min-height: auto !important;"}
+export const BlogListContainer = styled.div`
+  min-height: auto;
+`;
+
+export const RowContainer = styled.div`
+  scroll-snap-type: x mandatory;
+  height: auto;
+  width: auto;
+  overflow: hidden;
+`;
+
+export const RowSubContainer = styled(Grid)`
+  scroll-snap-align: start;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const mapState = (state) => ({
   allBlogs: state.blogs.allBlogs,
   currentUser: state.users.currentUser,
+  areBlogsLoading: state.blogs.areBlogsLoading,
 });
 
 export const BlogList = ({
@@ -31,10 +46,9 @@ export const BlogList = ({
   style,
   className,
   direction,
-  autoHeight,
   latest,
 }) => {
-  const { allBlogs, currentUser } = useSelector(mapState);
+  const { allBlogs, currentUser, areBlogsLoading } = useSelector(mapState);
   const history = useHistory();
   const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = React.useState("");
@@ -64,71 +78,76 @@ export const BlogList = ({
     };
   }, []);
 
+  const renderedBlogs = latestBlogs?.map((blog, index) => {
+    return (
+      <BlogCard
+        key={index}
+        style={{ float: "left" }}
+        blogDate={getFormattedDate(blog.timestamp)}
+        {...blog}
+        content={blog.content.replace(/<[^>]+>/g, " ")}
+        onClick={(event) => {
+          history.push({
+            pathname: `/blogs/${blog.id}`,
+            state: {
+              id: blog.id,
+            },
+          });
+        }}
+      />
+    );
+  });
+
   return (
     <BlogListContainer
-      autoHeight={autoHeight}
       direction={direction}
       className={`wrapper ${className}`}
       style={style}
     >
-      <div style={{ paddingTop: "1rem" }}>
-        <FilterChips
-          options={filteredCategories}
-          selectedOption={selectedCategory}
-          onOptionChange={onCategoryClick}
-        />
-        <ShadowContainer>
-          <div
-            style={{
-              display: "inline-flex",
-              flexWrap: direction === "row" ? "nowrap" : "wrap",
-              // justifyContent: latest ? "space-evenly" : "initial",
-              width: "100%",
-            }}
-          >
-            {!latestBlogs?.length ? (
-              <h4 style={{ padding: "1rem" }}>No Blogs</h4>
+      {areBlogsLoading ? (
+        <Grid container alignItems="center" justifyContent="center">
+          <LoaderIcon />
+        </Grid>
+      ) : (
+        <>
+          {direction !== "row" && (
+            <FilterChips
+              options={filteredCategories}
+              selectedOption={selectedCategory}
+              onOptionChange={onCategoryClick}
+            />
+          )}
+          <Grid container alignItems="center" justifyContent="center">
+            {direction === "row" ? (
+              <RowContainer>
+                <RowSubContainer container wrap="nowrap">
+                  {renderedBlogs}
+                </RowSubContainer>
+              </RowContainer>
             ) : (
-              latestBlogs?.map((blog, index) => {
-                return (
-                  <BlogCard
-                    key={index}
-                    blogDate={getFormattedDate(blog.timestamp)}
-                    {...blog}
-                    content={blog.content.replace(/<[^>]+>/g, " ")}
-                    onClick={(event) => {
-                      history.push({
-                        pathname: `/blogs/${blog.id}`,
-                        state: {
-                          id: blog.id,
-                        },
-                      });
-                    }}
-                  />
-                );
-              })
+              renderedBlogs
             )}
-          </div>
-        </ShadowContainer>
-        {currentUser?.canWriteBlogs && (
-          <StyledNavLink to="/blog-create">
-            <StyledFab
-              variant="extended"
-              ref={fabRef}
-              primary
-              style={{
-                position: "fixed",
-                bottom: "1rem",
-                right: "2rem",
-                display: noFab ? "none" : "inline-flex",
-              }}
-            >
-              <AddIcon />
-              Add Blog
-            </StyledFab>
-          </StyledNavLink>
-        )}
-      </div>
+          </Grid>
+          {currentUser?.canWriteBlogs && (
+            <StyledNavLink to="/blog-create">
+              <StyledFab
+                variant="extended"
+                ref={fabRef}
+                primary
+                style={{
+                  position: "fixed",
+                  bottom: "1rem",
+                  right: "2rem",
+                  display: noFab ? "none" : "inline-flex",
+                }}
+              >
+                <AddIcon />
+                Add Blog
+              </StyledFab>
+            </StyledNavLink>
+          )}
+        </>
+      )}
     </BlogListContainer>
   );
 };
