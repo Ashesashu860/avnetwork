@@ -2,7 +2,7 @@ import { Chip, Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 
-const RowContainer = styled.div`
+const RowContainer = styled(Grid)`
   margin-top: 1rem;
   scroll-snap-type: x mandatory;
   height: auto;
@@ -25,8 +25,13 @@ export const FilterChips = ({
   style,
 }) => {
   return (
-    <RowContainer>
-      <RowSubContainer container spacing={1} wrap="nowrap">
+    <RowContainer container alignItems="center" justifyContent="center">
+      <RowSubContainer
+        container
+        spacing={1}
+        wrap="nowrap"
+        style={{ width: "auto" }}
+      >
         {options.map((option, index) => (
           <Grid item>
             <Chip
