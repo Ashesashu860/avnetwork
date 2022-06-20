@@ -24,7 +24,12 @@ const StyledFooter = styled.div`
 export const Footer = () => {
   return (
     <StyledFooter>
-      <Grid container direction="row" justify="space-between" spacing={2}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        spacing={2}
+      >
         <Grid item>
           <Logo primaryColor="#fff" secondaryColor="#fff" />
           <p>A single platform for all your needs.</p>

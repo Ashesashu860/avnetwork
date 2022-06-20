@@ -108,7 +108,7 @@ export const BlogCreate = withRouter(({ history }) => {
         onChange={onBlogContentChange}
         value={blogContent}
       />
-      <Grid container justify="flex-end">
+      <Grid container justifyContent="flex-end">
         <FormControl style={{ minWidth: "8rem", margin: "1rem" }}>
           <InputLabel>Category</InputLabel>
           <Select

@@ -31,7 +31,7 @@ export const Login = () => {
         container
         direction="column"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         spacing={4}
       >
         <Grid item>

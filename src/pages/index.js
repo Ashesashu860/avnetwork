@@ -15,3 +15,4 @@ export * from "./Admin";
 export * from "./PageNotFound";
 export * from "./UnderConstruction";
 export * from "./Profile";
+export * from "./Query";

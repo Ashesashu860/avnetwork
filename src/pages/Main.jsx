@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Navbar, Footer, DialogBox, Alert } from "../components";
+import {
+  Navbar,
+  Footer,
+  DialogBox,
+  Alert,
+  StyledFab,
+  StyledNavLink,
+} from "../components";
 import { Route, Switch } from "react-router-dom";
 import {
   Homepage,
@@ -27,9 +34,11 @@ import {
   ViewUser,
   MarketPlaceHome,
   WatchVideo,
+  Query,
 } from ".";
 import { checkUserAuth } from "../redux/actions";
 import { useHistory } from "react-router-dom";
+import ChatIcon from "@material-ui/icons/Chat";
 
 const mapState = (state) => ({
   dialogBoxProps: state.root.dialogBoxProps,
@@ -81,8 +90,23 @@ export const Main = () => {
             <Route exact path="/edit_profile" component={EditProfile} />
             <Route exact path="/networks" component={Networks} />
             <Route exact path="/view_user" component={ViewUser} />
+            <Route exact path="/query" component={Query} />
             <Route component={PageNotFound} />
           </Switch>
+          <StyledNavLink to="/query">
+            <StyledFab
+              variant="extended"
+              primary
+              style={{
+                position: "fixed",
+                bottom: "1rem",
+                right: "2rem",
+              }}
+            >
+              <ChatIcon />
+              <p style={{ marginLeft: "0.5rem" }}>Query</p>
+            </StyledFab>
+          </StyledNavLink>
           <Footer />
           <DialogBox {...dialogBoxProps} />
           <Alert {...alertProps} onClose={onAlertClose} open={alertOpen} />

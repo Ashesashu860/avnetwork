@@ -76,14 +76,14 @@ export const WatchVideo = (props) => {
         <Grid
           container
           wrap="nowrap"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
         >
           {currentUser ? (
             <Grid
               container
               wrap="nowrap"
-              justify="flex-end"
+              justifyContent="flex-end"
               className="blog_operations"
             >
               <Checkbox
@@ -140,7 +140,7 @@ export const WatchVideo = (props) => {
         )}
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
           style={{ marginBottom: "1rem" }}
         >

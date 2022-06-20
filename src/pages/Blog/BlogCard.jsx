@@ -119,11 +119,11 @@ export const BlogCard = ({
       <StyledParagraph>{content}</StyledParagraph>
 
       <FooterContainer>
-        <Grid container justify="space-between" alignItems="center">
+        <Grid container justifyContent="space-between" alignItems="center">
           <h5>{`${author}`}</h5>
           <h5>{`${category}`}</h5>
         </Grid>
-        <Grid container justify="space-between" alignItems="center">
+        <Grid container justifyContent="space-between" alignItems="center">
           <span
             style={{
               fontSize: "0.9rem",
@@ -140,7 +140,7 @@ export const BlogCard = ({
             <span>{comments || "0"}</span>
           </StyledFooter>
         </Grid>
-        {/* <Grid container justify="space-between" alignItems="center">
+        {/* <Grid container justifyContent="space-between" alignItems="center">
           <Rating
             name="customized-empty"
             defaultValue={ratings}

@@ -53,20 +53,41 @@ export const StyledTextArea = ({
   className,
   style,
   value,
+  placeholder,
+  plain,
 }) => {
   return (
     <div className={className} style={style}>
-      <StyledFieldset error={!!error} color={color}>
-        <StyledLegend error={!!error} color={color}>
-          {title}
-        </StyledLegend>
+      {!plain ? (
+        <StyledFieldset error={!!error} color={color}>
+          <StyledLegend error={!!error} color={color}>
+            {title}
+          </StyledLegend>
+          <textarea
+            name={name}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            style={{ resize: "none" }}
+            placeholder={placeholder}
+          />
+        </StyledFieldset>
+      ) : (
         <textarea
           name={name}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          style={{
+            resize: "none",
+            outline: "none",
+            border: "0",
+            borderBottom: "1px solid #ccc",
+            width: "100%",
+          }}
+          placeholder={placeholder}
         />
-      </StyledFieldset>
+      )}
       {error && <ErrorText>{error}</ErrorText>}
     </div>
   );

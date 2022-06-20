@@ -74,13 +74,13 @@ export const BlogHome = () => {
           forever - Mahatma Gandhi
         </p>
         <SubHeading>LEARN NOW ABOUT</SubHeading>
-        <Grid container spacing={3} alignItems="center" justify="center">
+        <Grid container spacing={3} alignItems="center" justifyContent="center">
           {images.map((image) => (
             <Grid
               item
               container
               alignItems="center"
-              justify="center"
+              justifyContent="center"
               direction="column"
               style={{ width: "auto" }}
             >

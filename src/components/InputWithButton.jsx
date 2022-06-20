@@ -39,7 +39,7 @@ export const InputWithButton = ({
     <Container
       container
       alignItems="center"
-      justify="flex-end"
+      justifyContent="flex-end"
       direction="row"
       wrap="nowrap"
       style={style}

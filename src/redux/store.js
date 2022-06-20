@@ -6,6 +6,7 @@ import {
   rootReducer,
   marketPlaceReducer,
   tutorialsReducer,
+  queriesReducer,
 } from "./reducers";
 import { rootSaga } from "./sagas/root_saga";
 
@@ -18,6 +19,7 @@ const store = createStore(
     root: rootReducer,
     marketPlace: marketPlaceReducer,
     tutorials: tutorialsReducer,
+    queries: queriesReducer,
   }),
   applyMiddleware(sagaMiddleware)
 );

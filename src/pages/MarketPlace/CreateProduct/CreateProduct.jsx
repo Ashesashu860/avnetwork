@@ -296,7 +296,7 @@ export const CreateProduct = (props) => {
                 container
                 wrap="nowrap"
                 alignItems="center"
-                justify="center"
+                justifyContent="center"
               >
                 <StyledTextBox
                   InputProps={{
@@ -372,7 +372,12 @@ export const CreateProduct = (props) => {
               </StyledImageContainer>
             </CreateProductSubContainer>
           </Grid>
-          <Grid container wrap="nowrap" alignItems="center" justify="center">
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="center"
+            justifyContent="center"
+          >
             <StyledFab
               variant="extended"
               bold

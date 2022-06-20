@@ -55,7 +55,7 @@ export const SearchBar = ({ className, style, width }) => {
     <SearchContainer
       container
       alignItems="center"
-      justify="flex-end"
+      justifyContent="flex-end"
       direction="row"
       wrap="nowrap"
       style={style}
