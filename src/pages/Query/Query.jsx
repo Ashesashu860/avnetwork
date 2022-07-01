@@ -16,7 +16,7 @@ import { blogCategories } from "../masterData";
 import { v4 as uuidv4 } from "uuid";
 import "./query.css";
 import { getFormattedDate } from "../Blog/BlogCreateModules";
-import { checkUserAuth } from "../../redux/actions";
+import { loginUserAction } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
 const QueryTextArea = styled(StyledTextArea)`
@@ -62,8 +62,11 @@ export const Query = () => {
   };
 
   React.useEffect(() => {
+    console.log("ouside", currentUser);
+
     if (!currentUser) {
-      dispatch(checkUserAuth(history));
+      console.log("inside", currentUser);
+      dispatch(loginUserAction(history));
     } else dispatch(getAllQueriesForCurrentUserAction(currentUser?.uid));
   }, []);
 
