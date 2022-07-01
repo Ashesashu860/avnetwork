@@ -44,10 +44,12 @@ const mapState = (state) => ({
   dialogBoxProps: state.root.dialogBoxProps,
   alertProps: state.root.alertProps,
   isLoading: state.root.isLoading,
+  currentUser: state?.users?.currentUser,
 });
 
 export const Main = () => {
-  const { dialogBoxProps, alertProps, isLoading } = useSelector(mapState);
+  const { dialogBoxProps, alertProps, isLoading, currentUser } =
+    useSelector(mapState);
   const [alertOpen, setAlertOpen] = useState(!alertProps.title);
   const onAlertClose = () => setAlertOpen(false);
 
@@ -93,20 +95,22 @@ export const Main = () => {
             <Route exact path="/query" component={Query} />
             <Route component={PageNotFound} />
           </Switch>
-          <StyledNavLink to="/query">
-            <StyledFab
-              variant="extended"
-              primary
-              style={{
-                position: "fixed",
-                bottom: "1rem",
-                left: "2rem",
-              }}
-            >
-              <ChatIcon />
-              <p style={{ marginLeft: "0.5rem" }}>Query</p>
-            </StyledFab>
-          </StyledNavLink>
+          {currentUser && (
+            <StyledNavLink to="/query">
+              <StyledFab
+                variant="extended"
+                primary
+                style={{
+                  position: "fixed",
+                  bottom: "1rem",
+                  left: "2rem",
+                }}
+              >
+                <ChatIcon />
+                <p style={{ marginLeft: "0.5rem" }}>Query</p>
+              </StyledFab>
+            </StyledNavLink>
+          )}
           <Footer />
           <DialogBox {...dialogBoxProps} />
           <Alert {...alertProps} onClose={onAlertClose} open={alertOpen} />
