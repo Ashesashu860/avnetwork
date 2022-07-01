@@ -6,6 +6,7 @@ import {
   SearchBar,
   Logo,
   StyledButton,
+  CollapseSearch,
 } from "../../components";
 import {
   Avatar,
@@ -235,6 +236,7 @@ export const Navbar = withRouter(({ history }) => {
           style={{ position: "relative", marginTop: "-1px" }}
           className="sub-nav"
         >
+          {/* <CollapseSearch /> */}
           <SearchBar width="100%" />
         </nav>
       </div>

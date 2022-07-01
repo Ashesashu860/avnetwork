@@ -11,7 +11,6 @@ import firebase from "../../config/firebase-config";
 export function* getAllQueriesForCurrentUserSaga(action) {
   try {
     yield put(toggleQueriesLoadingAction(true));
-    yield console.log("action?.payload?.userId", action?.payload?.userId);
     const queries = yield getDatafromDbwhere(
       "queries",
       "userId",
@@ -22,7 +21,6 @@ export function* getAllQueriesForCurrentUserSaga(action) {
     );
     yield put(toggleQueriesLoadingAction(false));
   } catch (error) {
-    console.log("error", error);
     yield put(setAlertAction(error));
   }
 }

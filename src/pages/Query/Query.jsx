@@ -1,24 +1,23 @@
-import {
-  Card,
-  Dialog,
-  FormControl,
-  Grid,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
+import { Card, FormControl, Grid, InputLabel, Select } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { LoaderIcon, StyledFab, StyledTextArea } from "../../components";
+import {
+  LoaderIcon,
+  StyledFab,
+  StyledTextArea,
+  PostContainer,
+} from "../../components";
 import {
   getAllQueriesForCurrentUserAction,
   postQueryAction,
 } from "../../redux/actions/query_actions";
-import { CommentCard } from "../Blog";
 import { blogCategories } from "../masterData";
 import { v4 as uuidv4 } from "uuid";
 import "./query.css";
 import { getFormattedDate } from "../Blog/BlogCreateModules";
+import { checkUserAuth } from "../../redux/actions";
+import { useHistory } from "react-router-dom";
 
 const QueryTextArea = styled(StyledTextArea)`
   margin-top: 1rem;
@@ -37,6 +36,7 @@ const initialQuery = {
 
 export const Query = () => {
   const [query, setQuery] = React.useState(initialQuery);
+  const history = useHistory();
 
   const dispatch = useDispatch();
   const { currentUser, areQueriesLoading, allQueries } = useSelector(mapState);
@@ -62,20 +62,21 @@ export const Query = () => {
   };
 
   React.useEffect(() => {
-    dispatch(getAllQueriesForCurrentUserAction(currentUser?.uid));
+    if (!currentUser) {
+      dispatch(checkUserAuth(history));
+    } else dispatch(getAllQueriesForCurrentUserAction(currentUser?.uid));
   }, []);
 
   return (
     <div className="wrapper container">
       <Card className="post_container">
         <QueryTextArea
-          title="Post your query"
-          label="Post your query"
+          title="Query"
+          label="Query"
           onChange={onChange}
           name="queryText"
           value={query.queryText}
           placeholder="Write a query..."
-          plain
         />
         <Grid
           container
@@ -115,17 +116,19 @@ export const Query = () => {
         {areQueriesLoading ? (
           <LoaderIcon />
         ) : allQueries ? (
-          allQueries?.map((query) => {
-            return (
-              <CommentCard
-                key={query?.photoURL}
-                username={query?.username}
-                date={getFormattedDate(query?.timestamp)}
-                comment={query?.queryText}
-                photoURL={query?.photoURL}
-              />
-            );
-          })
+          allQueries
+            .sort((a, b) => b.timestamp - a.timestamp)
+            ?.map((query) => {
+              return (
+                <PostContainer
+                  key={query?.photoURL}
+                  username={query?.username}
+                  date={getFormattedDate(query?.timestamp)}
+                  queryText={query?.queryText}
+                  photoURL={query?.photoURL}
+                />
+              );
+            })
         ) : (
           <h3>No Queries</h3>
         )}

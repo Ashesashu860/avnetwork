@@ -22,3 +22,5 @@ export * from "./ListItemWithPhoto";
 export * from "./FilterChips";
 export * from "./Slider";
 export * from "./AdsContainer";
+export * from "./PostContainer";
+export * from "./CollapseSearch";

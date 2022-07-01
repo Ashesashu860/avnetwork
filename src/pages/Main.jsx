@@ -100,7 +100,7 @@ export const Main = () => {
               style={{
                 position: "fixed",
                 bottom: "1rem",
-                right: "2rem",
+                left: "2rem",
               }}
             >
               <ChatIcon />

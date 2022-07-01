@@ -46,9 +46,6 @@ export const CommentCard = ({ username, date, comment, photoURL }) => {
             {comment}
           </div>
         </Grid>
-        {/* <IconButton>
-          <DeleteIcon />
-        </IconButton> */}
       </Grid>
     </StyledCard>
   );
