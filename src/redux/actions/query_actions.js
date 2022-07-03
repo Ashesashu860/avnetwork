@@ -26,3 +26,35 @@ export const toggleQueriesLoadingAction = (areQueriesLoading) => ({
     areQueriesLoading,
   },
 });
+
+//Comments
+export const postAQueryCommentAction = (queryId, queryComment, user) => ({
+  type: "POST_QUERY_COMMENT",
+  payload: {
+    queryId,
+    queryComment,
+    user,
+  },
+});
+
+export const getQueryCommentsAction = (queryId) => ({
+  type: "GET_QUERY_COMMENTS",
+  payload: {
+    queryId,
+  },
+});
+
+export const setQueryCommentsAction = (queryId, queryComments) => ({
+  type: "SET_QUERY_COMMENTS",
+  payload: {
+    queryId,
+    queryComments,
+  },
+});
+
+export const toggleQueryCommentsLoadingAction = (areQueryCommentsLoading) => ({
+  type: "TOGGLE_QUERY_COMMENTS_LOADING",
+  payload: {
+    areQueryCommentsLoading,
+  },
+});

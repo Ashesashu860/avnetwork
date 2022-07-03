@@ -10,6 +10,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { InputWithButton } from "./InputWithButton";
 import CommentIcon from "@material-ui/icons/Comment";
 import { CommentCard } from "../pages/Blog";
+import { getFormattedDate } from "../pages/Blog/BlogCreateModules";
+import {
+  getQueryCommentsAction,
+  postAQueryCommentAction,
+  setAlertAction,
+} from "../redux/actions";
+import { LoaderIcon } from "./LoaderIcon";
 
 const Accordion = withStyles({
   root: {
@@ -69,14 +76,37 @@ const mapState = (state) => ({
   currentUser: state.users.currentUser,
 });
 
-export const PostContainer = ({ username, date, queryText, photoURL }) => {
+export const PostContainer = ({
+  query,
+  queryComments,
+  areQueryCommentsLoading,
+}) => {
+  const dispatch = useDispatch();
+
   const { currentUser } = useSelector(mapState);
 
   const [comment, setComment] = React.useState("");
 
   const onCommentChange = (event) => setComment(event.target.value);
-  const onCommentSubmit = () => null;
-  console.log("currentUser", currentUser);
+  const onCommentSubmit = (event) => {
+    if (comment) {
+      dispatch(postAQueryCommentAction(query.id, comment, currentUser));
+      setComment("");
+    } else {
+      dispatch(setAlertAction("Please type a comment to post"));
+    }
+  };
+
+  //Accordion
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandChange = (event) => {
+    if (!queryComments) {
+      dispatch(getQueryCommentsAction(query?.id));
+    }
+    setExpanded(!expanded);
+  };
+
   return (
     <StyledCard>
       <Grid container wrap="nowrap">
@@ -89,8 +119,8 @@ export const PostContainer = ({ username, date, queryText, photoURL }) => {
           }}
         >
           <img
-            src={photoURL}
-            alt={username?.charAt(0)}
+            src={query.photoURL}
+            alt={query.username?.charAt(0)}
             style={{ maxHeight: "100%" }}
           />
         </Avatar>
@@ -100,8 +130,10 @@ export const PostContainer = ({ username, date, queryText, photoURL }) => {
             wrap="nowrap"
             style={{ justifyContent: "space-between" }}
           >
-            <h5>{username}</h5>
-            <span style={{ fontSize: "0.9rem" }}>{date}</span>
+            <h5>{query.username}</h5>
+            <span style={{ fontSize: "0.9rem" }}>
+              {getFormattedDate(query.timestamp)}
+            </span>
           </Grid>
           <div
             style={{
@@ -109,11 +141,11 @@ export const PostContainer = ({ username, date, queryText, photoURL }) => {
               marginTop: "0.5rem",
             }}
           >
-            {queryText}
+            {query.queryText}
           </div>
         </Grid>
       </Grid>
-      <Accordion>
+      <Accordion expanded={expanded} onChange={handleExpandChange}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1d-content"
@@ -122,13 +154,25 @@ export const PostContainer = ({ username, date, queryText, photoURL }) => {
           <p style={{ color: "#666" }}>Comments</p>
         </AccordionSummary>
         <AccordionDetails>
-          <CommentCard
-            key={comment?.photoURL}
-            username={comment?.username}
-            date={date}
-            comment={comment?.comment}
-            photoURL={comment?.photoURL}
-          />
+          {areQueryCommentsLoading ? (
+            <LoaderIcon />
+          ) : queryComments?.length > 0 ? (
+            <Grid container direction="column">
+              {queryComments?.map((comment) => {
+                return (
+                  <CommentCard
+                    key={comment?.photoURL}
+                    username={comment?.username}
+                    comment={comment?.queryComment}
+                    photoURL={comment?.photoURL}
+                    date={getFormattedDate(comment?.timestamp)}
+                  />
+                );
+              })}
+            </Grid>
+          ) : (
+            <p>No Comments</p>
+          )}
         </AccordionDetails>
       </Accordion>
       {currentUser && (
@@ -136,7 +180,7 @@ export const PostContainer = ({ username, date, queryText, photoURL }) => {
           inputValue={comment}
           onChange={onCommentChange}
           icon={<CommentIcon />}
-          iconOnClick={() => onCommentSubmit()}
+          iconOnClick={onCommentSubmit}
           width="100%"
           placeholder="Comment..."
           style={{ marginTop: "1rem", backgroundColor: "#ddd" }}

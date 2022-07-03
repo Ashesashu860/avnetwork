@@ -15,8 +15,7 @@ import {
 import { blogCategories } from "../masterData";
 import { v4 as uuidv4 } from "uuid";
 import "./query.css";
-import { getFormattedDate } from "../Blog/BlogCreateModules";
-import { loginUserAction } from "../../redux/actions";
+import { setDialogBoxPropsAction } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 
 const QueryTextArea = styled(StyledTextArea)`
@@ -27,6 +26,8 @@ const mapState = (state) => ({
   currentUser: state?.users?.currentUser,
   areQueriesLoading: state.queries.areQueriesLoading,
   allQueries: state.queries.allQueries,
+  queryComments: state.queries.queryComments,
+  areQueryCommentsLoading: state.queries.areQueryCommentsLoading,
 });
 
 const initialQuery = {
@@ -39,7 +40,13 @@ export const Query = () => {
   const history = useHistory();
 
   const dispatch = useDispatch();
-  const { currentUser, areQueriesLoading, allQueries } = useSelector(mapState);
+  const {
+    currentUser,
+    areQueriesLoading,
+    allQueries,
+    queryComments,
+    areQueryCommentsLoading,
+  } = useSelector(mapState);
 
   const onChange = (event) => {
     setQuery({
@@ -62,80 +69,90 @@ export const Query = () => {
   };
 
   React.useEffect(() => {
-    console.log("ouside", currentUser);
-
     if (!currentUser) {
-      console.log("inside", currentUser);
-      dispatch(loginUserAction(history));
+      history.push("/");
+      dispatch(
+        setDialogBoxPropsAction(
+          "Signup or login to to see all the queries",
+          {
+            title: "OK",
+            onButtonClick: (event) => {},
+          },
+          true
+        )
+      );
     } else dispatch(getAllQueriesForCurrentUserAction(currentUser?.uid));
   }, []);
 
   return (
-    <div className="wrapper container">
-      <Card className="post_container">
-        <QueryTextArea
-          title="Query"
-          label="Query"
-          onChange={onChange}
-          name="queryText"
-          value={query.queryText}
-          placeholder="Write a query..."
-        />
-        <Grid
-          container
-          wrap="nowrap"
-          justifyContent="space-between"
-          style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
-        >
-          <FormControl>
-            <InputLabel>Category</InputLabel>
-            <Select
-              native
-              name="queryCategory"
-              value={query.queryCategory}
+    <>
+      {currentUser && (
+        <div className="wrapper container">
+          <Card className="post_container">
+            <QueryTextArea
+              title="Query"
+              label="Query"
               onChange={onChange}
-              label="Category"
+              name="queryText"
+              value={query.queryText}
+              placeholder="Write a query..."
+            />
+            <Grid
+              container
+              wrap="nowrap"
+              justifyContent="space-between"
+              style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
             >
-              <option value={""}></option>
-              {blogCategories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <StyledFab
-            disabled={!query?.queryText || !query?.queryCategory}
-            variant="extended"
-            bold
-            primary={(query?.queryText && query?.queryCategory) || false}
-            onClick={onPostQueryClick}
-          >
-            Post
-          </StyledFab>
-        </Grid>
-      </Card>
-      <Card className="post_container">
-        {areQueriesLoading ? (
-          <LoaderIcon />
-        ) : allQueries ? (
-          allQueries
-            .sort((a, b) => b.timestamp - a.timestamp)
-            ?.map((query) => {
-              return (
-                <PostContainer
-                  key={query?.photoURL}
-                  username={query?.username}
-                  date={getFormattedDate(query?.timestamp)}
-                  queryText={query?.queryText}
-                  photoURL={query?.photoURL}
-                />
-              );
-            })
-        ) : (
-          <h3>No Queries</h3>
-        )}
-      </Card>
-    </div>
+              <FormControl>
+                <InputLabel>Category</InputLabel>
+                <Select
+                  native
+                  name="queryCategory"
+                  value={query.queryCategory}
+                  onChange={onChange}
+                  label="Category"
+                >
+                  <option value={""}></option>
+                  {blogCategories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <StyledFab
+                disabled={!query?.queryText || !query?.queryCategory}
+                variant="extended"
+                bold
+                primary={(query?.queryText && query?.queryCategory) || false}
+                onClick={onPostQueryClick}
+              >
+                Post
+              </StyledFab>
+            </Grid>
+          </Card>
+          <Card className="post_container">
+            {areQueriesLoading ? (
+              <LoaderIcon />
+            ) : allQueries ? (
+              allQueries
+                .sort((a, b) => b.timestamp - a.timestamp)
+                ?.map((query) => {
+                  return (
+                    <PostContainer
+                      key={query?.id}
+                      query={query}
+                      queryComments={queryComments?.[query?.id]}
+                      areQueryCommentsLoading={areQueryCommentsLoading}
+                    />
+                  );
+                })
+            ) : (
+              <h3>No Queries</h3>
+            )}
+          </Card>
+        </div>
+      )}
+    </>
   );
 };

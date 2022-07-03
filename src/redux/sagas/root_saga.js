@@ -34,7 +34,12 @@ import {
   likeTutorialSaga,
   commentOnTutorialSaga,
 } from "./tutorials_sagas";
-import { getAllQueriesForCurrentUserSaga, postAQuerySaga } from "./query_sagas";
+import {
+  getAllQueriesForCurrentUserSaga,
+  getQueryCommentsSaga,
+  postAQueryCommentSaga,
+  postAQuerySaga,
+} from "./query_sagas";
 
 export function* rootSaga() {
   //USER
@@ -86,4 +91,6 @@ export function* rootSaga() {
   //QUERIES
   yield takeLatest("POST_QUERY", postAQuerySaga);
   yield takeLatest("GET_ALL_QUERIES", getAllQueriesForCurrentUserSaga);
+  yield takeLatest("POST_QUERY_COMMENT", postAQueryCommentSaga);
+  yield takeLatest("GET_QUERY_COMMENTS", getQueryCommentsSaga);
 }

@@ -37,6 +37,7 @@ const StyledMenu = styled(Menu)`
 export const SearchBar = ({ className, style, width }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedCateoryIndex, setSelectedCateoryIndex] = React.useState(0);
+  const [searchText, setSearchText] = React.useState("");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,6 +52,13 @@ export const SearchBar = ({ className, style, width }) => {
     setAnchorEl(null);
   };
 
+  const onInputChange = (event) => {
+    if (event.key === "Enter") {
+      alert(searchText);
+    }
+    setSearchText(event.target.value);
+  };
+
   return (
     <SearchContainer
       container
@@ -63,7 +71,11 @@ export const SearchBar = ({ className, style, width }) => {
       className={className}
     >
       <Grid container item>
-        <StyledInput placeholder="Search Market Place" />
+        <StyledInput
+          value={searchText}
+          placeholder="Search Market Place"
+          onChange={onInputChange}
+        />
       </Grid>
       <Grid container alignItems="center" style={{ width: "auto" }} item>
         <Button
